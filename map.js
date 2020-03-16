@@ -137,7 +137,6 @@ require([
 
 
     //popup templates for all layers
-    // test new machine
 
 
     studyAreasPopup = function(feature) {
@@ -2410,6 +2409,7 @@ mapView.watch("widthBreakpoint", function(breakpoint) {
 });
 
 function updateView(isMobile) {
+    console.log("Is Mobile");
   setLegendMobile(isMobile);
 }
 
