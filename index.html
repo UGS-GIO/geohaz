@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="description" content="Utah Geologic Hazards Portal">
+ 
+  <title>Utah Geologic Hazards Portal</title>
+
+  <!-- Calcite Maps Bootstrap -->
+  <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.10.css">
+  <!--link rel="stylesheet" href="http://localhost/GitHub/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.9.css"-->
+  
+  <!-- Calcite Maps -->
+  <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.10.css">
+  <!--link rel="stylesheet" href="http://localhost/GitHub/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.9.css"-->
+
+  <!-- ArcGIS JS 4 -->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/css/main.css">
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+.modal {
+  display: none;
+  position: fixed;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.esri-feature__last-edited-info {
+
+    display: none;
+}
+
+.esri-view-width-xsmall .esri-expand--auto .esri-expand__container--expanded {
+top: 60px;
+}
+
+/* .esri-view-height-small .esri-expand .esri-widget--panel, .esri-view-height-small .esri-expand .esri-widget--panel-height-only, .esri-view-height-small .esri-ui-corner .esri-component.esri-widget--panel, .esri-view-height-small .esri-ui-corner .esri-component.esri-widget--panel-height-only {
+max-height: none;
+} */
+
+    .calcite-title:before {
+      content: url('https://geology.utah.gov/apps/_ugsmaptemplate/logo_main.png');
+      padding: 6px 12px 0 2px;
+      cursor: pointer;
+    }
+
+    .esri-legend__layer-caption {
+      display:none;
+    }
+
+   /* Removes the layerlist legend toggle button  */
+
+    .esri-layer-list__item-actions-menu-item:first-of-type {
+      display: none;
+    }
+
+    .esri-layer-list__child-toggle + .esri-layer-list__item-label > .esri-layer-list__item-toggle {
+ display:none;
+}
+
+div.esri-legend__message {
+    display: none;
+ }
+
+ .esri-layer-list__item-actions-menu-item--active, .esri-layer-list__item-actions-menu-item--active:hover {
+   background-color: #ffffff;
+ }
+
+
+
+ .invisible {
+        visibility: collapse;
+      }
+
+      .esri-expand .esri-expand__content {
+        box-shadow: none;
+      }
+
+      .esri-view-height-xsmall
+        .esri-ui-corner
+        .esri-expand
+        .esri-legend.esri-widget,
+      .esri-view-height-small
+        .esri-ui-corner
+        .esri-expand
+        .esri-legend.esri-widget {
+        max-height: 100%;
+      }
+
+      .esri-view-width-less-than-small .esri-zoom .esri-widget--button {
+        display: none;
+      }
+
+  </style>
+
+</head>
+
+<body class="calcite-maps calcite-nav-top">
+    <a class="ugs-watermark " href="https://geology.utah.gov"></a>
+  <!-- Navbar -->
+
+  <nav class="navbar calcite-navbar navbar-fixed-top calcite-text-light calcite-bg-dark">
+    <!-- Menu -->
+    <div class="dropdown calcite-dropdown calcite-text-dark calcite-bg-light" role="presentation">
+      <a class="dropdown-toggle" role="menubutton" aria-haspopup="true" aria-expanded="false" tabindex="0">
+        <div class="calcite-dropdown-toggle">
+          <span class="sr-only">Toggle dropdown menu</span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a role="menuitem" tabindex="0" data-target="#panelInfo" aria-haspopup="true"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+        <!-- <li><a role="menuitem" tabindex="0" href="#" data-target="#panelLegend" aria-haspopup="true"><span class="glyphicon glyphicon-list-alt"></span> Legend</a></li> -->
+        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelBasemaps" aria-haspopup="true"><span class="esri-icon-basemap"></span> Basemaps</a></li>
+        <li><a role="menuitem" tabindex="0" href="#" data-target="#panelReport" aria-haspopup="true"><span class="esri-icon-documentation"></span> Generate Report</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelDisclaimer" aria-haspopup="true"><span class="glyphicon glyphicon-warning-sign"></span> Dislaimer</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelDatabase" aria-haspopup="true"><span class="glyphicon glyphicon-list-alt"></span> Database Contents</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelAcknowledgments" aria-haspopup="true"><span class="glyphicon glyphicon-user"></span> Acknowledgments</a></li>
+        <li><a role="menuitem" tabindex="0" data-target="#panelReferences" aria-haspopup="true"><span class="glyphicon glyphicon-tasks"></span> References</a></li>
+        
+      </ul>
+    </div>
+    <!-- Title -->
+    <div class="calcite-title calcite-overflow-hidden">
+        <span class="calcite-title-main">Utah Geologic Hazards Portal</span>
+        <span class="calcite-title-divider hidden-xs"></span>
+        <span class="calcite-title-sub hidden-xs">Utah Geological Survey</span>
+    </div>
+    <!-- Nav -->
+    <ul class="nav navbar-nav calcite-nav">
+      <li>
+        <div class="calcite-navbar-search calcite-search-expander">
+          <div id="searchWidgetDiv"></div>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!--/.calcite-navbar -->
+
+  <!-- Map  -->
+
+  <div class="calcite-map calcite-map-absolute">
+    <div id="mapViewDiv"></div>
+  </div>
+
+  <!-- /.calcite-map -->
+
+  <!-- Panels -->
+
+  <div class="calcite-panels calcite-panels-right calcite-text-light calcite-bg-dark panel-group">
+
+    <!-- Panel - Info -->
+
+    <div id="panelInfo" class="panel collapse in">
+      <div id="headingInfo" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseInfo"  aria-expanded="true" aria-controls="collapseInfo"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span><span class="panel-label">About</span></a> 
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelInfo"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+        </div>
+      </div>
+      <div id="collapseInfo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInfo">
+        <div class="panel-body">
+            <p><span style="font-weight: 400;">The </span><em><span style="font-weight: 400;">Utah Geologic Hazards Portal</span></em><span style="font-weight: 400;"> contains post-2008 UGS geologic hazard map data and data from other sources for parts of Utah. These data address earthquake, flood, landslide, and problem soil and rock hazards. Data maintained by other agencies, such as dam failure inundation and earthquake epicenters, are also available to view. This web mapping application is intended to provide planners, local government officials, property owners, developers, engineers, geologists, design professionals, and the public with information on the type, location, and relative severity of geologic hazards that may impact existing and future infrastructure and development. The data also provide information that may be used for emergency response and recovery planning and community risk assessment for existing development and infrastructure.&nbsp;&nbsp;</span></p>
+<p><span style="font-weight: 400;">Areas with comprehensive geologic hazard map data are shown with red polygons.&nbsp; Areas where comprehensive map data are not available but some hazard data exists are shown in blue polygons. Statewide data for hazardous (Quaternary age) faults, earthquake epicenters, and a legacy compilation of landslides are also available.&nbsp; Limited, comprehensive geologic hazard map data are available for the remaining hazards listed in the legend. Hazard map layers, along with available lidar elevation data, can be enabled in the Legend by clicking on the eye symbol. Map layer units describing the hazard relative severity are also shown in the Legend.&nbsp; The absence of data does not imply that no geologic hazard or hazards exist. Additional geologic hazard mapping is on-going and will be added to the database as it is finalized.&nbsp;&nbsp;</span></p>
+<p>&nbsp;</p>
+<p><strong>Related Information&nbsp;</strong></p>
+<p><span style="font-weight: 400;">For more information, see </span><a href="https://geology.utah.gov/hazards"><span style="font-weight: 400;">https://geology.utah.gov/hazards</span></a><span style="font-weight: 400;"> or contact the UGS.&nbsp;&nbsp;</span></p>
+        </div>
+     </div>
+    </div>
+
+    <!-- Panel - Legend
+
+    <div id="panelLegend" class="panel collapse in">
+      <div id="headingLegend" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseLegend" aria-expanded="true" aria-controls="collapseLegend"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Legend</span></a> 
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelLegend"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a> 
+        </div>
+      </div>
+      <div id="collapseLegend" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingLegend">
+        <div class="panel-body">            
+          <div id="legendDiv"></div>
+        </div>
+      </div>
+    </div> -->
+
+        <!-- Panel - Reports -->
+
+        <div id="panelReport" class="panel collapse">
+            <div id="headingReport" class="panel-heading" role="tab">
+              <div class="panel-title">
+                <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseReport" aria-expanded="false" aria-controls="collapseReport"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Report Generator</span></a> 
+                <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelReport"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a> 
+              </div>
+            </div>
+            <div id="collapseReport" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingReport">
+              <div class="panel-body">            
+                <div id="reportDiv">
+                  <b>Generate a Report of the Current Map Extent.</b>
+                  <p><button class="action-button esri-icon-documentation" id="currentButton" type="button"
+                                  title="Current Extents"></button></p>
+                                <p><b>Custom Area of Interest</b></p>
+                                <p><button class="action-button esri-icon-polygon" id="polygonButton" type="button"
+                                  title="Draw polygon"></button> Click to draw a polygon over the area you would like to generate a report. Double click to finish the polygon.</p>
+                                <!-- <p><button class="action-button esri-icon-down-arrow-circled" id="DownloadButton" type="button"
+                                  title="Download"></button> Click to generate report.</p> -->
+                                <p><button class="action-button esri-icon-trash" id="resetBtn" type="button" title="Clear graphics"></button> Reset the selected polygon area.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+            <!-- Basemaps Panel -->
+            <div id="panelBasemaps" class="panel collapse">
+              <div id="headingBasemaps" class="panel-heading" role="tab">
+                  <div class="panel-title">
+                      <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseBasemaps" aria-expanded="false" aria-controls="collapseBasemaps"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span class="panel-label">Basemaps</span></a>
+                      <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelBasemaps"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+                  </div>
+              </div>
+              <div id="collapseBasemaps" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingBasemaps">
+                  <div class="panel-body">
+                      <select id="selectBasemapPanel" class="form-control">
+                          <option value="streets" data-vector="streets-vector">Streets</option>
+                          <option value="satellite" data-vector="satellite" selected="">Satellite</option>
+                          <option value="hybrid" data-vector="hybrid">Hybrid</option>
+                          <option value="national-geographic" data-vector="national-geographic">National Geographic</option>
+                          <option value="topo" data-vector="topo-vector">Topographic</option>
+                          <option value="gray" data-vector="gray-vector">Gray</option>
+                          <option value="dark-gray" data-vector="dark-gray-vector">Dark Gray</option>
+                          <option value="osm" data-vector="osm">Open Street Map</option>
+                          <option value="dark-gray" data-vector="streets-night-vector">Streets Night</option>
+                          <option value="streets" data-vector="streets-navigation-vector">Streets Mobile</option>
+                      </select>
+                  </div>
+              </div>
+          </div>
+  
+
+              <!-- Panel - Disclaimer -->
+
+    <div id="panelDisclaimer" class="panel collapse">
+      <div id="headingDisclaimer" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseDisclaimer"  aria-expanded="true" aria-controls="collapseDisclaimer"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span><span class="panel-label">Disclaimer</span></a> 
+          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelDisclaimer"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+        </div>
+      </div>
+      <div id="collapseDisclaimer" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDisclaimer">
+        <div class="panel-body">
+            <p style="text-align: justify;">Although this product represents the work of professional scientists, the Utah Department of Natural Resources, Utah Geological Survey, makes no warranty, expressed or implied, regarding its suitability for a particular use. The Utah Department of Natural Resources, Utah Geological Survey, shall not be liable under any circumstances for any direct, indirect, special, incidental, or consequential damages with respect to claims by users of this product. The Utah Geological Survey does not guarantee accuracy or completeness of the data.
+              The Utah Geologic Hazards Database contains geologic hazard information and data from the Utah Geological Survey (UGS) and other sources for the area of interest shown on the map below and can be used to identify mapped geologic hazards in an area, understand what the hazards are, and some potential ways to mitigate them.
+               The database is periodically updated to incorporate the results of new mapping and/or updated mapping due to updated data and/or methodology; however, more-detailed fault traces and paleoseismic information may be available in recently published geologic maps and reports, so the database should not be considered exhaustive.
+              Locations of mapped geologic hazards should always be considered approximate.
+              The locational accuracy of  hazards on the maps vary, and spatial error can be substantial when viewing structures at high zoom levels that were originally mapped at small scales. Therefore, the locations of hazards on the map should be considered approximate. Depending on the ultimate needs of the user, a site-specific investigation by a qualified Utah-licensed Professional Geologist may be required to accurately characterize the hazards at a particular site.
+              </p>
+            <p>&nbsp;</p>
+        </div>
+     </div>
+    </div>
+
+                  <!-- Panel - Database -->
+
+                  <div id="panelDatabase" class="panel collapse">
+                    <div id="headingDatabase" class="panel-heading" role="tab">
+                      <div class="panel-title">
+                        <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseDatabase"  aria-expanded="true" aria-controls="collapseDatabase"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Database Contents</span></a> 
+                        <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelDatabase"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+                      </div>
+                    </div>
+                    <div id="collapseDatabase" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDatabase">
+                      <div class="panel-body">
+                        <p><span style="font-weight: 400;">The Geologic Hazards Mapping Database contains geologic hazard information and data from the Utah Geological Survey (UGS) and other sources. The database is periodically updated to incorporate the results of new mapping. Detailed geologic hazard mapping is available for limited areas and for specific hazards in Utah and additional mapping is ongoing.</span></p>
+                        <p><br /><span style="font-weight: 400;">The Utah database exists as an attributed geographic information system (GIS) feature class in the State Geographic Information Database (SGID), and is available through the </span><a href="http://gis.utah.gov/data/geoscience/quaternary-faults"><span style="font-weight: 400;">Utah Automated Geographic Reference Center</span></a><span style="font-weight: 400;"> (AGRC). Users can access full data reports for individual hazards by clicking on the &ldquo;Detailed Report&rdquo; link in pop-up window. These reports are not a substitute for a site-specific geologic hazards and geotechnical engineering investigation by a qualified, Utah-licensed consultant.&nbsp; These investigations provide valuable information on the site geologic conditions that may affect or be affected by development, as well as the type and severity of geologic hazards at a site and recommend solutions to mitigate the effects and costs of the hazards, both at the time of construction and over the life of the development.&nbsp; See your local city or county building department for details on these investigations and UGS Circular 122 </span><a href="https://ugspub.nr.utah.gov/publications/circular/c-122.pdf"><span style="font-weight: 400;">https://ugspub.nr.utah.gov/publications/circular/c-122.pdf</span></a><span style="font-weight: 400;">).</span></p>
+                      </div>
+                   </div>
+                  </div>
+
+                  <!-- Panel - Acknowledgments -->
+
+                                    <div id="panelAcknowledgments" class="panel collapse">
+                                      <div id="headingAcknowledgments" class="panel-heading" role="tab">
+                                        <div class="panel-title">
+                                          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseAcknowledgments"  aria-expanded="true" aria-controls="collapseAcknowledgments"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="panel-label">Acknowledgments</span></a> 
+                                          <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelAcknowledgments"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+                                        </div>
+                                      </div>
+                                      <div id="collapseAcknowledgments" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAcknowledgments">
+                                        <div class="panel-body">
+                                        <p><span style="font-weight: 400;">In 2008, the Utah Geological Survey Geologic Hazards Mapping Initiative was created with funding from the Utah Legislature to map geologic hazards in areas of existing and future development. This mapping is focused on identifying hazards for an entire 7.5&prime; quadrangle at 1:24,000 scale, instead of single hazard maps of large regional areas. The geologic-hazard maps address hazards associated with earthquakes, landslides, flooding, debris flows, indoor radon, shallow groundwater, rockfall, and problem soils and rocks. The initiative will provide planners, local officials, property owners, developers, engineers, geologists, design professionals, and the interested public with information on the type and location of critical geologic hazards that may impact existing and future development.</span></p>
+                                        <p>
+
+                                          <p><span style="font-weight: 400;">Hazard mapping is a multidisciplinary cooperative collaboration.&nbsp; We thank Scott Davis, Nathan Kota, Steve Gourley, and Jake Adam with the Utah Automated Geographic Reference Center (AGRC) for assistance and programming in the creation of the online web mapping application. Steve Bowman and Jessica Castleton (UGS) helped develop the schema and reporting format used in the current database. Marshall Robinson, Jay Hill, and Martha Jensen (UGS) and Corey Unger (former UGS) did web design and programming for the interactive map. UGS GIS analysts Gordon Douglass contributed substantially at various stages of development of the database. We thank the hazard mappers in the UGS Hazards Program for providing high quality hazard maps.&nbsp; </span></p>
+                                        </div>
+                                     </div>
+                                    </div>
+
+                   <!-- Panel - References -->
+
+                  <div id="panelReferences" class="panel collapse">
+                    <div id="headingReferences" class="panel-heading" role="tab">
+                      <div class="panel-title">
+                        <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseReferences"  aria-expanded="true" aria-controls="collapseReferences"><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span><span class="panel-label">References</span></a> 
+                        <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelReferences"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>  
+                      </div>
+                    </div>
+                    <div id="collapseReferences" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingReferences">
+                      <div class="panel-body">
+                        <p><span style="font-weight: 400;">Beukelman, G.S., Erickson, B.E., and Giraud, R.E., 2015, Landslide inventory map of the Sixmile Canyon and North Hollow area, Sanpete County, Utah: Utah Geological Survey Map 273DM, scale 1:24,000.</span></p>
+                        <p><span style="font-weight: 400;">Castleton</span><strong>,</strong><span style="font-weight: 400;"> J.J., Elliott, A.H., and McDonald, G.N., 2011, Geologic hazards of the Magna quadrangle, Salt Lake County, Utah: Utah Geological Survey Special Study 137, 73 p., 10 plates, scale 1:24,000, CD.</span></p>
+                        <p><span style="font-weight: 400;">Castleton, J.J., Elliott, A.H., and McDonald, G.N., 2014, Geologic hazards of the Copperton quadrangle, Salt Lake County, Utah: Utah Geological Survey Special Study 152, 24 p., 10 plates, scale 1:24,000, CD.</span></p>
+                        <p><span style="font-weight: 400;">Castleton, J.J., Erickson, B.A., and Kleber, E.J., 2018, Radon hazard potential of Davis County, Utah: Utah Geological Survey Open-file Report 655, 1 plate, scale 1:24,000</span></p>
+                        <p><span style="font-weight: 400;">Castleton, Jessica J., Erickson, Ben A., and Kleber, Emily J., 2018, Geologic hazards of the Moab quadrangle, Grand County, Utah: Utah Geological Survey Special Study 162, 33 p., 13 pl.,scale 1:24,000.</span></p>
+                        <p><span style="font-weight: 400;">Castleton, J.J., Erickson, B.A., McDonald, G.N., and Beukelman, G.S., 2018, Geologic Hazards of the Tickville Spring quadrangle, Salt Lake and Utah Counties, Utah: Utah Geological Survey Special Study 163, 25 p., 10 pl., scale 1:24,000.</span></p>
+                        <p><span style="font-weight: 400;">Giraud, R.E., and McDonald, G.N., 2017, Landslide inventory map of the Ferron Creek area, Sanpete and Emery Counties, Utah:&nbsp; Utah Geological Survey Special Study xxx, scale 1:24,000.&nbsp;&nbsp;</span></p>
+                        <p><span style="font-weight: 400;">Knudsen, T.R., and Lund, W.R., 2014, Geologic hazards of the State Route 9 Corridor, La Verkin City to Town of Springdale, Washington County, Utah: Utah Geological Survey Special Study 148, 13 p., 9 plates, GIS data, DVD.</span></p>
+                        <p><span style="font-weight: 400;">Lund, W.R., Knudsen, T.R., Shaw, L.M., 2008, Geologic hazards and adverse construction conditions, St. George metropolitan area, Washington County, Utah, Utah Geological Survey Special Study 127, 105 p.</span></p>
+                        <p><span style="font-weight: 400;">Lund, W.R., Knudsen, T.R., and Sharrow, D.L., 2010, Geologic hazards of the Zion National Park geologic-hazard study area, Washington and Kane Counties, Utah: Utah Geological Survey Special Study 133, 95 p., 9 plates, GIS data, DVD.</span></p>
+                        <p><span style="font-weight: 400;">McDonald, G.N., and Giraud, R.E., 2011, Landslide inventory map of Twelvemile Canyon, Sanpete County, Utah:&nbsp; Utah Geological Survey Map 247DM, scale 1:24,000.&nbsp;&nbsp;</span></p>
+                        <p><span style="font-weight: 400;">McDonald, G.N., and Giraud, R.E., 2014, Landslide inventory map of the 2012 Seeley fire area, Carbon and Emery Counties, Utah:&nbsp; Utah Geological Survey Special Study 153, scale 1:24,000.&nbsp;&nbsp;</span></p>
+                        <p><span style="font-weight: 400;">McDonald, G.N., and Giraud, R.E., 2015, Landslide inventory map for the Upper Muddy Creek area, Sanpete and Sevier Counties, Utah:&nbsp; Utah Geological Survey Special Study 155, scale 1:24,000.&nbsp;&nbsp;</span></p>
+                        <p>&nbsp;</p>
+                      </div>
+                   </div>
+                  </div>
+
+  </div>
+
+  <!-- /.calcite-panels -->
+
+
+
+  <script type="text/javascript">
+    var dojoConfig = {
+      packages: [{
+        name: "bootstrap",
+        location: "https://esri.github.io/calcite-maps/dist/vendor/dojo-bootstrap"
+      },
+      {
+        name: "calcite-maps",
+        location: "https://esri.github.io/calcite-maps/dist/js/dojo"
+        
+      }]
+    };
+  </script>
+
+  <!-- ArcGIS JS 4 -->
+  <script src="https://js.arcgis.com/4.13/"></script>
+  <script src="map.js"></script>
+
+  
+
+
+<div id="myModal" class="modal">
+
+  <div class="modal-content">
+    <p>Poop</p>
+  </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
