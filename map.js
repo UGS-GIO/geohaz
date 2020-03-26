@@ -73,12 +73,7 @@ require([
             top: 50,
             bottom: 0
         },
-        // highlightOptions: {
-        //     color: [255, 255, 0, 1],
-        //     haloColor: "white",
-        //     haloOpacity: 0.9,
-        //     fillOpacity: 0.2
-        //   },
+
         ui: {
             components: []
         }
