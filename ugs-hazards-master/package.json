@@ -1,0 +1,49 @@
+{
+  "name": "ugs-hazards",
+  "version": "1.0.2",
+  "private": true,
+  "homepage": ".",
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "esri-loader": "^2.12.0",
+    "lodash": "4.17.15",
+    "node-sass": "^4.13.0",
+    "polly-js": "^1.6.5",
+    "query-string": "^6.9.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "build-stage": "env-cmd -f ./.env.staging npm run build",
+    "eject": "react-scripts eject",
+    "lint": "eslint ./ --ignore-path .gitignore"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "env-cmd": "10.0.1",
+    "grunt": "1.0.4",
+    "grunt-contrib-clean": "2.0.0",
+    "grunt-contrib-compress": "^1.6.0",
+    "grunt-ssh": "0.12.9",
+    "load-grunt-tasks": "5.1.0",
+    "typescript": "3.7.3"
+  }
+}
