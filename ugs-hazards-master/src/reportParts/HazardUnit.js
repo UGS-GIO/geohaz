@@ -50,9 +50,9 @@ export default props => {
         <div>
           <p dangerouslySetInnerHTML={{ __html: props.Description }}
             title={config.notProd && 'HazardUnitTextTable.Description'}></p>
-          <h4>How to Use This Map</h4>
+          {/* <h4>How to Use This Map</h4>
           <p dangerouslySetInnerHTML={{ __html: props.HowToUse }}
-            title={config.notProd && 'HazardUnitTextTable.HowToUse'}></p>
+            title={config.notProd && 'HazardUnitTextTable.HowToUse'}></p> */}
         </div>
       </div>
     </div>

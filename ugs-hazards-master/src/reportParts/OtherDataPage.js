@@ -15,9 +15,9 @@ export default props => {
         title={config.notProd && "OtherDataTable.Introduction"}></p>
       <MapSurround mapKey={props.mapKey} />
       {props.children}
-      <h4>How To Use This Map</h4>
+      {/* <h4>How To Use This Map</h4>
       <p dangerouslySetInnerHTML={{ __html: props.HowToUse }}
-        title={config.notProd && "OtherDataTable.HowToUse"}></p>
+        title={config.notProd && "OtherDataTable.HowToUse"}></p> */}
       { props.References_ &&
         <>
           <h4>References</h4>
