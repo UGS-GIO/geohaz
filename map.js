@@ -1350,7 +1350,7 @@ require([
 
     const radonSus = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/14",
-        title: "Geologic Radon Susceptibility",
+        title: "Geologic Radon Hazard",
         elevationInfo: [{
             mode: "on-the-ground"
         }],
@@ -1995,7 +1995,7 @@ require([
             layer = collapsibleSoil;
         } else if (title === "Corrosive Soil and Rock Susceptibility") {
             layer = corrosiveSoil;
-        } else if (title === "Radon Susceptibility") {
+        } else if (title === "Geologic Radon Hazard") {
             layer = radonSus;
         } else if (title === "Shallow Groundwater Susceptibility") {
             layer = groundwaterSus;
