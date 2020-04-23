@@ -665,6 +665,58 @@ require([
         }]
     };
 
+    var rendererBedrockPot = {
+        type: "unique-value",
+        field: "SBPHazardUnit",
+        fieldDelimiter: ", ",
+        uniqueValueInfos: [{
+            value: "Hsbp, HDsbp",
+            label: "Hard",
+            symbol: {
+                type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                color: [168, 56, 0],
+                outline: { // autocasts as new SimpleLineSymbol()
+                    color: [0, 0, 0],
+                    width: "0.4px"
+                }
+            }
+        },{
+            value: "Ssbp",
+            label: "Soft",
+            symbol: {
+                type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                color: [255, 170, 0],
+                outline: { // autocasts as new SimpleLineSymbol()
+                    color: [0, 0, 0],
+                    width: "0.4px"
+                }
+            }
+        },{
+            value: "Bsbp",
+            label: "Buried",
+            symbol: {
+                type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                color: [230, 255, 190],
+                outline: { // autocasts as new SimpleLineSymbol()
+                    color: [0, 0, 0],
+                    width: "0.4px"
+                }
+            }
+        },{
+            value: "Dsbp",
+            label: "Deep",
+            symbol: {
+                type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                color: [190, 255, 232],
+                outline: { // autocasts as new SimpleLineSymbol()
+                    color: [0, 0, 0],
+                    width: "0.4px"
+                }
+            }
+        },
+        ]
+    }
+
 
     var rendererLiquefaction = {
         type: "unique-value", // autocasts as new UniqueValueRenderer()
@@ -1162,6 +1214,7 @@ require([
         elevationInfo: [{
             mode: "on-the-ground"
         }],
+        renderer: rendererBedrockPot,
         visible: false,
         outFields: ["*"],
         popupTemplate: {
