@@ -23,8 +23,8 @@ import CoverPage from './reportParts/CoverPage';
 import SummaryPage from './reportParts/SummaryPage';
 import OtherDataPage from './reportParts/OtherDataPage';
 import ProgressBar from './reportParts/ProgressBar';
-import LidarFeature from './reportParts/LidarFeature';
-import AerialFeature from './reportParts/AerialFeature';
+// import LidarFeature from './reportParts/LidarFeature';
+// import AerialFeature from './reportParts/AerialFeature';
 import ErrorPage from './reportParts/ErrorPage';
 
 
@@ -40,8 +40,8 @@ export default props => {
   const [groupToTextMap, setGroupToTextMap] = useState([]);
   const [reportTextMap, setReportTextMap] = useState({});
   const [otherDataMap, setOtherDataMap] = useState({});
-  const [lidarFeatures, setLidarFeatures] = useState([]);
-  const [aerialFeatures, setAerialFeatures] = useState([]);
+  // const [lidarFeatures, setLidarFeatures] = useState([]);
+  // const [aerialFeatures, setAerialFeatures] = useState([]);
   const [tasks, setTasks] = useState({});
   const [pageError, setError] = useState(false);
 
@@ -97,8 +97,8 @@ export default props => {
         hazardReferences,
         reportTextRows,
         otherDataRows,
-        lidarFeatures,
-        aerialFeatures
+        // lidarFeatures,
+        // aerialFeatures
       ] = await Promise.all([
         queryGroupingAsync(flatUnitCodes),
         queryIntroTextAsync(flatUnitCodes),
@@ -106,8 +106,8 @@ export default props => {
         queryReferenceTableAsync(flatUnitCodes),
         queryReportTextTableAsync(),
         queryOtherDataTableAsync(),
-        queryLidarAsync(props.polygon),
-        queryAerialAsync(props.polygon)
+        // queryLidarAsync(props.polygon),
+        // queryAerialAsync(props.polygon)
       ]);
       setProgressItemAsComplete(relatedTablesProgressId);
 
@@ -153,8 +153,8 @@ export default props => {
       setHazardIntroText(hazardIntroText);
       setHazardReferences(hazardReferences);
       setGroupToTextMap(groupToTextMapBuilder);
-      setLidarFeatures(lidarFeatures);
-      setAerialFeatures(aerialFeatures);
+      // setLidarFeatures(lidarFeatures);
+      // setAerialFeatures(aerialFeatures);
     };
 
     if (props.polygon) {
@@ -177,8 +177,8 @@ export default props => {
           <CoverPage aoiDescription={props.description} {...reportTextMap} />
           <SummaryPage {...reportTextMap}
             hazardToUnitMap={hazardToUnitMap}
-            aerialFeatures={aerialFeatures}
-            lidarFeatures={lidarFeatures}
+            // aerialFeatures={aerialFeatures}
+            // lidarFeatures={lidarFeatures}
             groupToHazardMap={groupToHazardMap} />
           {Object.keys(groupToHazardMap).map(groupName => (
             <Group key={groupName} name={groupName} text={groupToTextMap[groupName]}>
@@ -196,12 +196,12 @@ export default props => {
                   })}
             </Group>
           ))}
-          <OtherDataPage {...otherDataMap['Lidar Elevation Data']} mapKey={config.mapKeys.lidar} id="lidar">
+          {/* <OtherDataPage {...otherDataMap['Lidar Elevation Data']} mapKey={config.mapKeys.lidar} id="lidar">
             {lidarFeatures.map((feature, index) => <LidarFeature key={index} {...feature} />)}
           </OtherDataPage>
           <OtherDataPage {...otherDataMap['Aerial Photography and Imagery']} mapKey={config.mapKeys.aerials} id="aerial-photography">
             {aerialFeatures.map((feature, index) => <AerialFeature key={index} {...feature} />)}
-          </OtherDataPage>
+          </OtherDataPage> */}
         </HazardMap>
         <div className="header page-break">
           <h1>OTHER GEOLOGIC HAZARD RESOURCES</h1>

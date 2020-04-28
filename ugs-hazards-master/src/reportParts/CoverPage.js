@@ -13,7 +13,7 @@ export default ({ aoiDescription, aoi, Introduction, Disclaimer }) => {
         <h1>Utah Geological Survey</h1>
         <img src={ugsLogo} alt="dnr logo" className="logo" />
         <h3>GEOLOGIC HAZARDS MAPPING AND DATA CUSTOM REPORT</h3>
-        <h3 title={config.notProd && 'from "description" property of input data'}>for {aoiDescription}</h3>
+        {/* <h3 title={config.notProd && 'from "description" property of input data'}>for {aoiDescription}</h3> */}
         <p dangerouslySetInnerHTML={{ __html: `Report generated on ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`}}></p>
       </div>
       <p dangerouslySetInnerHTML={{ __html: Introduction }}
