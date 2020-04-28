@@ -720,11 +720,11 @@ require([
 
     var rendererLiquefaction = {
         type: "unique-value", // autocasts as new UniqueValueRenderer()
-        field: "Hazard_Symbology_Text",
+        field: "LQSHazardUnit",
         //defaultSymbol: { type: "simple-fill" },
         uniqueValueInfos: [{
             // All features with value of "Very High" will be green
-            value: "Very High Susceptibility",
+            value: "VHlqs",
             label: "Very High Susceptibility",
             symbol: {
                 type: "simple-fill", // autocasts as new SimpleFillSymbol()
@@ -736,7 +736,7 @@ require([
             }
         }, {
             // All features with value of "Very High" will be green
-            value: "High Susceptibility",
+            value: "Hlqs",
             label: "High Susceptibility",
             symbol: {
                 type: "simple-fill", // autocasts as new SimpleFillSymbol()
@@ -748,7 +748,7 @@ require([
             }
         }, {
             // All features with value of "Very High" will be green
-            value: "Moderate Susceptibility",
+            value: "Mlqs",
             label: "Moderate Susceptibility",
             symbol: {
                 type: "simple-fill", // autocasts as new SimpleFillSymbol()
@@ -760,7 +760,7 @@ require([
             }
         }, {
             // All features with value of "Very High" will be green
-            value: "Low Susceptibility",
+            value: "Llqs",
             label: "Low Susceptibility",
             symbol: {
                 type: "simple-fill", // autocasts as new SimpleFillSymbol()
@@ -772,7 +772,7 @@ require([
             }
         }, {
             // All features with value of "Very High" will be green
-            value: "Very Low Susceptibility",
+            value: "VLlqs",
             label: "Very Low Susceptibility",
             symbol: {
                 type: "simple-fill", // autocasts as new SimpleFillSymbol()
@@ -782,31 +782,33 @@ require([
                     width: "0.4px"
                 }
             }
-        }, {
-            // All features with value of "Very High" will be green
-            value: "Unknown Susceptibility",
-            label: "Unknown Susceptibility",
-            symbol: {
-                type: "simple-fill", // autocasts as new SimpleFillSymbol()
-                color: [230, 230, 0],
-                outline: { // autocasts as new SimpleLineSymbol()
-                    color: [0, 0, 0],
-                    width: "0.4px"
-                }
-            }
-        }, {
-            // All features with value of "Very High" will be green
-            value: "No Susceptibility",
-            label: "No Susceptibility",
-            symbol: {
-                type: "simple-fill", // autocasts as new SimpleFillSymbol()
-                color: [255, 255, 255, 0],
-                outline: { // autocasts as new SimpleLineSymbol()
-                    color: [0, 0, 0],
-                    width: "0.4px"
-                }
-            }
-        }]
+        }, 
+        // {
+        //     // All features with value of "Very High" will be green
+        //     value: "Unknown Susceptibility",
+        //     label: "Unknown Susceptibility",
+        //     symbol: {
+        //         type: "simple-fill", // autocasts as new SimpleFillSymbol()
+        //         color: [230, 230, 0],
+        //         outline: { // autocasts as new SimpleLineSymbol()
+        //             color: [0, 0, 0],
+        //             width: "0.4px"
+        //         }
+        //     }
+        // }, {
+        //     // All features with value of "Very High" will be green
+        //     value: "No Susceptibility",
+        //     label: "No Susceptibility",
+        //     symbol: {
+        //         type: "simple-fill", // autocasts as new SimpleFillSymbol()
+        //         color: [255, 255, 255, 0],
+        //         outline: { // autocasts as new SimpleLineSymbol()
+        //             color: [0, 0, 0],
+        //             width: "0.4px"
+        //         }
+        //     }
+        // }
+    ]
     };
 
     var surfaceFaultRuptureRenderer = {
