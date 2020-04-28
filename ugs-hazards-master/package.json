@@ -5,13 +5,13 @@
   "homepage": ".",
   "dependencies": {
     "classnames": "^2.2.6",
-    "esri-loader": "^2.12.0",
+    "esri-loader": "^2.14.0",
     "lodash": "4.17.15",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.14.0",
     "polly-js": "^1.6.5",
-    "query-string": "^6.9.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "query-string": "^6.12.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-scripts": "3.3.0"
   },
   "scripts": {
