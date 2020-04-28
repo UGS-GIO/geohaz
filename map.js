@@ -331,12 +331,12 @@ require([
 
 
         if (feature.graphic.attributes.d_geologic_unit1) {
-            content += "<span class='bold' title='Longitude'><b>Primary Geologic Unit Involved: </b></span>{d_geologic_unit1}<br/>";
+            content += "<span class='bold' title='Longitude'><b>Deposit Geologic Unit 1: </b></span>{d_geologic_unit1}<br/>";
         }
 
 
         if (feature.graphic.attributes.d_geologic_unit2) {
-            content += "<span class='bold' title='Longitude'><b>Secondary Geologic Unit Involved: </b></span>{d_geologic_unit2}<br/>";
+            content += "<span class='bold' title='Longitude'><b>Deposit Geologic Unit 2: </b></span>{d_geologic_unit2}<br/>";
         }
 
         return content;
@@ -783,31 +783,6 @@ require([
                 }
             }
         }, 
-        // {
-        //     // All features with value of "Very High" will be green
-        //     value: "Unknown Susceptibility",
-        //     label: "Unknown Susceptibility",
-        //     symbol: {
-        //         type: "simple-fill", // autocasts as new SimpleFillSymbol()
-        //         color: [230, 230, 0],
-        //         outline: { // autocasts as new SimpleLineSymbol()
-        //             color: [0, 0, 0],
-        //             width: "0.4px"
-        //         }
-        //     }
-        // }, {
-        //     // All features with value of "Very High" will be green
-        //     value: "No Susceptibility",
-        //     label: "No Susceptibility",
-        //     symbol: {
-        //         type: "simple-fill", // autocasts as new SimpleFillSymbol()
-        //         color: [255, 255, 255, 0],
-        //         outline: { // autocasts as new SimpleLineSymbol()
-        //             color: [0, 0, 0],
-        //             width: "0.4px"
-        //         }
-        //     }
-        // }
     ]
     };
 
@@ -913,7 +888,11 @@ require([
             mode: "on-the-ground"
         }],
         outFields: ["*"],
-
+        // popupTemplate: {
+        //     outFields: ["*"],
+        //     title: "<b>{relationships/3/HazardName}</b>",
+        //     content: lssPopup,
+        // }
         popupTemplate: {
             title: "<b>Landslide Susceptibility</b>",
             outFields: ["*"],
@@ -935,7 +914,8 @@ require([
                 },
                 {
                     type: "text",
-                    text: "<b>Description: </b>{relationships/2/Description}<br><b>Mapped Scale: </b>{LSSMappedScale}<br><b>Critical Angle: </b>{LSSCriticalAngle}"
+                    //text: "<b>Description: </b>{relationships/3/Description}<br>{LSSMappedScale:lssPopup}<br>{LSSCriticalAngle:lssPopup}"
+                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/2/Description}<br><b>Mapped Scale: </b>{LSSMappedScale}<br><b>Critical Angle: </b>{LSSCriticalAngle}"
                 }
             ]
         }
@@ -1043,8 +1023,8 @@ require([
         opacity: 0,
         popupTemplate: {
 
-            title: "<b>Earthquake Ground Shaking</b>",
-            content: "<b>Peak Ground Acceleration: </b>{Raster.ServicePixelValue.Raw}  G's"
+            title: "Ground Shaking",
+            content: "{Raster.ServicePixelValue.Raw}  G's"
 
         }
     });
