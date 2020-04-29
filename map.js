@@ -670,7 +670,7 @@ require([
         field: "SBPHazardUnit",
         fieldDelimiter: ", ",
         uniqueValueInfos: [{
-            value: "Hsbp, HDsbp",
+            value: "Hsbp",
             label: "Hard",
             symbol: {
                 type: "simple-fill", // autocasts as new SimpleFillSymbol()
