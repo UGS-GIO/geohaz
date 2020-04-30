@@ -1400,7 +1400,7 @@ require([
 
     const radonSus = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/14",
-        title: "Geologic Radon Hazard",
+        title: "GGeologic Radon Susceptibilty",
         elevationInfo: [{
             mode: "on-the-ground"
         }],
@@ -1581,7 +1581,7 @@ require([
 
     const floodHazard = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/0",
-        title: "Flood Hazard",
+        title: "Flood and Debris-Flow Hazard",
         elevationInfo: [{
             mode: "on-the-ground"
         }],
@@ -2035,7 +2035,7 @@ require([
             layer = erosionZone;
         } else if (title === "Earth Fissure Hazard") {
             layer = earthFissure;
-        } else if (title === "Flood Hazard") {
+        } else if (title === "Flood and Debris-Flow Hazard") {
             layer = floodHazard;
         } else if (title === "Caliche Susceptibility") {
             layer = caliche;
@@ -2045,7 +2045,7 @@ require([
             layer = collapsibleSoil;
         } else if (title === "Corrosive Soil and Rock Susceptibility") {
             layer = corrosiveSoil;
-        } else if (title === "Geologic Radon Hazard") {
+        } else if (title === "Geologic Radon Susceptibilty") {
             layer = radonSus;
         } else if (title === "Shallow Groundwater Susceptibility") {
             layer = groundwaterSus;
