@@ -2429,7 +2429,7 @@ require([
 
     });
 
-// Load
+// Check for mobile screen to load with collapsed legend
 
 isResponsiveSize = mapView.widthBreakpoint === "xsmall";
 updateView(isResponsiveSize);
@@ -2468,7 +2468,15 @@ function setLegendMobile(isMobile) {
 }
 
    
+popup = mapView.popup;
 
+mapView.when(function() {
+  popup.watch("collapsed", function(value){
+    if(value && popup.currentDockPosition === 'bottom-center'){
+      popup.collapsed = false;
+    }
+  });
+});
 
 
 
