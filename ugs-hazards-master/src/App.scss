@@ -2,14 +2,16 @@
 
 #root {
   font-size: 11pt;
-  display: flex;
+  display: -webkit-inline-flex;
+  // display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
 }
 
 .header {
-  display: flex;
+  display: -webkit-inline-flex;
+  // display: flex;
   flex-direction: column;
   align-items: center;
 }

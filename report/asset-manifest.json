@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "./static/css/main.c5786920.chunk.css",
+    "main.css": "./static/css/main.e443318a.chunk.css",
     "main.js": "./static/js/main.bef68a70.chunk.js",
     "main.js.map": "./static/js/main.bef68a70.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.8d4bdddd.js",
@@ -10,9 +10,9 @@
     "static/js/3.ab2d3521.chunk.js": "./static/js/3.ab2d3521.chunk.js",
     "static/js/3.ab2d3521.chunk.js.map": "./static/js/3.ab2d3521.chunk.js.map",
     "index.html": "./index.html",
-    "precache-manifest.f4d92bd0ae3e6b3f7d977f71af95e683.js": "./precache-manifest.f4d92bd0ae3e6b3f7d977f71af95e683.js",
+    "precache-manifest.6d3592b058bc84c977e3b31be7d0cd2c.js": "./precache-manifest.6d3592b058bc84c977e3b31be7d0cd2c.js",
     "service-worker.js": "./service-worker.js",
-    "static/css/main.c5786920.chunk.css.map": "./static/css/main.c5786920.chunk.css.map",
+    "static/css/main.e443318a.chunk.css.map": "./static/css/main.e443318a.chunk.css.map",
     "static/js/2.3b5fec03.chunk.js.LICENSE": "./static/js/2.3b5fec03.chunk.js.LICENSE",
     "static/media/qff-legend.jpg": "./static/media/qff-legend.77240261.jpg",
     "static/media/ugs-logo.jpg": "./static/media/ugs-logo.46881887.jpg"
@@ -20,7 +20,7 @@
   "entrypoints": [
     "static/js/runtime-main.8d4bdddd.js",
     "static/js/2.3b5fec03.chunk.js",
-    "static/css/main.c5786920.chunk.css",
+    "static/css/main.e443318a.chunk.css",
     "static/js/main.bef68a70.chunk.js"
   ]
 }
