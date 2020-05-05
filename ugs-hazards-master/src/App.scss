@@ -2,18 +2,24 @@
 
 #root {
   font-size: 11pt;
-  display: -webkit-inline-flex;
-  // display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+
 }
 
 .header {
   display: -webkit-inline-flex;
-  // display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: -ms-inline-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .app__container {
