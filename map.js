@@ -2039,7 +2039,7 @@ require([
             layer = floodHazard;
         } else if (title === "Caliche Susceptibility") {
             layer = caliche;
-        } else if (title === "Soluble Soil & Rock Susceptibility") {
+        } else if (title === "Soluble Soil and Rock Susceptibility") {
             layer = solubleSoil;
         } else if (title === "Collapsible Soil Susceptibility") {
             layer = collapsibleSoil;
@@ -2061,7 +2061,7 @@ require([
             layer = tectonicDef;
         } else if (title === "Wind-Blown Sand Susceptibility") {
             layer = eolianSus;
-        } else if (title === "Surface Fault Rupture Special Study Zone") {
+        } else if (title === "Surface Fault Rupture Special Study Zones") {
             layer = faultRupture;
         } else if (title === "Hazardous (Quaternary age) Faults") {
             layer = qFaults;
