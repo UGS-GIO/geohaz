@@ -26,7 +26,7 @@ export default props => {
         <thead>
           <tr>
             <th>Mapped Geologic Hazards</th>
-            <th>Mapped Hazard Severity</th>
+            <th>Mapped Hazard Susceptibility</th>
           </tr>
         </thead>
         <tbody>

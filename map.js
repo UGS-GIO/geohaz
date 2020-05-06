@@ -2479,7 +2479,11 @@ mapView.when(function() {
 });
 
 
-
+mapView.watch("scale", function(e){
+var ee = e.toFixed(0);
+var newScale = String(ee);
+document.getElementById("mapScale").innerHTML = "map scale 1:" + newScale;
+});
 
 
 });

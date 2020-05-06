@@ -25,7 +25,7 @@
   <!--link rel="stylesheet" href="http://localhost/GitHub/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.9.css"-->
 
   <!-- ArcGIS JS 4 -->
-  <link rel="stylesheet" href="https://js.arcgis.com/4.14/esri/css/main.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.15/esri/css/main.css">
 
   <style>
     html,
@@ -141,12 +141,41 @@ a:active {
   color: blue;
 }
 
+.updateMarker {
+        position: absolute;
+        bottom: -2px;
+        right: 100px;
+        height: 42px;
+        width: 128px;
+        z-index: 1;
+        font-size:10px;
+        white-space: nowrap;
+        text-shadow: 0 0 3px #ffffff;
+    }
+
+    #mapScale {
+        position: absolute;
+        bottom: 12px;
+        right: 100px;
+        height: 42px;
+        width: 128px;
+        z-index: 1;
+        font-size:12px;
+        white-space: nowrap;
+        text-shadow: 0 0 3px #ffffff;
+    }
+
   </style>
 
 </head>
 
 <body class="calcite-maps calcite-nav-top">
     <a class="ugs-watermark " href="https://geology.utah.gov"></a>
+
+    <div class="updateMarker">database updated May, 2020</div>
+    <div id="mapScale">map scale 1:2336686</div>
+
+
   <!-- Navbar -->
 
   <nav class="navbar calcite-navbar navbar-fixed-top calcite-text-light calcite-bg-dark">
@@ -252,8 +281,11 @@ a:active {
             <div id="collapseReport" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingReport">
               <div class="panel-body">            
                 <div id="reportDiv">
-                  <p>We recommend zooming in to a neighborhood or closer when using the Report Generator as it is intended for small areas of interest. A notification telling you "Area of interest is too large, try a smaller extent" will appear when you need to zoom in more.</p>
-                  <b>Generate a Report of the Current Map Extent</b>
+                  <p>The Report Generator is designed to provide a summary of
+                    information for small areas such as neighborhoods and smaller. If your area
+                    of interest is larger than that, you will see a notification prompting you
+                    to select a smaller area.</p>
+                  <b>Generate a Report of the Current Map Extent.</b>
                   <p><button class="action-button esri-icon-documentation" id="currentButton" type="button"
                                   title="Current Extents"></button></p>
                                 <p><b>Custom Area of Interest</b></p>
@@ -403,7 +435,7 @@ a:active {
   </script>
 
   <!-- ArcGIS JS 4 -->
-  <script src="https://js.arcgis.com/4.14/"></script>
+  <script src="https://js.arcgis.com/4.15/"></script>
   <script src="map.js"></script>
 
   
@@ -415,6 +447,8 @@ a:active {
     <p>Poop</p>
   </div>
 </div>
+
+
 
 
 
