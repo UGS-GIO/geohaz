@@ -57,6 +57,10 @@
   width: 80%;
 }
 
+.esri-ui-corner .esri-expand .esri-widget--panel, .esri-ui-corner .esri-expand .esri-widget--panel-height-only, .esri-ui-corner .esri-component .esri-widget--panel, .esri-ui-corner .esri-component.esri-widget--panel {
+    width: 330px;
+}
+
 .esri-feature__last-edited-info {
 
     display: none;
@@ -236,7 +240,7 @@ a:active {
       </div>
     </div> -->
 
-        <!-- Panel - Reports -->
+        <!-- Panel - Report Tool -->
 
         <div id="panelReport" class="panel collapse">
             <div id="headingReport" class="panel-heading" role="tab">
@@ -248,12 +252,12 @@ a:active {
             <div id="collapseReport" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingReport">
               <div class="panel-body">            
                 <div id="reportDiv">
-                  <b>Generate a Report of the Current Map Extent.</b>
+                  <b>Generate a Report of the Current Map Extent</b>
                   <p><button class="action-button esri-icon-documentation" id="currentButton" type="button"
                                   title="Current Extents"></button></p>
                                 <p><b>Custom Area of Interest</b></p>
                                 <p><button class="action-button esri-icon-polygon" id="polygonButton" type="button"
-                                  title="Draw polygon"></button> Click to draw a polygon over the area you would like to generate a report. Double click to finish the polygon.</p>
+                                  title="Draw polygon"></button> Click to draw a polygon over the area for which you would like to generate a report. Double click to finish the polygon.</p>
                                 <!-- <p><button class="action-button esri-icon-down-arrow-circled" id="DownloadButton" type="button"
                                   title="Download"></button> Click to generate report.</p> -->
                                 <p><button class="action-button esri-icon-trash" id="resetBtn" type="button" title="Clear graphics"></button> Reset the selected polygon area.</p>
