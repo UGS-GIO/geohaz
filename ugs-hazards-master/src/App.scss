@@ -2,22 +2,22 @@
 
 #root {
   font-size: 11pt;
+  // display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
-
 }
 
 .header {
-  display: -webkit-inline-flex;
-  display: flex;
-  flex-wrap: wrap;
+  // display: flex;
+  justify-content: left;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
-.app__container {
-  width: $mapScreenWidth;
-}
+
+// .app__container {
+//   width: $mapScreenWidth;
+// }
 
 .page-break {
   break-before: page;
@@ -29,7 +29,7 @@
 
 .print-button {
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   height: 2rem;
   margin-top: 2rem;
 }
@@ -39,3 +39,10 @@
     display: none;
   }
 }
+
+
+/* Extra small devices (phones, 600px and down) */
+@media screen and (max-width: 600px) {
+  .header {display: -webkit-inline-flex;}
+}
+

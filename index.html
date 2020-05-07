@@ -25,7 +25,7 @@
   <!--link rel="stylesheet" href="http://localhost/GitHub/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.9.css"-->
 
   <!-- ArcGIS JS 4 -->
-  <link rel="stylesheet" href="https://js.arcgis.com/4.14/esri/css/main.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.15/esri/css/main.css">
 
   <style>
     html,
@@ -141,12 +141,31 @@ a:active {
   color: blue;
 }
 
+
+
+    #mapScale {
+        position: absolute;
+        bottom: 12px;
+        right: 100px;
+        height: 42px;
+        width: 128px;
+        z-index: 1;
+        font-size:14px;
+        white-space: nowrap;
+        text-shadow: -1px -1px 1px rgba(255,255,255,.4), 1px 1px 1px rgba(0,0,0,.5), 0px 0px 11px rgba(255,255,255,0);
+        /* text-shadow: 0 0 3px #ffffff; */
+    }
+
   </style>
 
 </head>
 
 <body class="calcite-maps calcite-nav-top">
     <a class="ugs-watermark " href="https://geology.utah.gov"></a>
+
+
+
+
   <!-- Navbar -->
 
   <nav class="navbar calcite-navbar navbar-fixed-top calcite-text-light calcite-bg-dark">
@@ -194,6 +213,7 @@ a:active {
   <!-- Map  -->
 
   <div class="calcite-map calcite-map-absolute">
+    <div id="mapScale">map scale 1:2336686</div>
     <div id="mapViewDiv"></div>
   </div>
 
@@ -215,8 +235,8 @@ a:active {
       <div id="collapseInfo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInfo">
         <div class="panel-body">
           <p style="text-align: justify;">This Portal is a compilation of data from the <em>Utah Geologic Hazards Database</em>, and contains post-2008 UGS geologic hazard map data and data from other sources for parts of Utah. These data address earthquake, flood, landslide, and problem soil and rock hazards. This web mapping application is intended to provide planners, local government officials, property owners, developers, engineers, geologists, design professionals, and the public with information on the type, location, and relative susceptibility of geologic hazards that may impact existing and future infrastructure and development. The data also provide information that may be used for emergency response and recovery planning and community risk assessment for existing development and infrastructure.&nbsp;</p>
-          <p>&nbsp;</p>
           <p style="text-align: justify;">Areas with comprehensive geologic hazard map data are shown with red polygons.&nbsp; Statewide data for hazardous (Quaternary age) faults, and a legacy compilation of landslides are also available.&nbsp; Limited, comprehensive geologic hazard map data are available for the remaining hazards listed in the Legend.&nbsp; Hazard map layers can be enabled in the Legend by clicking on the eye symbol.&nbsp; Map layer units describing the hazard relative susceptibility are also shown in the Legend.&nbsp; The absence of data does not imply that no geologic hazard or hazards exist. Additional geologic hazard mapping is on-going and will be added to the database as it is finalized.&nbsp;</p>
+          <p><strong>Database updated May 2020</strong></p>
           <p><strong>&nbsp;</strong></p>
           <p><strong>Related Information </strong></p>
           <p>For more information, see <a href="https://geology.utah.gov/hazards"><span style="font-weight: 400; color: blue;">https://geology.utah.gov/hazards</span></a> or contact the UGS.&nbsp;</p>
@@ -252,7 +272,10 @@ a:active {
             <div id="collapseReport" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingReport">
               <div class="panel-body">            
                 <div id="reportDiv">
-                  <p>We recommend zooming in to a neighborhood or closer when using the Report Generator as it is intended for small areas of interest. A notification telling you "Area of interest is too large, try a smaller extent" will appear when you need to zoom in more.</p>
+                  <p style="text-align: justify;">The Report Generator is designed to provide a summary of
+                    information for small areas. If your area
+                    of interest is larger than that, you will see a notification prompting you
+                    to select a smaller area.</p>
                   <b>Generate a Report of the Current Map Extent</b>
                   <p><button class="action-button esri-icon-documentation" id="currentButton" type="button"
                                   title="Current Extents"></button></p>
@@ -307,7 +330,7 @@ a:active {
         <div class="panel-body">
             <p style="text-align: justify;">Although this product represents the work of professional scientists, the Utah Department of Natural Resources, Utah Geological Survey, makes no warranty, expressed or implied, regarding its suitability for a particular use. The Utah Department of Natural Resources, Utah Geological Survey, shall not be liable under any circumstances for any direct, indirect, special, incidental, or consequential damages with respect to claims by users of this product. The Utah Geological Survey does not guarantee accuracy or completeness of the data.</p>
             <p style="text-align: justify;">The Utah Geologic Hazards Database contains geologic hazard information and data from the Utah Geological Survey (UGS) and other sources for the area of interest shown on the interactive map and can be used to identify mapped geologic hazards in an area, understand what the hazards are, and some potential ways to mitigate them.</p>
-            <p style="text-align: justify;">&nbsp;The database is periodically updated to incorporate the results of new mapping and/or updated mapping due to updated data and/or methodology; however, more-detailed fault traces and paleoseismic information may be available in recently published geologic maps and reports, so the database should not be considered exhaustive.</p>
+            <p style="text-align: justify;">The database is periodically updated to incorporate the results of new mapping and/or updated mapping due to updated data and/or methodology; however, more-detailed fault traces and paleoseismic information may be available in recently published geologic maps and reports, so the database should not be considered exhaustive.</p>
             <p style="text-align: justify;">Locations of mapped geologic hazards should always be considered approximate.</p>
             <p style="text-align: justify;">The locational accuracy of&nbsp; hazards on the maps vary, and spatial error can be substantial when viewing structures at high zoom levels that were originally mapped at small scales. Therefore, the locations of hazards on the map should be considered approximate. Depending on the ultimate needs of the user, a site-specific investigation by a qualified Utah-licensed Professional Geologist may be required to accurately characterize the hazards at a particular site.</p>
             <p>&nbsp;</p>
@@ -326,9 +349,9 @@ a:active {
                     </div>
                     <div id="collapseDatabase" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDatabase">
                       <div class="panel-body">
-<p> The database for the Utah Geologic Hazards Portal contains geologic hazard information and data from the Utah Geological Survey (UGS) and other sources. The database is periodically updated to incorporate the results of new mapping. Detailed geologic hazard mapping is available for limited areas and for specific hazards in Utah and additional mapping is ongoing.</p>
+<p style="text-align: justify;"> The database for the Utah Geologic Hazards Portal contains geologic hazard information and data from the Utah Geological Survey (UGS) and other sources. The database is periodically updated to incorporate the results of new mapping. Detailed geologic hazard mapping is available for limited areas and for specific hazards in Utah and additional mapping is ongoing.</p>
 <p>&nbsp;</p>
-<p>The Utah <i>Quaternary Fault and Fold Database</i> exists as an attributed geographic information system (GIS) feature class in the State Geographic Information Database (SGID), and is available through the <a href="http://gis.utah.gov/data/geoscience/quaternary-faults" target="&rdquo;_blank&rdquo;"><span style="font-weight: 400;color: blue">Utah Automated Geographic Reference Center</span></a> (AGRC). Users can access full data reports for individual hazards by clicking on the &ldquo;Report ID&rdquo; link in pop-up window. These reports are not a substitute for a site-specific geologic hazards and geotechnical engineering investigation by a qualified, Utah-licensed consultant.&nbsp; These investigations provide valuable information on the site geologic conditions that may affect or be affected by development, as well as the type and relative susceptibility of geologic hazards at a site and recommend solutions to mitigate the effects and costs of the hazards, both at the time of construction and over the life of the development.&nbsp; See your local city or county building department for details on these investigations and UGS Circular 122 <a href="https://ugspub.nr.utah.gov/publications/circular/c-122.pdf" target="&rdquo;_blank&rdquo;"><span style="font-weight: 400;color: blue">https://ugspub.nr.utah.gov/publications/circular/c-122.pdf</span></a>).</p>
+<p style="text-align: justify;">The Utah <i>Quaternary Fault and Fold Database</i> exists as an attributed geographic information system (GIS) feature class in the State Geographic Information Database (SGID), and is available through the <a href="http://gis.utah.gov/data/geoscience/quaternary-faults" target="&rdquo;_blank&rdquo;"><span style="font-weight: 400;color: blue">Utah Automated Geographic Reference Center</span></a> (AGRC). Users can access full data reports for individual hazards by clicking on the report link in the pop-up window. These reports are not a substitute for a site-specific geologic hazards and geotechnical engineering investigation by a qualified, Utah-licensed consultant.&nbsp; These investigations provide valuable information on the site geologic conditions that may affect or be affected by development, as well as the type and relative susceptibility of geologic hazards at a site and recommend solutions to mitigate the effects and costs of the hazards, both at the time of construction and over the life of the development.&nbsp; See your local city or county building department for details on these investigations and UGS Circular 122 <a href="https://ugspub.nr.utah.gov/publications/circular/c-122.pdf" target="&rdquo;_blank&rdquo;"><span style="font-weight: 400;color: blue">https://ugspub.nr.utah.gov/publications/circular/c-122.pdf</span></a>).</p>
                       </div>
                    </div>
                   </div>
@@ -403,7 +426,7 @@ a:active {
   </script>
 
   <!-- ArcGIS JS 4 -->
-  <script src="https://js.arcgis.com/4.14/"></script>
+  <script src="https://js.arcgis.com/4.15/"></script>
   <script src="map.js"></script>
 
   
@@ -415,6 +438,8 @@ a:active {
     <p>Poop</p>
   </div>
 </div>
+
+
 
 
 
