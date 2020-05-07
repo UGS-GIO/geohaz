@@ -2426,10 +2426,12 @@ mapView.watch("widthBreakpoint", function(breakpoint) {
 
 function updateView(isMobile) {
     if (isMobile) {
-
+        console.log("true");
         document.getElementById("mapScale").style.display = "none";
-    } 
-  document.getElementById("mapScale").style.display = "contents";
+    } else {
+    console.log("false");
+  document.getElementById("mapScale").style.display = "";
+    }
   setLegendMobile(isMobile);
 }
 
