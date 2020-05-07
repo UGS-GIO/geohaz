@@ -2162,7 +2162,7 @@ require([
     }
 
     window.onclick = function(event) {
-        console.log(event);
+        //console.log(event);
         if (event.target == modal) {
             modal.style.display = "none";
         }
@@ -2266,6 +2266,7 @@ require([
         const sketchVM = new SketchViewModel({
             view: mapView,
             layer: tempGraphicsLayer,
+            updateOnGraphicClick: false,
             polygonSymbol: {
                 type: "simple-fill", // autocasts as new SimpleFillSymbol()
                 color: "rgba(138,43,226, 0.8)",
@@ -2277,39 +2278,42 @@ require([
             }
         });
 
-        setUpClickHandler();
+        //setUpClickHandler();
 
         //Listen to create event to add a newly created graphic to view
         sketchVM.on(["create"], addGraphic);
 
         //Listen the sketchViewModel's update
-        sketchVM.on(["update"], updateGraphic);
+        //sketchVM.on(["update"], updateGraphic);
 
 
 
         //Called when sketchViewModel's create-complete event is fired
         function addGraphic(event) {
+            console.log(event);
             if (event.state === "complete") {
                 console.log("complete");
                             //check to be sure extents are not too large
-            if (drawAOIHeight < 12000 && drawAOIWidth < 18000) {
-                var params = {
-                    description: "Test",
-                    polygon: aoi,
+                if (drawAOIHeight < 12000 && drawAOIWidth < 18000) {
+                    var params = {
+                        description: "Test",
+                        polygon: aoi,
 
-                };
-                console.log(params);
+                    };
+                    console.log(params);
 
-                localStorage.setItem('aoi', JSON.stringify(params));
-                console.log(localStorage);
-                window.open('./report');
-            } else {
-                console.log("Area of interest is too large, try again");
-                alert("Area of interest is too large, try a smaller area.");
-            }
+                    localStorage.setItem('aoi', JSON.stringify(params));
+                    console.log(localStorage);
+                    window.open('./report');
+                } else {
+                    console.log("Area of interest is too large, try again");
+                    alert("Area of interest is too large, try a smaller area.");
+                }
+            
             } else {
                 console.log("not complete");
-            // Create a new graphic and set its geometry to
+            
+                // Create a new graphic and set its geometry to
             // `create-complete` event geometry.
             graphic = new Graphic({
                 geometry: event.geometry,
@@ -2320,6 +2324,7 @@ require([
             drawAOIHeight = event.graphic.geometry.extent.height;
             drawAOIWidth = event.graphic.geometry.extent.width;
             aoi = event.graphic.geometry.toJSON();
+            
         }
         }
 
@@ -2371,41 +2376,6 @@ require([
             });
             setActiveButton(this);
         };
-
-        // //Download button 
-        // var downloadButton = document.getElementById("DownloadButton");
-        // downloadButton.onclick = function() {
-        //     // set the sketch to create a polygon geometry
-        //     //sketchViewModel.create("polygon");
-        //     //   var inputGraphicContainer = [];
-        //     //           inputGraphicContainer.push(graphic);
-        //     //           var featureSet = new FeatureSet();
-        //     //           featureSet.features = inputGraphicContainer;
-        //     //           console.log(inputGraphicContainer);
-        //     //           console.log(featureSet);
-        //     console.log(graphic);
-        //     console.log(drawAOIHeight);
-        //     console.log(drawAOIWidth);
-        //     console.log(aoi);
-
-
-        //     //check to be sure extents are not too large
-        //     if (drawAOIHeight < 12000 && drawAOIWidth < 18000) {
-        //         var params = {
-        //             description: "Test",
-        //             polygon: aoi,
-
-        //         };
-        //         console.log(params);
-
-        //         localStorage.setItem('aoi', JSON.stringify(params));
-        //         console.log(localStorage);
-        //         window.open('./report');
-        //     } else {
-        //         console.log("Area of interest is too large, try again");
-        //         alert("Area of interest is too large, try a smaller area.");
-        //     }
-        // };
 
 
         //Reset button
