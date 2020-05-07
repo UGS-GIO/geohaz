@@ -1849,7 +1849,7 @@ require([
     const earthquakes = new GroupLayer({
         title: "Earthquake Hazards",
         visible: true,
-        layers: [shakingVector, liquefaction, qFaults, faultRupture/*, epicentersMining, epicentersRecent*/]
+        layers: [shakingVector, liquefaction, faultRupture, qFaults/*, epicentersMining, epicentersRecent*/]
     });
 
     const landslides = new GroupLayer({
