@@ -2434,6 +2434,7 @@ function setLegendMobile(isMobile) {
   var toAdd = isMobile ? expandLegend : legend;
   var toRemove = isMobile ? legend : expandLegend;
 
+
   mapView.ui.remove(toRemove);
   mapView.ui.add(toAdd, "top-left");
 }
