@@ -126,6 +126,7 @@ require([
     let editGraphic;
     // GraphicsLayer to hold graphics created via sketch view model
     const tempGraphicsLayer = new GraphicsLayer({
+        elevationInfo: "on-the-ground",
         listMode: "hide",
     });
 
