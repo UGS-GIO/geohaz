@@ -2425,7 +2425,11 @@ mapView.watch("widthBreakpoint", function(breakpoint) {
 });
 
 function updateView(isMobile) {
-    console.log("Is Mobile");
+    if (isMobile) {
+
+        document.getElementById("mapScale").style.display = "none";
+    } 
+  document.getElementById("mapScale").style.display = "contents";
   setLegendMobile(isMobile);
 }
 
