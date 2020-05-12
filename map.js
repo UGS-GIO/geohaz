@@ -2457,11 +2457,33 @@ mapView.when(function() {
 });
 
 
-mapView.watch("scale", function(e){
-var ee = e.toFixed(0);
-var newScale = String(ee);
-document.getElementById("mapScale").innerHTML = "map scale 1:" + newScale;
-});
+// mapView.watch("scale", function(e){
+// var ee = e.toFixed(0);
+// var newScale = String(ee);
+// document.getElementById("mapScale").innerHTML = "map scale 1:" + newScale;
+// });
+
+var coordsWidget = document.createElement("div");
+      coordsWidget.id = "coordsWidget";
+      coordsWidget.className = "esri-widget esri-component";
+      coordsWidget.style.padding = "3px 3px 10px";
+      coordsWidget.style.backgroundColor = "#ffffff80";
+
+      mapView.ui.add(coordsWidget, "bottom-right");
+
+function showCoordinates(pt) {
+    var coords = "Lat/Lon " + pt.latitude.toFixed(3) + " " + pt.longitude.toFixed(3) +
+        " | Scale 1:" + Math.round(mapView.scale * 1) / 1;
+    coordsWidget.innerHTML = coords;
+  }
+
+  mapView.watch("stationary", function(isStationary) {
+    showCoordinates(mapView.center);
+  });
+
+  mapView.on("pointer-move", function(evt) {
+    showCoordinates(mapView.toMap({ x: evt.x, y: evt.y }));
+  });
 
 
 });
