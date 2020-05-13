@@ -1401,7 +1401,7 @@ require([
 
     const radonSus = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/14",
-        title: "Geologic Radon Susceptibilty",
+        title: "Geologic Radon Susceptibility",
         elevationInfo: [{
             mode: "on-the-ground"
         }],
