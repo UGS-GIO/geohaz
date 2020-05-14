@@ -2472,9 +2472,11 @@ var coordsWidget = document.createElement("div");
       mapView.ui.add(coordsWidget, "bottom-right");
 
 function showCoordinates(pt) {
+    if (pt) {
     var coords = "Lat/Lon " + pt.latitude.toFixed(3) + " " + pt.longitude.toFixed(3) +
         " | Scale 1:" + Math.round(mapView.scale * 1) / 1;
     coordsWidget.innerHTML = coords;
+    }
   }
 
   mapView.watch("stationary", function(isStationary) {
@@ -2482,6 +2484,7 @@ function showCoordinates(pt) {
   });
 
   mapView.on("pointer-move", function(evt) {
+
     showCoordinates(mapView.toMap({ x: evt.x, y: evt.y }));
   });
 
