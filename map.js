@@ -1941,7 +1941,32 @@ require([
         pixelData.pixelBlock.pixelType = "U8"; // U8 is used for color
     }
 
-
+	navHelpImage = document.createElement("IMG");
+	navHelpImage.setAttribute("src", "map_navigation.png");
+	navHelpImage.setAttribute("id", "navHelpDiv");
+	navHelpImage.style.position = "fixed";
+	navHelpImage.style.maxHeight = "75%";
+	navHelpImage.style.maxWidth = "50%";
+	navHelpImage.style.top = "50%";
+	navHelpImage.style.left = "54px";
+	navHelpImage.style.transform = "translate(0, -50%)";
+	
+	var navExpandHelpTrue = new Expand({
+		autoCollapse: true,
+		view: mapView,
+		content: navHelpImage,
+		//group: "top-left",
+		expandTooltip: "Navigation Help",
+		expanded: true
+	});
+	
+	var navExpandHelpFalse = new Expand({
+		view: mapView,
+		content: navHelpImage,
+		//group: "top-left",
+		expandTooltip: "Navigation Help",
+		expanded: false
+	});
 
 
     layerList = new LayerList({
@@ -2433,6 +2458,7 @@ function updateView(isMobile) {
   document.getElementById("mapScale").style.display = "";
     }
   setLegendMobile(isMobile);
+  setMapNavMobile(isMobile);
 }
 
 
@@ -2443,6 +2469,15 @@ function setLegendMobile(isMobile) {
 
   mapView.ui.remove(toRemove);
   mapView.ui.add(toAdd, "top-left");
+}
+
+function setMapNavMobile(isMobile) {
+  var toAddNav = isMobile ? navExpandHelpFalse : navExpandHelpTrue;
+  var toRemoveNav = isMobile ? navExpandHelpTrue : navExpandHelpFalse;
+
+
+  mapView.ui.remove(toRemoveNav);
+  mapView.ui.add(toAddNav, "top-left");
 }
 
    
