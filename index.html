@@ -141,6 +141,81 @@ a:active {
   color: blue;
 }
 
+.help-tip{
+	position: absolute;
+	bottom: 30px;
+	left: 18px;
+	text-align: center;
+	background-color: #ffffff;
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	font-size: 14px;
+	line-height: 26px;
+	cursor: default;
+  box-shadow: 1px 1px 5px #040404;
+}
+
+.help-tip:before{
+	content:'?';
+	font-weight: bold;
+	color:#000000;
+}
+
+
+.help-tip p{
+	display: none;
+	text-align: left;
+	background-color: white;
+	padding: 10px;
+	position: absolute;
+	border-radius: 3px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+  left: 100%;
+  bottom: 85%;
+	color: #FFF;
+	font-size: 13px;
+	line-height: 1.4;
+}
+
+.help-tip p:before{
+	position: absolute;
+	content: '';
+	width:0;
+	height: 0;
+	border:6px solid transparent;
+  border-bottom-color: white;
+    left: 10px;
+    bottom: -12px;
+    transform: rotate(180deg);
+}
+
+.help-tip p:after{
+	width:100%;
+	height:40px;
+	content:'';
+	position: absolute;
+	top:-40px;
+	left:0;
+}
+
+@-webkit-keyframes fadeIn {
+	0% { 
+		opacity:0; 
+		transform: scale(0.6);
+	}
+
+	100% {
+		opacity:100%;
+		transform: scale(1);
+	}
+}
+
+@keyframes fadeIn {
+	0% { opacity:0; }
+	100% { opacity:100%; }
+}
+
   </style>
 
 </head>
@@ -413,7 +488,7 @@ a:active {
   <!-- ArcGIS JS 4 -->
   <script src="https://js.arcgis.com/4.15/"></script>
   <script src="map.js"></script>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   
 
 
@@ -425,7 +500,9 @@ a:active {
 </div>
 
 
-
+<div class="help-tip" role="button">
+  <p> <br><br><img src="map_navigation.png" width="500" /></p>
+</div>
 
 
 

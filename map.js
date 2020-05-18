@@ -2488,5 +2488,33 @@ function showCoordinates(pt) {
     showCoordinates(mapView.toMap({ x: evt.x, y: evt.y }));
   });
 
+  //navigation help
+  mapView.when(function() {
+
+
+    var loadHelp = document.querySelector('.help-tip p');
+
+    console.log(loadHelp);
+
+
+
+            loadHelp.style.display = "block";
+            helpLoaded = "yes";
+
+            $(".help-tip").click(function() {
+                if (helpLoaded == "yes") {
+                     helpLoaded = "no";
+                loadHelp.style.display = "none";
+                } else {
+                     helpLoaded = "yes";
+                    loadHelp.style.display = "block";
+                }
+            });
+    
+
+
+
+
+  });
 
 });
