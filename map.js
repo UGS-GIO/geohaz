@@ -2493,11 +2493,6 @@ function showCoordinates(pt) {
 
 
     var loadHelp = document.querySelector('.help-tip p');
-
-    console.log(loadHelp);
-
-
-
             loadHelp.style.display = "block";
             helpLoaded = "yes";
 
@@ -2510,10 +2505,6 @@ function showCoordinates(pt) {
                     loadHelp.style.display = "block";
                 }
             });
-    
-
-
-
 
   });
 
