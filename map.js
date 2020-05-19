@@ -130,7 +130,7 @@ require([
         listMode: "hide",
     });
 
-
+    helpLoaded = "no";
 
     //popup templates for all layers
 
@@ -2424,16 +2424,35 @@ mapView.watch("widthBreakpoint", function(breakpoint) {
   }
 });
 
+
 function updateView(isMobile) {
+    loadHelp = document.querySelector('.help-tip img');
+    loadHelpCallout = document.querySelector('.callout');
     if (isMobile) {
-        console.log("true");
-        document.getElementById("mapScale").style.display = "none";
+                loadHelp.style.display = "none";
+                loadHelpCallout.style.display = "none";
+                helpLoaded = "no";
     } else {
-    console.log("false");
-  document.getElementById("mapScale").style.display = "";
+                loadHelp.style.display = "block";
+                loadHelpCallout.style.display = "block";
+                helpLoaded = "yes";
     }
   setLegendMobile(isMobile);
+
 }
+
+$(".help-tip").click(function() {
+    if (helpLoaded == "yes") {
+         helpLoaded = "no";
+         helpLoadedCallout = "no";
+    loadHelp.style.display = "none";
+    loadHelpCallout.style.display = "none";
+    } else {
+         helpLoaded = "yes";
+        loadHelp.style.display = "block";
+        loadHelpCallout.style.display = "block";
+    }
+});
 
 
 function setLegendMobile(isMobile) {
@@ -2454,14 +2473,9 @@ mapView.when(function() {
       popup.collapsed = false;
     }
   });
+
 });
 
-
-// mapView.watch("scale", function(e){
-// var ee = e.toFixed(0);
-// var newScale = String(ee);
-// document.getElementById("mapScale").innerHTML = "map scale 1:" + newScale;
-// });
 
 var coordsWidget = document.createElement("div");
       coordsWidget.id = "coordsWidget";
@@ -2489,26 +2503,26 @@ function showCoordinates(pt) {
   });
 
   //navigation help
-  mapView.when(function() {
+//   mapView.when(function() {
 
 
-    var loadHelp = document.querySelector('.help-tip img');
-	var loadHelpCallout = document.querySelector('.callout');
-            loadHelp.style.display = "block";
-            helpLoaded = "yes";
-			$(".help-tip").click(function() {
-                if (helpLoaded == "yes") {
-                     helpLoaded = "no";
-					 helpLoadedCallout = "no";
-                loadHelp.style.display = "none";
-				loadHelpCallout.style.display = "none";
-                } else {
-                     helpLoaded = "yes";
-                    loadHelp.style.display = "block";
-					loadHelpCallout.style.display = "block";
-                }
-            });
+//     var loadHelp = document.querySelector('.help-tip img');
+// 	var loadHelpCallout = document.querySelector('.callout');
+//             loadHelp.style.display = "block";
+//             helpLoaded = "yes";
+// 			$(".help-tip").click(function() {
+//                 if (helpLoaded == "yes") {
+//                      helpLoaded = "no";
+// 					 helpLoadedCallout = "no";
+//                 loadHelp.style.display = "none";
+// 				loadHelpCallout.style.display = "none";
+//                 } else {
+//                      helpLoaded = "yes";
+//                     loadHelp.style.display = "block";
+// 					loadHelpCallout.style.display = "block";
+//                 }
+//             });
 
-  });
+//   });
 
 });
