@@ -2432,10 +2432,12 @@ function updateView(isMobile) {
                 loadHelp.style.display = "none";
                 loadHelpCallout.style.display = "none";
                 helpLoaded = "no";
+				loadHelp.src = "map_navigation_mobile_crop.png";
     } else {
                 loadHelp.style.display = "block";
                 loadHelpCallout.style.display = "block";
                 helpLoaded = "yes";
+				loadHelp.src = "map_navigation_crop.png";
     }
   setLegendMobile(isMobile);
 
