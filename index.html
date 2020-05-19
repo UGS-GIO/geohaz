@@ -142,9 +142,10 @@ a:active {
 }
 
 .help-tip{
+	//display: none;
 	position: fixed;
-	bottom: 30px;
-	left: 30px;
+	bottom: 19px;
+	left: 19px;
 	text-align: center;
 	background-color: #ffffff;
 	border-radius: 50%;
@@ -152,7 +153,7 @@ a:active {
 	height: 24px;
 	font-size: 14px;
 	line-height: 26px;
-	cursor: default;
+	cursor: pointer;
   box-shadow: 1px 1px 5px #040404;
 }
 
@@ -163,11 +164,31 @@ a:active {
 }
 
 .help-tip img {
-	width: 700px
+	position: fixed;
+	max-height: 70%;
+	max-width: 75%;
+	//top: 50%;
+	left: 63px;
+	//transform: translate(0, -50%);
+	bottom: 11px;
+	border-radius: 3px;
+	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5)
+}
+
+.callout {
+  width: 0;
+  border-top: 20px solid white;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  cursor:pointer;
+  transform: rotate(90deg);
+  position: fixed;
+  bottom: 21px;
+  left: 35px
 }
 
 
-.help-tip p{
+/*.help-tip p{
 	display: none;
 	text-align: left;
 	background-color: white;
@@ -194,14 +215,14 @@ a:active {
     transform: rotate(180deg);
 }
 
-.help-tip p:after{
+.help-tip :after{
 	width:100%;
 	height:40px;
 	content:'';
 	position: absolute;
 	top:-40px;
 	left:0;
-}
+}*/
 
 @-webkit-keyframes fadeIn {
 	0% { 
@@ -505,8 +526,9 @@ a:active {
 
 
 <div class="help-tip" role="button">
-  <p><img src="map_navigation.png"></p>
+  <img src="map_navigation_crop.png">
 </div>
+<div class="callout"></div>
 
 
 

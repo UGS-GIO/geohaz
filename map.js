@@ -2492,17 +2492,20 @@ function showCoordinates(pt) {
   mapView.when(function() {
 
 
-    var loadHelp = document.querySelector('.help-tip p');
+    var loadHelp = document.querySelector('.help-tip img');
+	var loadHelpCallout = document.querySelector('.callout');
             loadHelp.style.display = "block";
             helpLoaded = "yes";
-
-            $(".help-tip").click(function() {
+			$(".help-tip").click(function() {
                 if (helpLoaded == "yes") {
                      helpLoaded = "no";
+					 helpLoadedCallout = "no";
                 loadHelp.style.display = "none";
+				loadHelpCallout.style.display = "none";
                 } else {
                      helpLoaded = "yes";
                     loadHelp.style.display = "block";
+					loadHelpCallout.style.display = "block";
                 }
             });
 
