@@ -2479,7 +2479,8 @@ mapView.when(function() {
   popup.watch("collapsed", function(value){
       console.log(value);
       console.log(popup);
-    if(value && popup.currentDockPosition === 'bottom-center'){
+      if(value){
+    //if(value && popup.currentDockPosition === 'bottom-center'){
       popup.collapsed = false;
     }
   });
