@@ -130,7 +130,7 @@ require([
         listMode: "hide",
     });
 
-
+    helpLoaded = "no";
 
     //popup templates for all layers
 
@@ -2424,16 +2424,43 @@ mapView.watch("widthBreakpoint", function(breakpoint) {
   }
 });
 
+
 function updateView(isMobile) {
-    if (isMobile) {
-        console.log("true");
-        document.getElementById("mapScale").style.display = "none";
-    } else {
-    console.log("false");
-  document.getElementById("mapScale").style.display = "";
-    }
+    
   setLegendMobile(isMobile);
+
 }
+
+	loadHelp = document.querySelector('.help-tip img');
+    loadHelpCallout = document.querySelector('.callout');
+    if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
+                loadHelp.style.display = "none";
+                loadHelpCallout.style.display = "none";
+                helpLoaded = "no";
+				loadHelp.src = "map_navigation_mobile_crop.png";
+				loadHelp.style.maxWidth = "92%";
+				loadHelp.style.left = "15px";
+    } else {
+                loadHelp.style.display = "block";
+                loadHelpCallout.style.display = "block";
+                helpLoaded = "yes";
+				loadHelp.src = "map_navigation_crop.png";
+				loadHelp.style.maxWidth = "75%";
+				loadHelp.style.left = "63px";
+    }
+
+$(".help-tip").click(function() {
+    if (helpLoaded == "yes") {
+         helpLoaded = "no";
+         helpLoadedCallout = "no";
+    loadHelp.style.display = "none";
+    loadHelpCallout.style.display = "none";
+    } else {
+         helpLoaded = "yes";
+        loadHelp.style.display = "block";
+        loadHelpCallout.style.display = "block";
+    }
+});
 
 
 function setLegendMobile(isMobile) {
@@ -2454,14 +2481,9 @@ mapView.when(function() {
       popup.collapsed = false;
     }
   });
+
 });
 
-
-// mapView.watch("scale", function(e){
-// var ee = e.toFixed(0);
-// var newScale = String(ee);
-// document.getElementById("mapScale").innerHTML = "map scale 1:" + newScale;
-// });
 
 var coordsWidget = document.createElement("div");
       coordsWidget.id = "coordsWidget";
@@ -2489,26 +2511,26 @@ function showCoordinates(pt) {
   });
 
   //navigation help
-  mapView.when(function() {
+//   mapView.when(function() {
 
 
-    var loadHelp = document.querySelector('.help-tip img');
-	var loadHelpCallout = document.querySelector('.callout');
-            loadHelp.style.display = "block";
-            helpLoaded = "yes";
-			$(".help-tip").click(function() {
-                if (helpLoaded == "yes") {
-                     helpLoaded = "no";
-					 helpLoadedCallout = "no";
-                loadHelp.style.display = "none";
-				loadHelpCallout.style.display = "none";
-                } else {
-                     helpLoaded = "yes";
-                    loadHelp.style.display = "block";
-					loadHelpCallout.style.display = "block";
-                }
-            });
+//     var loadHelp = document.querySelector('.help-tip img');
+// 	var loadHelpCallout = document.querySelector('.callout');
+//             loadHelp.style.display = "block";
+//             helpLoaded = "yes";
+// 			$(".help-tip").click(function() {
+//                 if (helpLoaded == "yes") {
+//                      helpLoaded = "no";
+// 					 helpLoadedCallout = "no";
+//                 loadHelp.style.display = "none";
+// 				loadHelpCallout.style.display = "none";
+//                 } else {
+//                      helpLoaded = "yes";
+//                     loadHelp.style.display = "block";
+// 					loadHelpCallout.style.display = "block";
+//                 }
+//             });
 
-  });
+//   });
 
 });
