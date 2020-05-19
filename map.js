@@ -2426,22 +2426,28 @@ mapView.watch("widthBreakpoint", function(breakpoint) {
 
 
 function updateView(isMobile) {
-    loadHelp = document.querySelector('.help-tip img');
+    
+  setLegendMobile(isMobile);
+
+}
+
+	loadHelp = document.querySelector('.help-tip img');
     loadHelpCallout = document.querySelector('.callout');
-    if (isMobile) {
+    if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
                 loadHelp.style.display = "none";
                 loadHelpCallout.style.display = "none";
                 helpLoaded = "no";
 				loadHelp.src = "map_navigation_mobile_crop.png";
+				loadHelp.style.maxWidth = "92%";
+				loadHelp.style.left = "15px";
     } else {
                 loadHelp.style.display = "block";
                 loadHelpCallout.style.display = "block";
                 helpLoaded = "yes";
 				loadHelp.src = "map_navigation_crop.png";
+				loadHelp.style.maxWidth = "75%";
+				loadHelp.style.left = "63px";
     }
-  setLegendMobile(isMobile);
-
-}
 
 $(".help-tip").click(function() {
     if (helpLoaded == "yes") {
