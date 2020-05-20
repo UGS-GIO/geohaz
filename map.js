@@ -2431,42 +2431,49 @@ function updateView(isMobile) {
 
 }
 
-    //loadHelp = document.querySelector('.help-tip img');
     loadHelp = document.querySelector('.help-tip img');
+    // navHelp = document.querySelector('.help-tip');
 
-    mapView.ui.add(loadHelp, {
-        position: "bottom-left"
-    });
+    // mapView.ui.add(navHelp, {
+    //     position: "bottom-left"
+    // });
+
+
+    var navHelp = '<div class="esri-component esri-widget">';
+    navHelp += '<div id="help-tip" class="esri-widget--button esri-widget esri-interactive" role="button" title="Navigation Help">';
+    navHelp += '<span aria-hidden="true" role="presentation" class="esri-icon esri-icon-question"></span>';
+    navHelp += '<span class="esri-icon-font-fallback-text">Navigation Help</span></div></div>';
+    $(".esri-ui-top-left").append(navHelp);
     
     //loadHelpCallout = document.querySelector('.callout');
-//     if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
-//                 loadHelp.style.display = "none";
-//                 loadHelpCallout.style.display = "none";
-//                 helpLoaded = "no";
-// 				loadHelp.src = "map_navigation_mobile_crop.png";
-// 				loadHelp.style.maxWidth = "92%";
-// 				loadHelp.style.left = "15px";
-//     } else {
-//                 loadHelp.style.display = "block";
-//                 loadHelpCallout.style.display = "block";
-//                 helpLoaded = "yes";
-// 				loadHelp.src = "map_navigation_crop.png";
-// 				loadHelp.style.maxWidth = "75%";
-// 				loadHelp.style.left = "63px";
-//     }
+    if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
+                loadHelp.style.display = "none";
+                //loadHelpCallout.style.display = "none";
+                helpLoaded = "no";
+				loadHelp.src = "map_navigation_mobile_crop.png";
+				loadHelp.style.maxWidth = "92%";
+				loadHelp.style.left = "15px";
+    } else {
+                loadHelp.style.display = "block";
+                //loadHelpCallout.style.display = "block";
+                helpLoaded = "yes";
+				loadHelp.src = "map_navigation_crop.png";
+				loadHelp.style.maxWidth = "75%";
+				loadHelp.style.left = "63px";
+    }
 
-// $(".help-tip").click(function() {
-//     if (helpLoaded == "yes") {
-//          helpLoaded = "no";
-//          helpLoadedCallout = "no";
-//     loadHelp.style.display = "none";
-//     loadHelpCallout.style.display = "none";
-//     } else {
-//          helpLoaded = "yes";
-//         loadHelp.style.display = "block";
-//         loadHelpCallout.style.display = "block";
-//     }
-// });
+$("#help-tip").click(function() {
+    if (helpLoaded == "yes") {
+         helpLoaded = "no";
+         //helpLoadedCallout = "no";
+    loadHelp.style.display = "none";
+    //loadHelpCallout.style.display = "none";
+    } else {
+         helpLoaded = "yes";
+        loadHelp.style.display = "block";
+        //loadHelpCallout.style.display = "block";
+    }
+});
 
 
 
