@@ -2431,36 +2431,43 @@ function updateView(isMobile) {
 
 }
 
-	loadHelp = document.querySelector('.help-tip img');
-    loadHelpCallout = document.querySelector('.callout');
-    if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
-                loadHelp.style.display = "none";
-                loadHelpCallout.style.display = "none";
-                helpLoaded = "no";
-				loadHelp.src = "map_navigation_mobile_crop.png";
-				loadHelp.style.maxWidth = "92%";
-				loadHelp.style.left = "15px";
-    } else {
-                loadHelp.style.display = "block";
-                loadHelpCallout.style.display = "block";
-                helpLoaded = "yes";
-				loadHelp.src = "map_navigation_crop.png";
-				loadHelp.style.maxWidth = "75%";
-				loadHelp.style.left = "63px";
-    }
+    //loadHelp = document.querySelector('.help-tip img');
+    loadHelp = document.querySelector('.help-tip img');
 
-$(".help-tip").click(function() {
-    if (helpLoaded == "yes") {
-         helpLoaded = "no";
-         helpLoadedCallout = "no";
-    loadHelp.style.display = "none";
-    loadHelpCallout.style.display = "none";
-    } else {
-         helpLoaded = "yes";
-        loadHelp.style.display = "block";
-        loadHelpCallout.style.display = "block";
-    }
-});
+    mapView.ui.add(loadHelp, {
+        position: "bottom-left"
+    });
+    
+    //loadHelpCallout = document.querySelector('.callout');
+//     if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
+//                 loadHelp.style.display = "none";
+//                 loadHelpCallout.style.display = "none";
+//                 helpLoaded = "no";
+// 				loadHelp.src = "map_navigation_mobile_crop.png";
+// 				loadHelp.style.maxWidth = "92%";
+// 				loadHelp.style.left = "15px";
+//     } else {
+//                 loadHelp.style.display = "block";
+//                 loadHelpCallout.style.display = "block";
+//                 helpLoaded = "yes";
+// 				loadHelp.src = "map_navigation_crop.png";
+// 				loadHelp.style.maxWidth = "75%";
+// 				loadHelp.style.left = "63px";
+//     }
+
+// $(".help-tip").click(function() {
+//     if (helpLoaded == "yes") {
+//          helpLoaded = "no";
+//          helpLoadedCallout = "no";
+//     loadHelp.style.display = "none";
+//     loadHelpCallout.style.display = "none";
+//     } else {
+//          helpLoaded = "yes";
+//         loadHelp.style.display = "block";
+//         loadHelpCallout.style.display = "block";
+//     }
+// });
+
 
 
 function setLegendMobile(isMobile) {
@@ -2472,15 +2479,11 @@ function setLegendMobile(isMobile) {
   mapView.ui.add(toAdd, "top-left");
 }
 
-   
+//uncollapse mobile popup when it docks
 popup = mapView.popup;
-
 mapView.when(function() {
   popup.watch("collapsed", function(value){
-      console.log(value);
-      console.log(popup);
       if(value){
-    //if(value && popup.currentDockPosition === 'bottom-center'){
       popup.collapsed = false;
     }
   });
@@ -2513,27 +2516,5 @@ function showCoordinates(pt) {
     showCoordinates(mapView.toMap({ x: evt.x, y: evt.y }));
   });
 
-  //navigation help
-//   mapView.when(function() {
-
-
-//     var loadHelp = document.querySelector('.help-tip img');
-// 	var loadHelpCallout = document.querySelector('.callout');
-//             loadHelp.style.display = "block";
-//             helpLoaded = "yes";
-// 			$(".help-tip").click(function() {
-//                 if (helpLoaded == "yes") {
-//                      helpLoaded = "no";
-// 					 helpLoadedCallout = "no";
-//                 loadHelp.style.display = "none";
-// 				loadHelpCallout.style.display = "none";
-//                 } else {
-//                      helpLoaded = "yes";
-//                     loadHelp.style.display = "block";
-// 					loadHelpCallout.style.display = "block";
-//                 }
-//             });
-
-//   });
 
 });
