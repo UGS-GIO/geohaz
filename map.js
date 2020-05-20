@@ -2449,21 +2449,22 @@ function updateView(isMobile) {
     if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
                 loadHelp.style.display = "none";
                 //loadHelpCallout.style.display = "none";
-                helpLoaded = "no";
+                //helpLoaded = "no";
 				loadHelp.src = "map_navigation_mobile_crop.png";
 				loadHelp.style.maxWidth = "92%";
 				loadHelp.style.left = "15px";
     } else {
                 loadHelp.style.display = "block";
                 //loadHelpCallout.style.display = "block";
-                helpLoaded = "yes";
+                //helpLoaded = "yes";
 				loadHelp.src = "map_navigation_crop.png";
 				loadHelp.style.maxWidth = "75%";
-				loadHelp.style.left = "63px";
+				//loadHelp.style.left = "63px";
+				loadHelp.style.left = "54px";
     }
 
-$("#help-tip").click(function() {
-    if (helpLoaded == "yes") {
+$("#help-tip, .help-tip").click(function() {
+    /* if (helpLoaded == "yes") {
          helpLoaded = "no";
          //helpLoadedCallout = "no";
     loadHelp.style.display = "none";
@@ -2472,10 +2473,9 @@ $("#help-tip").click(function() {
          helpLoaded = "yes";
         loadHelp.style.display = "block";
         //loadHelpCallout.style.display = "block";
-    }
+    } */
+	$(loadHelp).toggle();
 });
-
-
 
 function setLegendMobile(isMobile) {
   var toAdd = isMobile ? expandLegend : legend;
