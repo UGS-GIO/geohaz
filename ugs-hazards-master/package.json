@@ -6,7 +6,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "esri-loader": "^2.14.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "node-sass": "^4.14.0",
     "polly-js": "^1.6.5",
     "query-string": "^6.12.1",
