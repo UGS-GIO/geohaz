@@ -1,0 +1,2 @@
+(this["webpackJsonpugs-hazards"]=this["webpackJsonpugs-hazards"]||[]).push([[3],{51:function(s){s.exports=JSON.parse('{"description":"Test AOI Description","polygon":{"rings":[[[-12472025.223916203,4967174.1688544145],[-12471929.677630847,4967107.2864546655],[-12471920.123002311,4966696.437427633],[-12472522.064600056,4966744.210570311],[-12472464.736828843,4967279.269768307],[-12472025.223916203,4967174.1688544145]]],"spatialReference":{"wkid":3857}}}')}}]);
+//# sourceMappingURL=3.6ebfadbe.chunk.js.map
