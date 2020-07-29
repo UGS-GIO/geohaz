@@ -29,6 +29,7 @@ require([
     "esri/widgets/NavigationToggle",
     "esri/layers/GraphicsLayer",
     "esri/symbols/SimpleFillSymbol",
+    "esri/symbols/SimpleLineSymbol",
     "esri/Graphic",
     "esri/tasks/support/FeatureSet",
     "esri/tasks/support/Query",
@@ -51,7 +52,7 @@ require([
     "calcite-maps/calcitemaps-arcgis-support-v0.10",
     "dojo/query",
     "dojo/domReady!"
-], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, watchUtils, DimensionalDefinition, MosaicRule, webMercatorUtils, GeometryService, ProjectParameters, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, ScaleBar, Attribution, LayerList, Locate, NavigationToggle, GraphicsLayer, SimpleFillSymbol, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
+], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, watchUtils, DimensionalDefinition, MosaicRule, webMercatorUtils, GeometryService, ProjectParameters, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, ScaleBar, Attribution, LayerList, Locate, NavigationToggle, GraphicsLayer, SimpleFillSymbol, SimpleLineSymbol, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
     /******************************************************************
      *
      * Create the map, view and widgets
@@ -1868,6 +1869,33 @@ require([
     mapView.map.add(floodHazards);
     mapView.map.add(earthquakes);
     mapView.map.add(tempGraphicsLayer);
+
+
+    //highlight faults when selected
+
+  mapView.popup.watch('selectedFeature', function(gra){
+    if(gra){
+        mapView.graphics.removeAll();
+      var h = mapView.highlightOptions;
+      gra.symbol = {
+        type: "simple-line", 
+        style: "solid",
+        color: [255, 255, 0],    
+        width: 3
+      };
+      mapView.graphics.add(gra);
+    }else{
+        mapView.graphics.removeAll();
+    }
+  });
+  
+  mapView.popup.watch('visible', function(vis){
+    if(!vis){
+        mapView.graphics.removeAll();
+    }
+  });
+
+
 
 
 
