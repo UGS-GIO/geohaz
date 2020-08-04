@@ -123,6 +123,22 @@ require([
 
     mapView.ui.add(locateWidget, "top-left");
 
+          // show or hide any open calicite panels when user clicks for attribute details
+      // be sure to pass the panel body, not panel title, ussually called 'collapseNAME'
+      function showHideCalcitePanels(showPanel, showCollapse){
+        // hide all windows
+        //query(".panel-collapse").query(".panel .in").collapse("hide");   //close any open panels
+        query(".panel.in").removeClass("in");   //close any open panels
+        query(".panel-collapse").removeClass("in");
+
+        // if specified show this calcite panel
+        if (showPanel){
+          //query(showPanel).collapse("show");    // so I use these instead
+          query(showCollapse).collapse("show");
+          query(showCollapse).parent().collapse('show');
+        }
+      }
+
     var tempGraphic = null;
     let editGraphic;
     // GraphicsLayer to hold graphics created via sketch view model
@@ -210,14 +226,37 @@ require([
         return content;
     }
 
-    qfaultsPopup = function(feature) {
-        console.log(feature);
-        var content = "";
+    qfaultsPopup = {
+        content: function(feature){
+          var div = document.createElement("span");
+          div.id = "faultTip";
+          div.innerHTML = "<span class='bold' title='Longitude'><b>Fault Zone: </b></span><span id='faultTip'>{FaultZone}</span><br/>";
+          return div;
+        }
+    }
 
+    qfaultsPopup = function(feature) {
+        var content = "";
+        var faultZoneSum = feature.graphic.attributes.Summary;
         if (feature.graphic.attributes.FaultZone) {
-            content += "<span class='bold' title='Longitude'><b>Fault Zone: </b></span>{FaultZone}<br/>";
+
+            var faultZ
+            var div = document.createElement("span");
+            div.id = "faultTip";
+            div.innerHTML = "{FaultZone}";
+
+            console.log(div);
+            // var faultString = feature.graphic.attributes.FaultZone;
+            // //content += "<span class='bold' title='Longitude'><b>Fault Zone: </b></span><span id='faultTip'>{FaultZone}</span><br/>";
+            // content += "<span class='bold' title='Name of fault composed of multiple named sections'><b>Fault Zone Name: </b></span>" + faultString + "<br/>";
+            // var faultSpan = document.createElement('span')
+            // faultSpan.setAttribute("id", "faulTip");
+            // faultSpan.appendChild(faultString);
+            content += "<span class='bold' title='Name of fault composed of multiple named sections'><b>Fault Zone Name: </b></span>" + toString(div) + "<br/>";
+            query("#faultSum").html(faultZoneSum);
         }
         if (feature.graphic.attributes.FaultName) {
+            console.log("poop2");
             content += "<span class='bold' title='Latitude'><b>Fault Name: </b></span>{FaultName}<br/>";
         }
         if (feature.graphic.attributes.SectionName) {
@@ -254,8 +293,19 @@ require([
         if (feature.graphic.attributes.USGS_Link) {
             content += "<span class='bold' title='Date'><b>USGS Link: </b></span>" + "<a href='{USGS_Link}' target='_blank'>Opens in new tab</a>" + "<br/>";
         }
+
+            // assign click even to fault name so summary goes to Fault Summary panel
+$("#faultTip").click(function (e) {
+
+    // hide visible panels, then show the fault summary panel
+    showHideCalcitePanels("#panelLegend", "#collapseLegend");
+    query("#customMessage").html(faultZoneSum);
+  });
+
         return content;
     }
+
+
 
 
 

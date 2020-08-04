@@ -149,11 +149,19 @@ a:active {
 	left: 54px;
 	background-color: white;
 	bottom: 11px;
-	//top: 314px;
+	top: 314px;
 	border-radius: 3px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 	cursor: pointer
 }
+
+#faultTip {
+    	text-decoration: underline;
+    	cursor: pointer
+    }
+    #faultTip:hover{
+    	text-decoration: none
+    }
 
 /* .help-tip{
 	position: fixed;
@@ -330,21 +338,21 @@ a:active {
      </div>
     </div>
 
-    <!-- Panel - Legend
+    <!-- Panel - Legend -->
 
-    <div id="panelLegend" class="panel collapse in">
+    <div id="panelLegend" class="panel collapse ">
       <div id="headingLegend" class="panel-heading" role="tab">
         <div class="panel-title">
-          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseLegend" aria-expanded="true" aria-controls="collapseLegend"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Legend</span></a> 
+          <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseLegend" aria-expanded="true" aria-controls="collapseLegend"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Structure Details</span></a> 
           <a class="panel-close" role="button" data-toggle="collapse" tabindex="0" href="#panelLegend"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a> 
         </div>
       </div>
-      <div id="collapseLegend" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingLegend">
+      <div id="collapseLegend" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLegend">
         <div class="panel-body">            
-          <div id="legendDiv"></div>
+          <div id="faultSum"></div>
         </div>
       </div>
-    </div> -->
+    </div>
 
         <!-- Panel - Report Tool -->
 
