@@ -7,6 +7,7 @@ require([
     "esri/layers/ImageryLayer",
     "esri/layers/MapImageLayer",
     "esri/layers/GroupLayer",
+    "esri/PopupTemplate",
     "esri/core/watchUtils",
     "esri/layers/support/DimensionalDefinition",
     "esri/layers/support/MosaicRule",
@@ -52,7 +53,7 @@ require([
     "calcite-maps/calcitemaps-arcgis-support-v0.10",
     "dojo/query",
     "dojo/domReady!"
-], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, watchUtils, DimensionalDefinition, MosaicRule, webMercatorUtils, GeometryService, ProjectParameters, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, ScaleBar, Attribution, LayerList, Locate, NavigationToggle, GraphicsLayer, SimpleFillSymbol, SimpleLineSymbol, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
+], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, PopupTemplate, watchUtils, DimensionalDefinition, MosaicRule, webMercatorUtils, GeometryService, ProjectParameters, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, ScaleBar, Attribution, LayerList, Locate, NavigationToggle, GraphicsLayer, SimpleFillSymbol, SimpleLineSymbol, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
     /******************************************************************
      *
      * Create the map, view and widgets
@@ -226,84 +227,88 @@ require([
         return content;
     }
 
-    qfaultsPopup = {
-        content: function(feature){
-          var div = document.createElement("span");
-          div.id = "faultTip";
-          div.innerHTML = "<span class='bold' title='Longitude'><b>Fault Zone: </b></span><span id='faultTip'>{FaultZone}</span><br/>";
-          return div;
-        }
-    }
+    poopTemplate = 
+         (event) => {
+          const { graphic } = event;
+          const container = document.createElement("div");
 
-    qfaultsPopup = function(feature) {
-        var content = "";
-        var faultZoneSum = feature.graphic.attributes.Summary;
-        if (feature.graphic.attributes.FaultZone) {
+      
+          if (graphic.attributes.FaultZone) {
+              const faultZoneDiv = document.createElement("strong");
+              faultZoneDiv.textContent = "Fault Zone:";
+              container.appendChild(faultZoneDiv);
+      
+              const faultZoneSum = graphic.attributes.Summary;
+              const faultZone = graphic.attributes.FaultZone;
+              const faultTip = document.createElement("span");
+              faultTip.textContent = faultZone;
+              container.appendChild(faultTip);
+              faultTip.onclick = () => {
+                showHideCalcitePanels("#panelLegend", "#collapseLegend");
+                query("#faultSum").html(faultZoneSum);
+              };
+          }
+      
+          return container;
+        };
 
-            var faultZ
-            var div = document.createElement("span");
-            div.id = "faultTip";
-            div.innerHTML = "{FaultZone}";
 
-            console.log(div);
-            // var faultString = feature.graphic.attributes.FaultZone;
-            // //content += "<span class='bold' title='Longitude'><b>Fault Zone: </b></span><span id='faultTip'>{FaultZone}</span><br/>";
-            // content += "<span class='bold' title='Name of fault composed of multiple named sections'><b>Fault Zone Name: </b></span>" + faultString + "<br/>";
-            // var faultSpan = document.createElement('span')
-            // faultSpan.setAttribute("id", "faulTip");
-            // faultSpan.appendChild(faultString);
-            content += "<span class='bold' title='Name of fault composed of multiple named sections'><b>Fault Zone Name: </b></span>" + toString(div) + "<br/>";
-            query("#faultSum").html(faultZoneSum);
-        }
-        if (feature.graphic.attributes.FaultName) {
-            console.log("poop2");
-            content += "<span class='bold' title='Latitude'><b>Fault Name: </b></span>{FaultName}<br/>";
-        }
-        if (feature.graphic.attributes.SectionName) {
-            content += "<span class='bold' title='Depth'><b>Section Name: </b></span>{SectionName}<br/>";
-        }
-        if (feature.graphic.attributes.StrandName) {
-            content += "<span class='bold' title='Date'><b>Strand Name: </b></span>{StrandName}<br/>";
-        }
-        if (feature.graphic.attributes.FaultNum) {
-            content += "<span class='bold' title='Magnitude'><b>Structure Number: </b></span>{FaultNum}<br/>";
-        }
-        if (feature.graphic.attributes.MappedScale) {
-            content += "<span class='bold' title='Date'><b>Mapped Scale: </b></span>{MappedScale}<br/>";
-        }
-        if (feature.graphic.attributes.DipDirection) {
-            content += "<span class='bold' title='Date'><b>Dip Direction: </b></span>{DipDirection}<br/>";
-        }
-        if (feature.graphic.attributes.SlipSense) {
-            content += "<span class='bold' title='Date'><b>Slip Sense: </b></span>{SlipSense}<br/>";
-        }
-        if (feature.graphic.attributes.SlipRate) {
-            content += "<span class='bold' title='Date'><b>Slip Rate: </b></span>{SlipRate}<br/>";
-        }
-        if (feature.graphic.attributes.MappingConstraint) {
-            content += "<span class='bold' title='Date'><b>Mapping Constraint: </b></span>{MappingConstraint}<br/>";
-        }
+    // qfaultsPopup = function(feature) {
+    //     var content = "";
+    //     var faultZoneSum = feature.graphic.attributes.Summary;
+    //     if (feature.graphic.attributes.FaultZone) {
+    //         content += "<span class='bold' title='Longitude'><b>Fault Zone: </b></span><span id='faultTip'>{FaultZone}</span><br/>";
+    //         query("#faultSum").html(faultZoneSum);
+    //     }
+    //     if (feature.graphic.attributes.FaultName) {
+    //         console.log("poop2");
+    //         content += "<span class='bold' title='Latitude'><b>Fault Name: </b></span>{FaultName}<br/>";
+    //     }
+    //     if (feature.graphic.attributes.SectionName) {
+    //         content += "<span class='bold' title='Depth'><b>Section Name: </b></span>{SectionName}<br/>";
+    //     }
+    //     if (feature.graphic.attributes.StrandName) {
+    //         content += "<span class='bold' title='Date'><b>Strand Name: </b></span>{StrandName}<br/>";
+    //     }
+    //     if (feature.graphic.attributes.FaultNum) {
+    //         content += "<span class='bold' title='Magnitude'><b>Structure Number: </b></span>{FaultNum}<br/>";
+    //     }
+    //     if (feature.graphic.attributes.MappedScale) {
+    //         content += "<span class='bold' title='Date'><b>Mapped Scale: </b></span>{MappedScale}<br/>";
+    //     }
+    //     if (feature.graphic.attributes.DipDirection) {
+    //         content += "<span class='bold' title='Date'><b>Dip Direction: </b></span>{DipDirection}<br/>";
+    //     }
+    //     if (feature.graphic.attributes.SlipSense) {
+    //         content += "<span class='bold' title='Date'><b>Slip Sense: </b></span>{SlipSense}<br/>";
+    //     }
+    //     if (feature.graphic.attributes.SlipRate) {
+    //         content += "<span class='bold' title='Date'><b>Slip Rate: </b></span>{SlipRate}<br/>";
+    //     }
+    //     if (feature.graphic.attributes.MappingConstraint) {
+    //         content += "<span class='bold' title='Date'><b>Mapping Constraint: </b></span>{MappingConstraint}<br/>";
+    //     }
 
-        if (slipS = feature.graphic.attributes.FaultClass) {
-            content += "<span class='bold' title='Date'><b>Structure Class: </b></span>{FaultClass}<br/>";
-        } 
-        if (slipS = feature.graphic.attributes.FaultAge) {
-            content += "<span class='bold' title='Date'><b>Structure Age: </b></span>{FaultAge}<br/>";
-        } 
-        if (feature.graphic.attributes.USGS_Link) {
-            content += "<span class='bold' title='Date'><b>USGS Link: </b></span>" + "<a href='{USGS_Link}' target='_blank'>Opens in new tab</a>" + "<br/>";
-        }
+    //     if (slipS = feature.graphic.attributes.FaultClass) {
+    //         content += "<span class='bold' title='Date'><b>Structure Class: </b></span>{FaultClass}<br/>";
+    //     } 
+    //     if (slipS = feature.graphic.attributes.FaultAge) {
+    //         content += "<span class='bold' title='Date'><b>Structure Age: </b></span>{FaultAge}<br/>";
+    //     } 
+    //     if (feature.graphic.attributes.USGS_Link) {
+    //         content += "<span class='bold' title='Date'><b>USGS Link: </b></span>" + "<a href='{USGS_Link}' target='_blank'>Opens in new tab</a>" + "<br/>";
+    //     }
 
-            // assign click even to fault name so summary goes to Fault Summary panel
-$("#faultTip").click(function (e) {
+    //     // assign click even to fault name so summary goes to Fault Summary panel
+    //     $("#faultTip").click(function (e) {
 
-    // hide visible panels, then show the fault summary panel
-    showHideCalcitePanels("#panelLegend", "#collapseLegend");
-    query("#customMessage").html(faultZoneSum);
-  });
+    //         // hide visible panels, then show the fault summary panel
+    //         showHideCalcitePanels("#panelLegend", "#collapseLegend");
+    //         query("#customMessage").html(faultZoneSum);
+    //     });
 
-        return content;
-    }
+    //     return content;
+    // }
 
 
 
@@ -1121,17 +1126,27 @@ $("#faultTip").click(function (e) {
 
     // **********qfaults from our server as a mapimageservice
     const qFaults = new MapImageLayer({
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults/MapServer",
+        //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults/MapServer",
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults_with_labels/MapServer",
         sublayers: [{
             id: 0,
             visible: true,
 
-            popupTemplate: {
+            popupTemplate:
+            {
                 outFields: ["*"],
                 title: "<b>Hazardous (Quaternary age) Faults</b>",
-                content: qfaultsPopup
-            },
-        }],
+                content: poopTemplate
+            }
+        },
+        {
+            
+                id: 1,
+                visible: true,
+        
+            
+
+            }],
         title: "Hazardous (Quaternary age) Faults",
         listMode: "hide-children",
         visible: false,
