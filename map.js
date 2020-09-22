@@ -230,26 +230,39 @@ require([
     poopTemplate = 
          (event) => {
           const { graphic } = event;
-          const container = document.createElement("div");
-
+          const containerFaultZone = document.createElement("div");
+          //const containerFaultName = document.createElement("div");
       
           if (graphic.attributes.FaultZone) {
+              console.log("poop");
               const faultZoneDiv = document.createElement("strong");
               faultZoneDiv.textContent = "Fault Zone:";
-              container.appendChild(faultZoneDiv);
+              containerFaultZone.appendChild(faultZoneDiv);
       
               const faultZoneSum = graphic.attributes.Summary;
               const faultZone = graphic.attributes.FaultZone;
               const faultTip = document.createElement("span");
               faultTip.textContent = faultZone;
-              container.appendChild(faultTip);
+              containerFaultZone.appendChild(faultTip);
               faultTip.onclick = () => {
                 showHideCalcitePanels("#panelLegend", "#collapseLegend");
                 query("#faultSum").html(faultZoneSum);
               };
           }
+
+        //   if (graphic.attributes.FaultName) {
+        //     const faultNameDiv = document.createElement("strong");
+        //     faultZoneDiv.textContent = "Fault Name:";
+        //     containerFaultName.appendChild(faultNameDiv);
+    
+        //     const faultZone = graphic.attributes.FaultName;
+        //     const faultName = document.createElement("span");
+        //     faultName.textContent = faultZone;
+        //     containerFaultName.appendChild(faultName);
+        // }
+        // console.log(containerFaultName);
       
-          return container;
+          return containerFaultZone;
         };
 
 
