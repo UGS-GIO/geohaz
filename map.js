@@ -237,9 +237,8 @@ require([
           //const containerFaultName = document.createElement("div");
       
           if (graphic.attributes.FaultZone) {
-              console.log("poop");
               const faultZoneDiv = document.createElement("strong");
-              faultZoneDiv.textContent = "Fault Zone: ";
+              faultZoneDiv.textContent = "Fault Zone Name: ";
               containerFaultZone.appendChild(faultZoneDiv);
       
               const faultZoneSum = graphic.attributes.Summary;
@@ -252,22 +251,134 @@ require([
                 query("#faultSum").html(faultZoneSum);
               };
           }
-           if (graphic.attributes.FaultAge) {
-              console.log("FaultAge");
-              var br = document.createElement("br");
-              const faultAgeDiv = document.createElement('strong');
-              faultAgeDiv.textContent = "Fault Age: ";
-              containerFaultZone.appendChild(br);
-              containerFaultZone.appendChild(faultAgeDiv);
+        
+        if (graphic.attributes.SectionName) {
+           var br = document.createElement("br");
+           const sectionNameDiv = document.createElement('strong');
+           sectionNameDiv.textContent = "Section Name: ";
+           containerFaultZone.appendChild(br);
+           containerFaultZone.appendChild(sectionNameDiv);
 
-              const faultAgevalue = graphic.attributes.FaultAge;
-              console.log(faultAgevalue);
-              const faultAgeSpan = document.createElement("span");
-              faultAgeSpan.textContent = faultAgevalue;
-              containerFaultZone.appendChild(faultAgeSpan);
+           const sectionNameValue = graphic.attributes.SectionName;
+           const sectionNameSpan = document.createElement("span");
+           sectionNameSpan.textContent = sectionNameValue;
+           containerFaultZone.appendChild(sectionNameSpan);
+       }
+
+    if (graphic.attributes.FaultNum) {
+        var br = document.createElement("br");
+        const faultNumDiv = document.createElement('strong');
+        faultNumDiv.textContent = "Structure Number: ";
+        containerFaultZone.appendChild(br);
+        containerFaultZone.appendChild(faultNumDiv);
+
+        const faultNumValue = graphic.attributes.FaultNum;
+        const faultNumSpan = document.createElement("span");
+        faultNumSpan.textContent = faultNumValue;
+        containerFaultZone.appendChild(faultNumSpan);
+    }
+
+    if (graphic.attributes.MappedScale) {
+        var br = document.createElement("br");
+        const mapScaleDiv = document.createElement('strong');
+        mapScaleDiv.textContent = "Mapped Scale: ";
+        containerFaultZone.appendChild(br);
+        containerFaultZone.appendChild(mapScaleDiv);
+
+        const mapScaleValue = graphic.attributes.MappedScale;
+        const mapScaleSpan = document.createElement("span");
+        mapScaleSpan.textContent = mapScaleValue;
+        containerFaultZone.appendChild(mapScaleSpan);
+    }
 
 
-          }
+    if (graphic.attributes.DipDirection) {
+        var br = document.createElement("br");
+        const dipDirDiv = document.createElement('strong');
+        dipDirDiv.textContent = "Dip Direction: ";
+        containerFaultZone.appendChild(br);
+        containerFaultZone.appendChild(dipDirDiv);
+
+        const dipDirValue = graphic.attributes.DipDirection;
+        const dipDirSpan = document.createElement("span");
+        dipDirSpan.textContent = dipDirValue;
+        containerFaultZone.appendChild(dipDirSpan);
+    }
+
+        if (graphic.attributes.SlipSense) {
+            var br = document.createElement("br");
+            const slipSenseDiv = document.createElement('strong');
+            slipSenseDiv.textContent = "Slip Sense: ";
+            containerFaultZone.appendChild(br);
+            containerFaultZone.appendChild(slipSenseDiv);
+    
+            const slipSenseValue = graphic.attributes.SlipSense;
+            const slipSenseSpan = document.createElement("span");
+            slipSenseSpan.textContent = slipSenseValue;
+            containerFaultZone.appendChild(slipSenseSpan);
+        }
+
+        if (graphic.attributes.SlipRate) {
+            var br = document.createElement("br");
+            const slipRateDiv = document.createElement('strong');
+            slipRateDiv.textContent = "Slip Rate: ";
+            containerFaultZone.appendChild(br);
+            containerFaultZone.appendChild(slipRateDiv);
+    
+            const slipRatevalue = graphic.attributes.SlipRate;
+            const slipRateSpan = document.createElement("span");
+            slipRateSpan.textContent = slipRatevalue;
+            containerFaultZone.appendChild(slipRateSpan);
+        }
+    
+        
+
+        if (graphic.attributes.FaultClass) {
+            var br = document.createElement("br");
+            const faultClassDiv = document.createElement('strong');
+            faultClassDiv.textContent = "Structure Class: ";
+            containerFaultZone.appendChild(br);
+            containerFaultZone.appendChild(faultClassDiv);
+    
+            const faultClassvalue = graphic.attributes.FaultClass;
+            const faultClassSpan = document.createElement("span");
+            faultClassSpan.textContent = faultClassvalue;
+            containerFaultZone.appendChild(faultClassSpan);
+        }
+
+        if (graphic.attributes.FaultAge) {
+            var br = document.createElement("br");
+            const faultAgeDiv = document.createElement('strong');
+            faultAgeDiv.textContent = "Structure Age: ";
+            containerFaultZone.appendChild(br);
+            containerFaultZone.appendChild(faultAgeDiv);
+    
+            const faultAgevalue = graphic.attributes.FaultAge;
+            const faultAgeSpan = document.createElement("span");
+            faultAgeSpan.textContent = faultAgevalue;
+            containerFaultZone.appendChild(faultAgeSpan);
+        }
+
+        if (graphic.attributes.USGS_Link) {
+            var br = document.createElement("br");
+            const linkDiv = document.createElement('strong');
+            linkDiv.textContent = "Detailed Report: ";
+            containerFaultZone.appendChild(br);
+            containerFaultZone.appendChild(linkDiv);
+            const linkvalue = graphic.attributes.USGS_Link;
+    
+            var a = document.createElement('a');
+      var linkText = document.createTextNode("Opens in new tab");
+      a.appendChild(linkText);
+      a.title = "Detailed Report";
+      a.href = linkvalue;
+      a.target = '_blank';
+      document.body.appendChild(a);
+            
+            //const linkSpan = document.createElement("span");
+            //linkSpan.textContent = linkvalue;
+            containerFaultZone.appendChild(a);
+        }
 
         //   if (graphic.attributes.FaultName) {
         //     const faultNameDiv = document.createElement("strong");
