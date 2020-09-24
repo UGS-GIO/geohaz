@@ -229,14 +229,17 @@ require([
 
     poopTemplate = 
          (event) => {
+             console.log(event);
+            
           const { graphic } = event;
+         console.log(graphic);
           const containerFaultZone = document.createElement("div");
           //const containerFaultName = document.createElement("div");
       
           if (graphic.attributes.FaultZone) {
               console.log("poop");
               const faultZoneDiv = document.createElement("strong");
-              faultZoneDiv.textContent = "Fault Zone:";
+              faultZoneDiv.textContent = "Fault Zone: ";
               containerFaultZone.appendChild(faultZoneDiv);
       
               const faultZoneSum = graphic.attributes.Summary;
@@ -248,6 +251,22 @@ require([
                 showHideCalcitePanels("#panelLegend", "#collapseLegend");
                 query("#faultSum").html(faultZoneSum);
               };
+          }
+           if (graphic.attributes.FaultAge) {
+              console.log("FaultAge");
+              var br = document.createElement("br");
+              const faultAgeDiv = document.createElement('strong');
+              faultAgeDiv.textContent = "Fault Age: ";
+              containerFaultZone.appendChild(br);
+              containerFaultZone.appendChild(faultAgeDiv);
+
+              const faultAgevalue = graphic.attributes.FaultAge;
+              console.log(faultAgevalue);
+              const faultAgeSpan = document.createElement("span");
+              faultAgeSpan.textContent = faultAgevalue;
+              containerFaultZone.appendChild(faultAgeSpan);
+
+
           }
 
         //   if (graphic.attributes.FaultName) {
