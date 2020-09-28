@@ -227,6 +227,7 @@ require([
         return content;
     }
 
+    //qfaults popup code
     poopTemplate = 
          (event) => {
              console.log(event);
@@ -245,6 +246,7 @@ require([
               const faultZone = graphic.attributes.FaultZone;
               const faultTip = document.createElement("span");
               faultTip.textContent = faultZone;
+              var x = document.createElement("U");
               containerFaultZone.appendChild(faultTip);
               faultTip.onclick = () => {
                 showHideCalcitePanels("#panelLegend", "#collapseLegend");
