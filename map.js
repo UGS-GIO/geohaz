@@ -14,6 +14,8 @@ require([
     "esri/geometry/support/webMercatorUtils",
     "esri/tasks/GeometryService",
     "esri/tasks/support/ProjectParameters",
+    "esri/geometry/Extent",
+    "esri/tasks/Locator",
     // Widgets
     "esri/widgets/Home",
     "esri/widgets/Zoom",
@@ -53,7 +55,7 @@ require([
     "calcite-maps/calcitemaps-arcgis-support-v0.10",
     "dojo/query",
     "dojo/domReady!"
-], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, PopupTemplate, watchUtils, DimensionalDefinition, MosaicRule, webMercatorUtils, GeometryService, ProjectParameters, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, ScaleBar, Attribution, LayerList, Locate, NavigationToggle, GraphicsLayer, SimpleFillSymbol, SimpleLineSymbol, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
+], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, PopupTemplate, watchUtils, DimensionalDefinition, MosaicRule, webMercatorUtils, GeometryService, ProjectParameters, Extent, Locator, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, ScaleBar, Attribution, LayerList, Locate, NavigationToggle, GraphicsLayer, SimpleFillSymbol, SimpleLineSymbol, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
     /******************************************************************
      *
      * Create the map, view and widgets
@@ -78,8 +80,17 @@ require([
 
         ui: {
             components: []
-        }
+        },
+        highlightOptions: {
+            color: [255, 255, 0, 1],
+            haloColor: "white",
+            haloOpacity: 0.9,
+            fillOpacity: 0.2
+          }
     });
+
+    var highlight = null;
+
     // Popup and panel sync
     mapView.when(function() {
         CalciteMapArcGISSupport.setPopupPanelSync(mapView);
@@ -103,6 +114,7 @@ require([
         view: mapView
     });
     mapView.ui.add(compass, "top-left");
+    //mapView.ui.add(searchWidget, "top-left");
 
     var basemapToggle = new BasemapToggle({
         view: mapView,
@@ -230,12 +242,10 @@ require([
     //qfaults popup code
     poopTemplate = 
          (event) => {
-             console.log(event);
             
           const { graphic } = event;
          console.log(graphic);
           const containerFaultZone = document.createElement("div");
-          //const containerFaultName = document.createElement("div");
       
           if (graphic.attributes.FaultZone) {
               const faultZoneDiv = document.createElement("strong");
@@ -247,7 +257,6 @@ require([
               const faultTip = document.createElement("span");
               faultTip.textContent = faultZone;
               faultTip.style.textDecoration = 'underline';
-              //var x = document.createElement("U");
               containerFaultZone.appendChild(faultTip);
               faultTip.onclick = () => {
                 showHideCalcitePanels("#panelLegend", "#collapseLegend");
@@ -378,22 +387,8 @@ require([
       a.target = '_blank';
       document.body.appendChild(a);
             
-            //const linkSpan = document.createElement("span");
-            //linkSpan.textContent = linkvalue;
             containerFaultZone.appendChild(a);
         }
-
-        //   if (graphic.attributes.FaultName) {
-        //     const faultNameDiv = document.createElement("strong");
-        //     faultZoneDiv.textContent = "Fault Name:";
-        //     containerFaultName.appendChild(faultNameDiv);
-    
-        //     const faultZone = graphic.attributes.FaultName;
-        //     const faultName = document.createElement("span");
-        //     faultName.textContent = faultZone;
-        //     containerFaultName.appendChild(faultName);
-        // }
-        // console.log(containerFaultName);
       
           return containerFaultZone;
         };
@@ -1054,21 +1049,15 @@ require([
 
     // Qfaults symbology 
 
-    var oldestDottedFault = {
-        type: "simple-line",
-        style: "dash",
-        cap: "round",
-        join: "round",
-        width: 1.5
-    };
 
     var qFaultRenderer = {
-        type: "unique-value",
-        field: "FaultAge",
-        uniqueValueInfos: [{
-            value: "<2,600,000",
-            symbol: oldestDottedFault
-        }]
+        type: "simple",
+        symbol: {
+            type: "simple-line",  // autocasts as new SimpleLineSymbol()
+            color: "lightblue",
+            width: "0px",
+            style: "short-dot"
+          }
 
     }
 
@@ -2761,6 +2750,90 @@ function showCoordinates(pt) {
 
     showCoordinates(mapView.toMap({ x: evt.x, y: evt.y }));
   });
+         
+  //------------------Search Code------------------------  
+
+  searchWidget.includeDefaultSources = false;
+
+  searchWidget.on("search-complete", function(e){
+    console.log(e);
+
+    var faultID = e.results[0].results[0].feature;
+    console.log(faultID);
+
+    mapView.graphics.removeAll();
+      faultID.symbol = {
+        type: "simple-line", 
+        style: "solid",
+        color: [255, 255, 0],    
+        width: 3
+      };
+      mapView.graphics.add(faultID);
+
+
+});
+
+
+
+   searchWidget.allPlaceholder = "Find Fault, Place, or Parcel";
+
+
+       
+    searchWidget.on("search-start", function(e) {
+            mapView.popup.close();   //close previous popup when starting new search
+    });
+
+    searchWidget.on("search-clear", function(e) {
+        mapView.popup.close();  // close popup if its open from last search
+    });
+
+    var extent = new Extent(-114.1, 37.0, -108.9, 42.0);
+
+
+    
+
+
+    var sources = [
+      {
+        layer: 
+        new FeatureLayer({
+          url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults_with_labels/MapServer/0",
+        }),
+        exactMatch: false,
+        displayField: "FaultName",    
+        searchFields: ["FaultZone","FaultName","SectionName","StrandName"],   
+         outFields: ["*"],  
+        name: "Fault Search",
+        popupTemplate: {
+            title: "Hazardous (Quaternary age) Faults",
+            content: poopTemplate
+          },
+        placeholder: "ex: Wasatch Fault Zone",
+        searchTemplate: "{FaultZone}, {FaultName}, {SectionName}, {StrandName}",
+         suggestionTemplate: "<b>Fault Zone:</b> {FaultZone}, <b>Fault Name:</b> {FaultName}, <b>Section Name:</b> {SectionName}, <b>Strand Name:</b> {StrandName}",
+        maxSuggestions: 5000,
+        minSuggestCharacters: 3,
+
+    },
+    {
+    locator: new Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
+    exactMatch: true,
+    singleLineFieldName: "SingleLine",
+    type: "locator",
+    name: "Location Search",
+    countryCode: "US",  
+    searchExtent: extent,
+    category:["Address","Neighborhood","City"],
+    placeholder: "ex: -111.9, 40.8 or Place",
+
+    minSuggestCharacters: 3,
+    zoomScale: 100000,
+  }
+];
+
+    searchWidget.sources = sources;    
+
+        
 
 
 });
