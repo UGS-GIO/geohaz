@@ -226,7 +226,6 @@ require([
          (event) => {
             
           const { graphic } = event;
-         console.log(graphic);
           const containerFaultZone = document.createElement("div");
       
           if (graphic.attributes.FaultZone) {
@@ -239,6 +238,7 @@ require([
               const faultTip = document.createElement("span");
               faultTip.textContent = faultZone;
               faultTip.style.textDecoration = 'underline';
+              faultTip.style.cursor = 'pointer';
               containerFaultZone.appendChild(faultTip);
               faultTip.onclick = () => {
                 showHideCalcitePanels("#panelLegend", "#collapseLegend");
@@ -258,6 +258,19 @@ require([
            sectionNameSpan.textContent = sectionNameValue;
            containerFaultZone.appendChild(sectionNameSpan);
        }
+
+       if (graphic.attributes.StrandName) {
+        var br = document.createElement("br");
+        const strandNameDiv = document.createElement('strong');
+        strandNameDiv.textContent = "Strand Name: ";
+        containerFaultZone.appendChild(br);
+        containerFaultZone.appendChild(strandNameDiv);
+
+        const strandNameValue = graphic.attributes.StrandName;
+        const strandNameSpan = document.createElement("span");
+        strandNameSpan.textContent = strandNameValue;
+        containerFaultZone.appendChild(strandNameSpan);
+    }
 
     if (graphic.attributes.FaultNum) {
         var br = document.createElement("br");
