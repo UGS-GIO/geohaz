@@ -7,11 +7,7 @@ require([
     "esri/layers/ImageryLayer",
     "esri/layers/MapImageLayer",
     "esri/layers/GroupLayer",
-    "esri/PopupTemplate",
     "esri/core/watchUtils",
-    "esri/layers/support/DimensionalDefinition",
-    "esri/layers/support/MosaicRule",
-    "esri/geometry/support/webMercatorUtils",
     "esri/tasks/GeometryService",
     "esri/tasks/support/ProjectParameters",
     "esri/geometry/Extent",
@@ -25,14 +21,9 @@ require([
     "esri/widgets/Expand",
     "esri/widgets/Sketch/SketchViewModel",
     "esri/widgets/BasemapToggle",
-    "esri/widgets/ScaleBar",
-    "esri/widgets/Attribution",
     "esri/widgets/LayerList",
     "esri/widgets/Locate",
-    "esri/widgets/NavigationToggle",
     "esri/layers/GraphicsLayer",
-    "esri/symbols/SimpleFillSymbol",
-    "esri/symbols/SimpleLineSymbol",
     "esri/Graphic",
     "esri/tasks/support/FeatureSet",
     "esri/tasks/support/Query",
@@ -55,7 +46,7 @@ require([
     "calcite-maps/calcitemaps-arcgis-support-v0.10",
     "dojo/query",
     "dojo/domReady!"
-], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, PopupTemplate, watchUtils, DimensionalDefinition, MosaicRule, webMercatorUtils, GeometryService, ProjectParameters, Extent, Locator, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, ScaleBar, Attribution, LayerList, Locate, NavigationToggle, GraphicsLayer, SimpleFillSymbol, SimpleLineSymbol, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
+], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, watchUtils, GeometryService, ProjectParameters, Extent, Locator, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, LayerList, Locate, GraphicsLayer, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
     /******************************************************************
      *
      * Create the map, view and widgets
@@ -126,13 +117,6 @@ require([
         view: mapView, // Attaches the Locate button to the view
     });
 
-    // //legend expand widget
-    // var expandLegend = new Expand({
-    //     view: view,
-    //     content: layerList,
-    //     //group: "top-left",
-    //     expanded: true
-    //   })
 
     mapView.ui.add(locateWidget, "top-left");
 
@@ -140,13 +124,11 @@ require([
       // be sure to pass the panel body, not panel title, ussually called 'collapseNAME'
       function showHideCalcitePanels(showPanel, showCollapse){
         // hide all windows
-        //query(".panel-collapse").query(".panel .in").collapse("hide");   //close any open panels
         query(".panel.in").removeClass("in");   //close any open panels
         query(".panel-collapse").removeClass("in");
 
         // if specified show this calcite panel
         if (showPanel){
-          //query(showPanel).collapse("show");    // so I use these instead
           query(showCollapse).collapse("show");
           query(showCollapse).parent().collapse('show');
         }
@@ -394,64 +376,6 @@ require([
         };
 
 
-    // qfaultsPopup = function(feature) {
-    //     var content = "";
-    //     var faultZoneSum = feature.graphic.attributes.Summary;
-    //     if (feature.graphic.attributes.FaultZone) {
-    //         content += "<span class='bold' title='Longitude'><b>Fault Zone: </b></span><span id='faultTip'>{FaultZone}</span><br/>";
-    //         query("#faultSum").html(faultZoneSum);
-    //     }
-    //     if (feature.graphic.attributes.FaultName) {
-    //         console.log("poop2");
-    //         content += "<span class='bold' title='Latitude'><b>Fault Name: </b></span>{FaultName}<br/>";
-    //     }
-    //     if (feature.graphic.attributes.SectionName) {
-    //         content += "<span class='bold' title='Depth'><b>Section Name: </b></span>{SectionName}<br/>";
-    //     }
-    //     if (feature.graphic.attributes.StrandName) {
-    //         content += "<span class='bold' title='Date'><b>Strand Name: </b></span>{StrandName}<br/>";
-    //     }
-    //     if (feature.graphic.attributes.FaultNum) {
-    //         content += "<span class='bold' title='Magnitude'><b>Structure Number: </b></span>{FaultNum}<br/>";
-    //     }
-    //     if (feature.graphic.attributes.MappedScale) {
-    //         content += "<span class='bold' title='Date'><b>Mapped Scale: </b></span>{MappedScale}<br/>";
-    //     }
-    //     if (feature.graphic.attributes.DipDirection) {
-    //         content += "<span class='bold' title='Date'><b>Dip Direction: </b></span>{DipDirection}<br/>";
-    //     }
-    //     if (feature.graphic.attributes.SlipSense) {
-    //         content += "<span class='bold' title='Date'><b>Slip Sense: </b></span>{SlipSense}<br/>";
-    //     }
-    //     if (feature.graphic.attributes.SlipRate) {
-    //         content += "<span class='bold' title='Date'><b>Slip Rate: </b></span>{SlipRate}<br/>";
-    //     }
-    //     if (feature.graphic.attributes.MappingConstraint) {
-    //         content += "<span class='bold' title='Date'><b>Mapping Constraint: </b></span>{MappingConstraint}<br/>";
-    //     }
-
-    //     if (slipS = feature.graphic.attributes.FaultClass) {
-    //         content += "<span class='bold' title='Date'><b>Structure Class: </b></span>{FaultClass}<br/>";
-    //     } 
-    //     if (slipS = feature.graphic.attributes.FaultAge) {
-    //         content += "<span class='bold' title='Date'><b>Structure Age: </b></span>{FaultAge}<br/>";
-    //     } 
-    //     if (feature.graphic.attributes.USGS_Link) {
-    //         content += "<span class='bold' title='Date'><b>USGS Link: </b></span>" + "<a href='{USGS_Link}' target='_blank'>Opens in new tab</a>" + "<br/>";
-    //     }
-
-    //     // assign click even to fault name so summary goes to Fault Summary panel
-    //     $("#faultTip").click(function (e) {
-
-    //         // hide visible panels, then show the fault summary panel
-    //         showHideCalcitePanels("#panelLegend", "#collapseLegend");
-    //         query("#customMessage").html(faultZoneSum);
-    //     });
-
-    //     return content;
-    // }
-
-
 
 
 
@@ -502,17 +426,6 @@ require([
             content += "<span class='bold' title='Longitude'><b>Comments: </b></span>{comments}<br/>";
         }
 
-        // if (key === "feature_id") {
-        //     if (data.feature_id) { 
-        //         content += "<span class='bold' title='Longitude'><b>feature_id: </b></span>" + data.feature_id + "<br/>";
-        //     }
-        // }
-        // if (key === "rev_date") {
-        //     if (data.rev_date) { 
-        //         content += "<span class='bold' title='Longitude'><b>rev_date: </b></span>" + data.rev_date + "<br/>";
-        //     }
-        // }
-
         if (feature.graphic.attributes.d_h_move1) {
             content += "<span class='bold' title='Longitude'><b>Deposit Movement 1: </b></span>{data.d_h_move1}<br/>";
         }
@@ -542,12 +455,6 @@ require([
 
     landslideDepositPopup = function(feature) {
         var content = "";
-
-        // if (key === "category") {
-        //     if (data.category) { 
-        //         content += "<span class='bold' title='Longitude'><b>category: </b></span>" + data.category + "<br/>";
-        //     }
-        // }
 
         if (feature.graphic.attributes.d_material) {
             content += "<span class='bold' title='Longitude'><b>Deposit Material: </b></span>{d_material}<br/>";
@@ -594,17 +501,6 @@ require([
         if (feature.graphic.attributes.comments) {
             content += "<span class='bold' title='Longitude'><b>Comments: </b></span>{comments}<br/>";
         }
-
-        // if (key === "feature_id") {
-        //     if (data.feature_id) { 
-        //         content += "<span class='bold' title='Longitude'><b>feature_id: </b></span>{feature_id}<br/>";
-        //     }
-        // }
-        // if (key === "rev_date") {
-        //     if (data.rev_date) { 
-        //         content += "<span class='bold' title='Longitude'><b>rev_date: </b></span>{rev_date}<br/>";
-        //     }
-        // }
 
         if (feature.graphic.attributes.d_h_move1) {
             content += "<span class='bold' title='Longitude'><b>Deposit Movement 1: </b></span>{d_h_move1}<br/>";
@@ -981,31 +877,6 @@ require([
                 }
             }
         }, 
-        // {
-        //     // All features with value of "Very High" will be green
-        //     value: "Unknown Susceptibility",
-        //     label: "Unknown Susceptibility",
-        //     symbol: {
-        //         type: "simple-fill", // autocasts as new SimpleFillSymbol()
-        //         color: [230, 230, 0],
-        //         outline: { // autocasts as new SimpleLineSymbol()
-        //             color: [0, 0, 0],
-        //             width: "0.4px"
-        //         }
-        //     }
-        // }, {
-        //     // All features with value of "Very High" will be green
-        //     value: "No Susceptibility",
-        //     label: "No Susceptibility",
-        //     symbol: {
-        //         type: "simple-fill", // autocasts as new SimpleFillSymbol()
-        //         color: [255, 255, 255, 0],
-        //         outline: { // autocasts as new SimpleLineSymbol()
-        //             color: [0, 0, 0],
-        //             width: "0.4px"
-        //         }
-        //     }
-        // }
     ]
     };
 
@@ -1034,31 +905,6 @@ require([
             }
 
         }
-    }
-
-    //label quad boundaries
-    // const quadsLabelClass = new LabelClass({
-    //   labelExpressionInfo: { expression: "$feature.NAME" },
-    //   symbol: {
-    //     type: "text",  // autocasts as new TextSymbol()
-    //     color: "red",
-    //     //haloSize: 1,
-    //     //haloColor: "white"
-    //   }
-    // });
-
-    // Qfaults symbology 
-
-
-    var qFaultRenderer = {
-        type: "simple",
-        symbol: {
-            type: "simple-line",  // autocasts as new SimpleLineSymbol()
-            color: "lightblue",
-            width: "0px",
-            style: "short-dot"
-          }
-
     }
 
 
@@ -1241,27 +1087,10 @@ require([
         }
     });
 
-    // **********qfaults from arcgis online as a featurelayer
-    // const qFaults = new FeatureLayer({
-    //     url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Earthquake_Hazards/FeatureServer/2",
-    //     title: "Quaternary Faults",
-    //     elevationInfo: [{
-    //         mode: "on-the-ground"
-    //     }],
-    //     visible: false,
-    //     outFields: ["*"],
-    //     //renderer: qFaultRenderer,
-    //     popupTemplate: {
-    //         title:"<b>Quaternary Faults</b>",
-    //         content: qfaultsPopup
-    //     },
-
-
-    // });
 
     // **********qfaults from our server as a mapimageservice
     const qFaults = new MapImageLayer({
-        //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults/MapServer",
+
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults_with_labels/MapServer",
         sublayers: [{
             id: 0,
@@ -2660,11 +2489,7 @@ function updateView(isMobile) {
 }
 
     loadHelp = document.querySelector('.help-tip img');
-    // navHelp = document.querySelector('.help-tip');
 
-    // mapView.ui.add(navHelp, {
-    //     position: "bottom-left"
-    // });
 
 
     var navHelp = '<div class="esri-component esri-widget">';
@@ -2673,35 +2498,19 @@ function updateView(isMobile) {
     navHelp += '<span class="esri-icon-font-fallback-text">Navigation Help</span></div></div>';
     $(".esri-ui-top-left").append(navHelp);
     
-    //loadHelpCallout = document.querySelector('.callout');
     if (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
                 loadHelp.style.display = "none";
-                //loadHelpCallout.style.display = "none";
-                //helpLoaded = "no";
 				loadHelp.src = "map_navigation_mobile_crop.png";
 				loadHelp.style.maxWidth = "92%";
 				loadHelp.style.left = "15px";
     } else {
                 loadHelp.style.display = "block";
-                //loadHelpCallout.style.display = "block";
-                //helpLoaded = "yes";
 				loadHelp.src = "map_navigation_crop.png";
 				loadHelp.style.maxWidth = "75%";
-				//loadHelp.style.left = "63px";
 				loadHelp.style.left = "54px";
     }
 
 $("#help-tip, .help-tip").click(function() {
-    /* if (helpLoaded == "yes") {
-         helpLoaded = "no";
-         //helpLoadedCallout = "no";
-    loadHelp.style.display = "none";
-    //loadHelpCallout.style.display = "none";
-    } else {
-         helpLoaded = "yes";
-        loadHelp.style.display = "block";
-        //loadHelpCallout.style.display = "block";
-    } */
 	$(loadHelp).toggle();
 });
 
