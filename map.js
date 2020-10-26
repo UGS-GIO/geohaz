@@ -245,6 +245,19 @@ require([
                 query("#faultSum").html(faultZoneSum);
               };
           }
+
+          if (graphic.attributes.FaultName) {
+            var br = document.createElement("br");
+            const faultNameDiv = document.createElement('strong');
+            faultNameDiv.textContent = "Fault Name: ";
+            containerFaultZone.appendChild(br);
+            containerFaultZone.appendChild(faultNameDiv);
+ 
+            const faultNameValue = graphic.attributes.FaultName;
+            const faultNameSpan = document.createElement("span");
+            faultNameSpan.textContent = faultNameValue;
+            containerFaultZone.appendChild(faultNameSpan);
+        }
         
         if (graphic.attributes.SectionName) {
            var br = document.createElement("br");
