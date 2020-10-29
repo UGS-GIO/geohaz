@@ -167,21 +167,17 @@ arcpy.CalculateField_management("featureclassLyr", "Description", "str(!FaultZon
 # Step 24 - Process: Select Layer By Attribute and clear the selection
 arcpy.SelectLayerByAttribute_management("featureclassLyr", "CLEAR_SELECTION", "")
 
-# Step 25 - Process: Clean up Description field and Slip Sense field
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"Undetermined\",\"undetermined\")", "PYTHON", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"unnamed Quaternary\",\"Unnamed Quaternary\")", "PYTHON", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"Reverse\",\"reverse\")", "PYTHON", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"Monocline\",\"monocline\")", "PYTHON", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"Syncline\",\"syncline\")", "PYTHON", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"Anticline\",\"anticline\")", "PYTHON", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"None\",\"\")", "PYTHON", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"  \",\" \")", "PYTHON", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"<Null>\",\"\")", "PYTHON_9.3", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"  \",\" \")", "PYTHON_9.3", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.lstrip(\" \")", "PYTHON_9.3", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"anormal\",\"a normal\")", "PYTHON_9.3", "")
-arcpy.CalculateField_management("featureclassLyr", "Description", "!Description!.replace(\"Normal\",\"normal\")", "PYTHON_9.3", "")
-arcpy.CalculateField_management("featureclassLyr", "SlipSense", "!SlipSense!.title()", "PYTHON", "")
+
+# Step 25 - Process: Clean up Description field
+#using update cursor instead
+updateFieldsList = ["Description"]
+
+with arcpy.da.UpdateCursor ("featureclasslyr", updateFieldsList) as updateRows:
+    for updateRow in updateRows:
+        updateRow[0]=updateRow[0].replace("Undetermined","undetermined").replace("unnamed Quaternary", "Unnamed Quaternary").replace("Reverse", "reverse") \
+        .replace("Monocline", "monocline").replace("Syncline", "syncline").replace("Anticline", "anticline").replace("None","") \
+        .replace("<Null>", "").lstrip(" ").replace("anormal", "a normal").replace("Normal", "normal").replace("  ", "")
+        updateRows.updateRow(updateRow)
 
 # Step 26 - Process: Add Field for the Reporting tool
 arcpy.AddField_management("featureclassLyr", "Haz_Name", "TEXT", "", "", "50", "", "NULLABLE", "NON_REQUIRED", "")
@@ -196,11 +192,11 @@ with arcpy.da.UpdateCursor("featureclasslyr","DipDirection")as cursor:
     for row in cursor:
         if row [0] in dct:
             row[0] = dct[row[0]]
+            row[0]=row[0].lower()
             cursor.updateRow(row)
 
 #combine with above function
 arcpy.CalculateField_management("featureclassLyr", "DipDirection", "!DipDirection!.lower()", "PYTHON", "")
-
 
 # Step 29 - Process: Table to Table
 arcpy.TableToTable_conversion("featureclassLyr", OutputCSV, "EmilysFaultData.csv", "", "QFFHazardUnit \"QFFHazardUnit\" true true false 15 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,QFFHazardUnit,-1,-1;Description \"Description\" true true false 400 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,Description,-1,-1;Haz_Name \"Haz_Name\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,Haz_Name,-1,-1", "")
