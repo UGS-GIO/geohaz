@@ -137,9 +137,18 @@ arcpy.AddField_management(newfeatureclass2, "Description", "TEXT", "", "", "400"
 arcpy.CalculateField_management(newfeatureclass2, "QFFHazardUnit", "!FaultNum! +str(!OBJECTID!)+\"qff\"", "PYTHON_9.3", "")
 
 # Step 16 - Process: Calculate Field - Clean up the Section field so that you can add it to the Description
+#need to add this to the update cursor still
 arcpy.CalculateField_management(newfeatureclass2, "SectionName", "!SectionName! + \" section\"", "PYTHON", "")
-arcpy.CalculateField_management(newfeatureclass2, "SectionName", "!SectionName!.replace(\"section section\",\"section\")", "PYTHON_9.3", "")
-arcpy.CalculateField_management(newfeatureclass2, "SectionName", "!SectionName!.replace(\"Section section\",\"section\")", "PYTHON_9.3", "")
+
+with arcpy.da.UpdateCursor (newfeatureclass2, "SectionName") as updateRows:
+    for updateRow in updateRows:
+        if updateRow[0]== None:
+            updateRow[0]=updateRow[0]
+        else:
+            updateRow[0]=updateRow[0].replace("section section","section").replace("Section section", "section")
+        updateRows.updateRow(updateRow)
+
+
 
 # Step 17 - Process: Make Feature Layer out of feature class so that selections can be made
 arcpy.MakeFeatureLayer_management(newfeatureclass2, "featureclassLyr", "", "", "FaultNum FaultNum VISIBLE NONE;FaultZone FaultZone VISIBLE NONE;FaultName FaultName VISIBLE NONE;SectionName SectionName VISIBLE NONE;StrandName StrandName VISIBLE NONE;MappedScale MappedScale VISIBLE NONE;DipDirection DipDirection VISIBLE NONE;SlipSense SlipSense VISIBLE NONE;SlipRate SlipRate VISIBLE NONE;MappingConstraint MappingConstraint VISIBLE NONE;FaultClass FaultClass VISIBLE NONE;FaultAge FaultAge VISIBLE NONE;Label Label VISIBLE NONE;Summary Summary VISIBLE NONE;USGS_Link USGS_Link VISIBLE NONE;Notes Notes VISIBLE NONE;Citation Citation VISIBLE NONE;QFFHazardUnit QFFHazardUnit VISIBLE NONE;Description Description VISIBLE NONE")
@@ -174,9 +183,12 @@ updateFieldsList = ["Description"]
 
 with arcpy.da.UpdateCursor ("featureclasslyr", updateFieldsList) as updateRows:
     for updateRow in updateRows:
-        updateRow[0]=updateRow[0].replace("Undetermined","undetermined").replace("unnamed Quaternary", "Unnamed Quaternary").replace("Reverse", "reverse") \
-        .replace("Monocline", "monocline").replace("Syncline", "syncline").replace("Anticline", "anticline").replace("None","") \
-        .replace("<Null>", "").lstrip(" ").replace("anormal", "a normal").replace("Normal", "normal").replace("  ", "")
+        if updateRow[0]== None:
+            updateRow[0]=updateRow[0]
+        else:
+            updateRow[0]=updateRow[0].replace("Undetermined","undetermined").replace("unnamed Quaternary", "Unnamed Quaternary").replace("Reverse", "reverse") \
+            .replace("Monocline", "monocline").replace("Syncline", "syncline").replace("Anticline", "anticline").replace("None","") \
+            .replace("<Null>", "").lstrip(" ").replace("anormal", "a normal").replace("Normal", "normal").replace("  ", "")
         updateRows.updateRow(updateRow)
 
 # Step 26 - Process: Add Field for the Reporting tool
@@ -186,17 +198,17 @@ arcpy.AddField_management("featureclassLyr", "Haz_Name", "TEXT", "", "", "50", "
 arcpy.CalculateField_management("featureclassLyr", "Haz_Name", "\"Quaternary Fault\"", "VB", "")
 
 # Step 28 - Clean up dip direction field - this field sometimes has coded domains and sometimes doesn't
-dct={"N":"north", "NE":"northeast","E":"east" , "SE":"southeast", "S":"south" ,"SW":"southwest","W":"west","NW":"northwest","Unspecified":"unspecified", "Unspecified ":"unspecified"}
+#first convert dip direction to lowercase
+arcpy.CalculateField_management("featureclassLyr", "DipDirection", "!DipDirection!.lower()", "PYTHON", "")
 
+#create a dictionary of values to change
+dct={"n":"north", "ne":"northeast","e":"east" , "se":"southeast", "s":"south" ,"sw":"southwest","w":"west","nw":"northwest","Unspecified":"unspecified"}
 with arcpy.da.UpdateCursor("featureclasslyr","DipDirection")as cursor:
     for row in cursor:
         if row [0] in dct:
             row[0] = dct[row[0]]
-            row[0]=row[0].lower()
             cursor.updateRow(row)
 
-#combine with above function
-arcpy.CalculateField_management("featureclassLyr", "DipDirection", "!DipDirection!.lower()", "PYTHON", "")
 
 # Step 29 - Process: Table to Table
 arcpy.TableToTable_conversion("featureclassLyr", OutputCSV, "EmilysFaultData.csv", "", "QFFHazardUnit \"QFFHazardUnit\" true true false 15 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,QFFHazardUnit,-1,-1;Description \"Description\" true true false 400 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,Description,-1,-1;Haz_Name \"Haz_Name\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,Haz_Name,-1,-1", "")
