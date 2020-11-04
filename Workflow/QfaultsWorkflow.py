@@ -20,8 +20,6 @@ Input__Qfaults_from_SDE = r"M:\Shared drives\UGS_Shared\Kleber\Qfaults\Qfaults.g
 #Unmodified faults from Haz app (the "Master" version of the Qfaults) (fc before the dissolve)
 Qfaults_in_Haz_App = "M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults"
 
-#Create temporary Haz Faults layer so that the original is not overwritten (maybe do this in memory)
-
 #Create a variable for the dissolved feature class (interim step)
 newfeatureclass2 = "C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfeatureclass2"
 
@@ -75,7 +73,6 @@ arcpy.CalculateField_management(Default_gdb+"\\tempSDE", "SlipSense", "!SlipSens
 # Step 5 - Process: Feature Class to Feature Class - Create a new feature class of the Hazard app data so that the original is not overwritten
 arcpy.FeatureClassToFeatureClass_conversion(Qfaults_in_Haz_App, Default_gdb, 'HazFaults2')
 
-#HazFaults2 ='C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\HazFaults2'
 descHaz = arcpy.Describe('HazFaults2')
 print("Name: {} is a copy of the Hazards app feature service. It was successfully created.".format(descHaz.name))
 resultHaz = int(arcpy.GetCount_management('HazFaults2').getOutput(0))
@@ -86,7 +83,6 @@ print("The field_names in the Hazards App Fault data are " + str(field_names))
 
 # Step 6 -Process: Make Feature Layer of the copied Hazards app data so that the selection tool can be used
 arcpy.MakeFeatureLayer_management('HazFaults2', "HazFaults2_Layer")
-
 
 # Step 7 - Process: Select faults to delete from the Hazard app layer
 arcpy.SelectLayerByAttribute_management("HazFaults2_Layer", "NEW_SELECTION", HazFaultnum)
@@ -110,10 +106,8 @@ Num4 = str(arcpy.GetCount_management(InterimHazData))
 Num5 = str(arcpy.GetCount_management(Default_gdb+"\\tempSDE"))
 print("The new Hazards data now has " + Num4 + " faults. This is a result of adding " + Num5 + " faults from the SDE to the " + Num3 + " faults from the Hazards app." )
 
-
 # Step 11 - Process: Make Feature Layer of the newly created feature class so that the selection can be removed
 arcpy.MakeFeatureLayer_management(InterimHazData, "HazFaults_CopyFeatures_Layer")
-
 Num6 = str(arcpy.GetCount_management("HazFaults_CopyFeatures_Layer"))
 
 # Step 12 - Process: Select Layer By Attribute - Remove selection from data so Dissolve works on entire dataset
@@ -124,7 +118,6 @@ arcpy.Dissolve_management("HazFaults_CopyFeatures_Layer", newfeatureclass2, "Fau
 Num7 = str(arcpy.GetCount_management(newfeatureclass2))
 print("Dataset with " + Num7 + " dissolved faults successfully created.")
 
-
 # Step 14 - Process: Add QffHazard and Description Field to the dissolved feature class for the reporting tool
 arcpy.AddField_management(newfeatureclass2, "QFFHazardUnit", "TEXT", "", "", "15", "", "NULLABLE", "NON_REQUIRED", "")
 arcpy.AddField_management(newfeatureclass2, "Description", "TEXT", "", "", "400", "", "NULLABLE", "NON_REQUIRED", "")
@@ -132,8 +125,7 @@ arcpy.AddField_management(newfeatureclass2, "Description", "TEXT", "", "", "400"
 # Step 15 - Process: Calculate QffHazardUnit Field
 arcpy.CalculateField_management(newfeatureclass2, "QFFHazardUnit", "!FaultNum! +str(!OBJECTID!)+ 'qff' ", "PYTHON_9.3", "")
 
-# Step 16 - Process: Calculate Field - Clean up the Section field so that you can add it to the Description
-
+# Step 16 - Process: Calculate Field - Clean up the Section field so that you can add it to the Description and cleanup white spaces
 arcpy.CalculateField_management(newfeatureclass2, "SectionName", "!SectionName! + \" section\"", "PYTHON", "")
 
 with arcpy.da.UpdateCursor (newfeatureclass2, "SectionName") as updateRows:
@@ -218,16 +210,14 @@ with arcpy.da.UpdateCursor("featureclasslyr","DipDirection")as cursor:
             cursor.updateRow(row)
 
 
-# Step 29 - Process: Table to Tablesty
-arcpy.TableToTable_conversion("featureclassLyr", OutputCSV, "EmilysFaultData.csv", "", "QFFHazardUnit \"QFFHazardUnit\" true true false 15 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,QFFHazardUnit,-1,-1;Description \"Description\" true true false 400 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,Description,-1,-1;Haz_Name \"Haz_Name\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,Haz_Name,-1,-1", "")
+# Step 29 - Process: Table to Table for final CSV
+arcpy.TableToTable_conversion("featureclassLyr", OutputCSV, "HazFaultDataForReports.csv", "", "QFFHazardUnit \"QFFHazardUnit\" true true false 15 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,QFFHazardUnit,-1,-1;Description \"Description\" true true false 400 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,Description,-1,-1;Haz_Name \"Haz_Name\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,Haz_Name,-1,-1", "")
 
 field_names = [f.name for f in arcpy.ListFields('featureclassLyr')]
 print("The field_names in the Hazards App Fault data are " + str(field_names))
 
-# Step 30 - Process: Drop field and create final feature class
-
+# Step 30 - Process: Drop fields and create final feature class
 arcpy.FeatureClassToFeatureClass_conversion("featureclassLyr", Default_gdb, finalfeatureclass)
-
 arcpy.DeleteField_management(finalfeatureclass, dropFields)
 
 
