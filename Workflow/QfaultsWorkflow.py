@@ -22,7 +22,7 @@ Qfaults_in_Haz_App = "M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\
 
 #Create temporary Haz Faults layer so that the original is not overwritten (maybe do this in memory)
 
-#Create a variable for the dissolved feature class (interim step - consider writing this to in_memory)
+#Create a variable for the dissolved feature class (interim step)
 newfeatureclass2 = "C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfeatureclass2"
 
 #the fields that should be dropped from the feature service at the very end of the script - this should remain the same always
@@ -31,7 +31,7 @@ dropFields = ["QFFHazardUnit", "Description", "Haz_Name"]
 ###############################   Outputs   ################################################################################################################
 
 #Output: Name and location of feature class for Hazards app
-finalfeatureclass='FaultsDatatoday'
+finalfeatureclass='HazFaultsAppData'
 
 #Output: Create location for output of reporting tool CSV
 OutputCSV=r"C:\Users\marthajensen\Desktop"
@@ -113,7 +113,7 @@ print("The new Hazards data now has " + Num4 + " faults. This is a result of add
 
 # Step 11 - Process: Make Feature Layer of the newly created feature class so that the selection can be removed
 arcpy.MakeFeatureLayer_management(InterimHazData, "HazFaults_CopyFeatures_Layer")
-#arcpy.MakeFeatureLayer_management(InterimHazData, "HazFaults_CopyFeatures_Layer", "", "", "OBJECTID OBJECTID VISIBLE NONE;Shape Shape VISIBLE NONE;FaultNum FaultNum VISIBLE NONE;FaultZone FaultZone VISIBLE NONE;FaultName FaultName VISIBLE NONE;SectionName SectionName VISIBLE NONE;StrandName StrandName VISIBLE NONE;MappedScale MappedScale VISIBLE NONE;DipDirection DipDirection VISIBLE NONE;SlipSense SlipSense VISIBLE NONE;SlipRate SlipRate VISIBLE NONE;MappingConstraint MappingConstraint VISIBLE NONE;FaultClass FaultClass VISIBLE NONE;FaultAge FaultAge VISIBLE NONE;Label Label VISIBLE NONE;Summary Summary VISIBLE NONE;USGS_Link USGS_Link VISIBLE NONE;Notes Notes VISIBLE NONE;Citation Citation VISIBLE NONE;Shape_Length Shape_Length VISIBLE NONE")
+
 Num6 = str(arcpy.GetCount_management("HazFaults_CopyFeatures_Layer"))
 
 # Step 12 - Process: Select Layer By Attribute - Remove selection from data so Dissolve works on entire dataset
@@ -125,16 +125,15 @@ Num7 = str(arcpy.GetCount_management(newfeatureclass2))
 print("Dataset with " + Num7 + " dissolved faults successfully created.")
 
 
-# Step 14 - Process: Add QffHazard Field and Description field to the dissolved feature class
+# Step 14 - Process: Add QffHazard and Description Field to the dissolved feature class for the reporting tool
 arcpy.AddField_management(newfeatureclass2, "QFFHazardUnit", "TEXT", "", "", "15", "", "NULLABLE", "NON_REQUIRED", "")
 arcpy.AddField_management(newfeatureclass2, "Description", "TEXT", "", "", "400", "", "NULLABLE", "NON_REQUIRED", "")
 
-
 # Step 15 - Process: Calculate QffHazardUnit Field
-arcpy.CalculateField_management(newfeatureclass2, "QFFHazardUnit", "!FaultNum! +str(!OBJECTID!)+\"qff\"", "PYTHON_9.3", "")
+arcpy.CalculateField_management(newfeatureclass2, "QFFHazardUnit", "!FaultNum! +str(!OBJECTID!)+ 'qff' ", "PYTHON_9.3", "")
 
 # Step 16 - Process: Calculate Field - Clean up the Section field so that you can add it to the Description
-#need to add this to the update cursor still
+
 arcpy.CalculateField_management(newfeatureclass2, "SectionName", "!SectionName! + \" section\"", "PYTHON", "")
 
 with arcpy.da.UpdateCursor (newfeatureclass2, "SectionName") as updateRows:
@@ -166,7 +165,7 @@ arcpy.SelectLayerByAttribute_management("featureclassLyr", "NEW_SELECTION", "Fau
 
 # Step 19 - Process: Calculate Description Field with FaultAge=Undetermined selected
 arcpy.CalculateField_management("featureclassLyr", "Description","str(!FaultZone!) + ' ' + str(!FaultName!) + ' ' + str(!SectionName!) + ' ' +  str(!StrandName!) + ' ' +  'is a' + ' ' + str(!SlipSense!) + ' ' + 'fault that was mapped at' + ' ' +  str(!MappedScale!) + ' ' + 'scale. Geologic studies have not determined the age or slip rate of the fault.'" , "PYTHON_9.3")
-#"str(!FaultZone!)+ ' ' + str(!FaultName!) + ' ' + str(!SectionName!) + ' ' + str(!StrandName!) + ' ' + 'is a' + ' ' + str(!SlipSense!) + ' ' + 'fault that was mapped at'"
+
 
 # Step 20 - Process: Select Layer By Attribute - Known Age
 arcpy.SelectLayerByAttribute_management("featureclassLyr", "NEW_SELECTION", "NOT FaultAge = 'Undetermined'")
@@ -187,7 +186,6 @@ arcpy.SelectLayerByAttribute_management("featureclassLyr", "CLEAR_SELECTION", ""
 
 
 # Step 25 - Process: Clean up Description field
-#using update cursor instead
 updateFieldsList = ["Description"]
 
 with arcpy.da.UpdateCursor ("featureclasslyr", updateFieldsList) as updateRows:
@@ -201,13 +199,11 @@ with arcpy.da.UpdateCursor ("featureclasslyr", updateFieldsList) as updateRows:
         updateRows.updateRow(updateRow)
 
 
-
-
 # Step 26 - Process: Add Field for the Reporting tool
 arcpy.AddField_management("featureclassLyr", "Haz_Name", "TEXT", "", "", "50", "", "NULLABLE", "NON_REQUIRED", "")
 
 # Step 27 - Process: Calculate Field - Haz_Name = Quaternary Fault for the CSV
-arcpy.CalculateField_management("featureclassLyr", "Haz_Name", "\"Quaternary Fault\"", "VB", "")
+arcpy.CalculateField_management("featureclassLyr", "Haz_Name", "'Quaternary Fault'", "PYTHON", "")
 
 # Step 28 - Clean up dip direction field - this field sometimes has coded domains and sometimes doesn't
 #first convert dip direction to lowercase
@@ -222,7 +218,7 @@ with arcpy.da.UpdateCursor("featureclasslyr","DipDirection")as cursor:
             cursor.updateRow(row)
 
 
-# Step 29 - Process: Table to Table
+# Step 29 - Process: Table to Tablesty
 arcpy.TableToTable_conversion("featureclassLyr", OutputCSV, "EmilysFaultData.csv", "", "QFFHazardUnit \"QFFHazardUnit\" true true false 15 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,QFFHazardUnit,-1,-1;Description \"Description\" true true false 400 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,Description,-1,-1;Haz_Name \"Haz_Name\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults,Haz_Name,-1,-1", "")
 
 field_names = [f.name for f in arcpy.ListFields('featureclassLyr')]
