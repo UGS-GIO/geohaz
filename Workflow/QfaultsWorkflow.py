@@ -31,11 +31,12 @@ dropFields = ["QFFHazardUnit", "Description", "Haz_Name"]
 ###############################   Outputs   ################################################################################################################
 
 #Output: Name and location of feature class for Hazards app
-finalfeatureclass='C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\NewSDE_DataFaults26Oct2020'
+finalfeatureclass='FaultsDatatoday'
 
 #Output: Create location for output of reporting tool CSV
 OutputCSV=r"C:\Users\marthajensen\Desktop"
 
+############################################################################################################################################################
 
 # Step 1 - Process: Make a feature layer of the new data from Emily (SDE data) so that a feature class with selected faults can be created
 arcpy.MakeFeatureLayer_management(Input__Qfaults_from_SDE, 'in_memory\Qfaults_SDELayer', "", "", "OBJECTID OBJECTID VISIBLE NONE;Shape Shape VISIBLE NONE;FaultNum FaultNum VISIBLE NONE;FaultZone FaultZone VISIBLE NONE;FaultName FaultName VISIBLE NONE;SectionName SectionName VISIBLE NONE;StrandName StrandName VISIBLE NONE;MappedScale MappedScale VISIBLE NONE;DipDirection DipDirection VISIBLE NONE;SlipSense SlipSense VISIBLE NONE;SlipRate SlipRate VISIBLE NONE;MappingConstraint MappingConstraint VISIBLE NONE;FaultClass FaultClass VISIBLE NONE;FaultAge FaultAge VISIBLE NONE;Label Label VISIBLE NONE;DateCreated DateCreated VISIBLE NONE;LastModified LastModified VISIBLE NONE;Citation Citation VISIBLE NONE;Shape_Length Shape_Length VISIBLE NONE")
@@ -46,7 +47,6 @@ result = int(arcpy.GetCount_management('in_memory\Qfaults_SDELayer').getOutput(0
 print("The record count for the SDE layer is " + str(result))
 
 # Step 2 - Process: Feature Class to Feature Class - Select faults from the SDE that you want to append to the Hazards app - Create a feature class of selected faults using the SDEFaultnum variable
-#arcpy.FeatureClassToFeatureClass_conversion('in_memory\Qfaults_SDELayer', Default_gdb, 'tempSDE', SDEFaultnum, "FaultNum \"FaultNum\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultNum,-1,-1;FaultZone \"FaultZone\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultZone,-1,-1;FaultName \"FaultName\" true true false 60 Text 0 0 ,First,#,Qfaults_SDELayer,FaultName,-1,-1;SectionName \"SectionName\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,SectionName,-1,-1;StrandName \"StrandName\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,StrandName,-1,-1;MappedScale \"MappedScale\" true true false 15 Text 0 0 ,First,#,Qfaults_SDELayer,MappedScale,-1,-1;DipDirection \"DipDirection\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,DipDirection,-1,-1;SlipSense \"SlipSense\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,SlipSense,-1,-1;SlipRate \"SlipRate\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,SlipRate,-1,-1;MappingConstraint \"MappingConstraint\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,MappingConstraint,-1,-1;FaultClass \"FaultClass\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultClass,-1,-1;FaultAge \"FaultAge\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultAge,-1,-1;Label \"Label\" true true false 100 Text 0 0 ,First,#,Qfaults_SDELayer,Label,-1,-1;DateCreated \"DateCreated\" true true false 8 Date 0 0 ,First,#,Qfaults_SDELayer,DateCreated,-1,-1;LastModified \"LastModified\" true true false 8 Date 0 0 ,First,#,Qfaults_SDELayer,LastModified,-1,-1;Citation \"Citation\" true true false 100 Text 0 0 ,First,#,Qfaults_SDELayer,Citation,-1,-1;Shape_Length \"Shape_Length\" false true true 8 Double 0 0 ,First,#,Qfaults_SDELayer,Shape_Length,-1,-1", "")
 arcpy.FeatureClassToFeatureClass_conversion('in_memory\Qfaults_SDELayer', Default_gdb, "tempSDE", SDEFaultnum)
 
 
@@ -73,7 +73,6 @@ arcpy.CalculateField_management(Default_gdb+"\\tempSDE", "SlipSense", "!SlipSens
 
 
 # Step 5 - Process: Feature Class to Feature Class - Create a new feature class of the Hazard app data so that the original is not overwritten
-#arcpy.FeatureClassToFeatureClass_conversion(Qfaults_in_Haz_App, Default_gdb, 'HazFaults2', "", "FaultNum \"FaultNum\" true true false 50 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,FaultNum,-1,-1;FaultZone \"FaultZone\" true true false 50 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,FaultZone,-1,-1;FaultName \"FaultName\" true true false 60 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,FaultName,-1,-1;SectionName \"SectionName\" true true false 50 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,SectionName,-1,-1;StrandName \"StrandName\" true true false 50 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,StrandName,-1,-1;MappedScale \"MappedScale\" true true false 15 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,MappedScale,-1,-1;DipDirection \"DipDirection\" true true false 50 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,DipDirection,-1,-1;SlipSense \"SlipSense\" true true false 50 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,SlipSense,-1,-1;SlipRate \"SlipRate\" true true false 50 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,SlipRate,-1,-1;MappingConstraint \"MappingConstraint\" true true false 50 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,MappingConstraint,-1,-1;FaultClass \"FaultClass\" true true false 50 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,FaultClass,-1,-1;FaultAge \"FaultAge\" true true false 50 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,FaultAge,-1,-1;Label \"Label\" true true false 100 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,Label,-1,-1;Summary \"Summary\" true true false 2000 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,Summary,-1,-1;USGS_Link \"USGS_Link\" true true false 100 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,USGS_Link,-1,-1;Notes \"Notes\" true true false 50 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,Notes,-1,-1;Citation \"Citation\" true true false 75 Text 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,Citation,-1,-1;Shape_Length \"Shape_Length\" false true true 8 Double 0 0 ,First,#,M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults,Shape_Length,-1,-1", "")
 arcpy.FeatureClassToFeatureClass_conversion(Qfaults_in_Haz_App, Default_gdb, 'HazFaults2')
 
 #HazFaults2 ='C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\HazFaults2'
@@ -87,8 +86,6 @@ print("The field_names in the Hazards App Fault data are " + str(field_names))
 
 # Step 6 -Process: Make Feature Layer of the copied Hazards app data so that the selection tool can be used
 arcpy.MakeFeatureLayer_management('HazFaults2', "HazFaults2_Layer")
-# arcpy.MakeFeatureLayer_management(HazFaults2, "HazFaults2_Layer", "", "", "OBJECTID OBJECTID VISIBLE NONE;Shape Shape VISIBLE NONE;FaultNum FaultNum VISIBLE NONE;FaultZone FaultZone VISIBLE NONE;FaultName FaultName VISIBLE NONE;SectionName SectionName VISIBLE NONE;StrandName StrandName VISIBLE NONE;MappedScale MappedScale VISIBLE NONE;DipDirection DipDirection VISIBLE NONE;SlipSense SlipSense VISIBLE NONE;SlipRate SlipRate VISIBLE NONE;MappingConstraint MappingConstraint VISIBLE NONE;FaultClass FaultClass VISIBLE NONE;FaultAge FaultAge VISIBLE NONE;Label Label VISIBLE NONE;Summary Summary VISIBLE NONE;USGS_Link USGS_Link VISIBLE NONE;Notes Notes VISIBLE NONE;Citation Citation VISIBLE NONE;Shape_Length Shape_Length VISIBLE NONE")
-# interim layer, so no checks are needed right now - above is complete output from Model Builder - I dont think it's needed
 
 
 # Step 7 - Process: Select faults to delete from the Hazard app layer
@@ -112,7 +109,7 @@ arcpy.Append_management(Default_gdb+"\\tempSDE", InterimHazData, "NO_TEST")
 Num4 = str(arcpy.GetCount_management(InterimHazData))
 Num5 = str(arcpy.GetCount_management(Default_gdb+"\\tempSDE"))
 print("The new Hazards data now has " + Num4 + " faults. This is a result of adding " + Num5 + " faults from the SDE to the " + Num3 + " faults from the Hazards app." )
-#arcpy.Append_management(tempSDE, InterimHazData, "NO_TEST", "FaultNum \"FaultNum\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,FaultNum,-1,-1;FaultZone \"FaultZone\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,FaultZone,-1,-1;FaultName \"FaultName\" true true false 60 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,FaultName,-1,-1;SectionName \"SectionName\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,SectionName,-1,-1;StrandName \"StrandName\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,StrandName,-1,-1;MappedScale \"MappedScale\" true true false 15 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,MappedScale,-1,-1;DipDirection \"DipDirection\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,DipDirection,-1,-1;SlipSense \"SlipSense\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,SlipSense,-1,-1;SlipRate \"SlipRate\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,SlipRate,-1,-1;MappingConstraint \"MappingConstraint\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,MappingConstraint,-1,-1;FaultClass \"FaultClass\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,FaultClass,-1,-1;FaultAge \"FaultAge\" true true false 50 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,FaultAge,-1,-1;Label \"Label\" true true false 100 Text 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,Label,-1,-1;USGS_Link \"USGS_Link\" true true false 100 Text 0 0 ,First,#;Shape_Length \"Shape_Length\" false true true 8 Double 0 0 ,First,#,C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfau34,Shape_Length,-1,-1", "")
+
 
 # Step 11 - Process: Make Feature Layer of the newly created feature class so that the selection can be removed
 arcpy.MakeFeatureLayer_management(InterimHazData, "HazFaults_CopyFeatures_Layer")
@@ -148,6 +145,16 @@ with arcpy.da.UpdateCursor (newfeatureclass2, "SectionName") as updateRows:
             updateRow[0]=updateRow[0].replace("section section","section").replace("Section section", "section")
         updateRows.updateRow(updateRow)
 
+#Strip off leading and trailing spaces in each field - needs to be done before calculating the Description field
+updateFields = ["FaultZone","FaultName", "SectionName", "StrandName", "SlipSense", "MappedScale","FaultAge","SlipRate"]
+
+with arcpy.da.UpdateCursor (newfeatureclass2, updateFields) as updateRows:
+    for updateRow in updateRows:
+        if updateRow[0]== None:
+            updateRow[0]=updateRow[0]
+        else:
+            updateRow[0]=updateRow[0].lstrip("").rstrip("")
+        updateRows.updateRow(updateRow)
 
 
 # Step 17 - Process: Make Feature Layer out of feature class so that selections can be made
@@ -156,21 +163,23 @@ arcpy.MakeFeatureLayer_management(newfeatureclass2, "featureclassLyr", "", "", "
 # Step 18 - Process: Select Layer By Attribute - Undetermined age
 arcpy.SelectLayerByAttribute_management("featureclassLyr", "NEW_SELECTION", "FaultAge = 'Undetermined' ")
 
+
 # Step 19 - Process: Calculate Description Field with FaultAge=Undetermined selected
-arcpy.CalculateField_management("featureclassLyr", "Description", "str(!FaultZone!)+ \" \" + str(!FaultName!) + \" \" + str(!SectionName!)+ \" \" +  str(!StrandName!)+ \" is a\" + str(!SlipSense!) + \" fault that was mapped at\" + \" \" +  str(!MappedScale!) + \" scale. Geologic studies have not determined the age or slip rate of the fault.\"", "PYTHON_9.3", "")
+arcpy.CalculateField_management("featureclassLyr", "Description","str(!FaultZone!) + ' ' + str(!FaultName!) + ' ' + str(!SectionName!) + ' ' +  str(!StrandName!) + ' ' +  'is a' + ' ' + str(!SlipSense!) + ' ' + 'fault that was mapped at' + ' ' +  str(!MappedScale!) + ' ' + 'scale. Geologic studies have not determined the age or slip rate of the fault.'" , "PYTHON_9.3")
+#"str(!FaultZone!)+ ' ' + str(!FaultName!) + ' ' + str(!SectionName!) + ' ' + str(!StrandName!) + ' ' + 'is a' + ' ' + str(!SlipSense!) + ' ' + 'fault that was mapped at'"
 
 # Step 20 - Process: Select Layer By Attribute - Known Age
 arcpy.SelectLayerByAttribute_management("featureclassLyr", "NEW_SELECTION", "NOT FaultAge = 'Undetermined'")
 
 # Step 21 - Process: Calculate Field - Description with Known age selected
-arcpy.CalculateField_management("featureclassLyr", "Description", "str(!FaultZone!) + \" \" + str(!FaultName!) + \" \" + str(!SectionName!) + \" \" + str(!StrandName!) + \"  is a\" + \" \" + str(!SlipSense!) + \" fault that was mapped at\" + \" \" + str(!MappedScale!) + \" scale. Geologic studies have determined that the fault has had movement in the last\" + \" \" + str(!FaultAge!) + \"  years and has a slip rate of\" + \" \" + str(!SlipRate!) +\".\"", "PYTHON_9.3", "")
+arcpy.CalculateField_management("featureclassLyr", "Description", "str(!FaultZone!) + ' ' + str(!FaultName!) + ' ' + str(!SectionName!) + ' ' + str(!StrandName!)  + ' ' +  'is a' + ' ' +  str(!SlipSense!) + ' ' + 'fault that was mapped at' + ' ' +  str(!MappedScale!) + ' ' + 'scale. Geologic studies have determined that the fault has had movement in the last' + ' ' + str(!FaultAge!) + ' ' + 'years and has a slip rate of' + ' ' + str(!SlipRate!) +'.' ", "PYTHON_9.3", "")
 
 
 # Step 22 - Process: Select Layer By Attribute - Anticline, Monocline, Syncline
 arcpy.SelectLayerByAttribute_management("featureclassLyr", "NEW_SELECTION", "SlipSense = 'Anticline' OR SlipSense = 'Monocline' OR SlipSense = 'Syncline'")
 
 # Step 23 - Process: Calculate Description Field with Anticline, Monocline and Syncline selected
-arcpy.CalculateField_management("featureclassLyr", "Description", "str(!FaultZone!) + \" \" + str(!FaultName!) + \" \" +  str(!SectionName!) + \" \" +  str(!StrandName!) + \"  is a\" + \" \" + str(!SlipSense!) + \" that was mapped at\" + \" \" +  str(!MappedScale!) + \" scale. Geologic studies have determined that the structure has had movement in the last\" + \" \" + str(!FaultAge!) + \" years and has a slip rate of\" + \" \" + str(!SlipRate!) +\".\" ", "PYTHON_9.3", "")
+arcpy.CalculateField_management("featureclassLyr", "Description", "str(!FaultZone!) + ' ' + str(!FaultName!) + ' ' +  str(!SectionName!) + ' ' +  str(!StrandName!) + ' ' +  'is a' + ' ' + str(!SlipSense!) + ' ' + 'that was mapped at' + ' ' +  str(!MappedScale!) + ' ' + 'scale. Geologic studies have determined that the structure has had movement in the last' + ' ' + str(!FaultAge!) + ' ' + 'years and has a slip rate of' + ' ' + str(!SlipRate!) +'.' ", "PYTHON_9.3", "")
 
 
 # Step 24 - Process: Select Layer By Attribute and clear the selection
@@ -187,9 +196,12 @@ with arcpy.da.UpdateCursor ("featureclasslyr", updateFieldsList) as updateRows:
             updateRow[0]=updateRow[0]
         else:
             updateRow[0]=updateRow[0].replace("Undetermined","undetermined").replace("unnamed Quaternary", "Unnamed Quaternary").replace("Reverse", "reverse") \
-            .replace("Monocline", "monocline").replace("Syncline", "syncline").replace("Anticline", "anticline").replace("None","") \
-            .replace("<Null>", "").lstrip(" ").replace("anormal", "a normal").replace("Normal", "normal").replace("  ", "")
+            .replace("Monocline", "monocline").replace("Syncline", "syncline").replace("Anticline", "anticline").replace('None',' ') \
+            .replace('<Null>', ' ').replace("anormal", "a normal").replace("Normal", "normal").replace('    ', ' ').replace('   ', ' ').replace('  ', ' ').replace('a anticline', 'an anticline')
         updateRows.updateRow(updateRow)
+
+
+
 
 # Step 26 - Process: Add Field for the Reporting tool
 arcpy.AddField_management("featureclassLyr", "Haz_Name", "TEXT", "", "", "50", "", "NULLABLE", "NON_REQUIRED", "")
@@ -218,14 +230,10 @@ print("The field_names in the Hazards App Fault data are " + str(field_names))
 
 # Step 30 - Process: Drop field and create final feature class
 
+arcpy.FeatureClassToFeatureClass_conversion("featureclassLyr", Default_gdb, finalfeatureclass)
+
 arcpy.DeleteField_management(finalfeatureclass, dropFields)
-arcpy.FeatureClassToFeatureClass_conversion("featureclassLyr", Default_gdb, "finalfeatureclass")
 
-
-
-#Clear memory of layers
-arcpy_Delete_management("featureclassLyr")
-arcpy_Delete_management("HazFaults2_Layer")
 
 print("Done")
 
