@@ -17,8 +17,8 @@ SDEFaultnum= "FaultNum = '1004a' OR FaultNum = '1004A' "
 #Input data from SDE for selecting faults (original data)
 Input__Qfaults_from_SDE = r"M:\Shared drives\UGS_Shared\Kleber\Qfaults\Qfaults.gdb\Qfaults_SDE_09302020"
 
-#Unmodified faults from Haz app (the "Master" version of the Qfaults) (fc before the dissolve)
-Qfaults_in_Haz_App = "M:\\Shared drives\\UGS_AGRC_Projects\\Hazards Application\\Master_QfaultsData\\Qfaults_AGRC.gdb\\Qfaults"
+#Unmodified faults for Haz app (the "Master" version of the Qfaults) (fc before the dissolve) and for the AGRC
+Qfaults_in_Haz_App = r"G:\Shared drives\UGS_Hazards_Geotech\Geologic Hazards Online Data\Master_QfaultsData\Qfaults_AGRC.gdb"
 
 #Create a variable for the dissolved feature class (interim step)
 newfeatureclass2 = "C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfeatureclass2"
