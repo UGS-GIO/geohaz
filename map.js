@@ -8,6 +8,7 @@ require([
     "esri/layers/MapImageLayer",
     "esri/layers/GroupLayer",
     "esri/core/watchUtils",
+    "esri/core/urlUtils",
     "esri/tasks/GeometryService",
     "esri/tasks/support/ProjectParameters",
     "esri/geometry/Extent",
@@ -46,7 +47,7 @@ require([
     "calcite-maps/calcitemaps-arcgis-support-v0.10",
     "dojo/query",
     "dojo/domReady!"
-], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, watchUtils, GeometryService, ProjectParameters, Extent, Locator, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, LayerList, Locate, GraphicsLayer, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
+], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, watchUtils, urlUtils, GeometryService, ProjectParameters, Extent, Locator, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, LayerList, Locate, GraphicsLayer, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
     /******************************************************************
      *
      * Create the map, view and widgets
@@ -1924,6 +1925,37 @@ require([
     mapView.map.add(floodHazards);
     mapView.map.add(earthquakes);
     mapView.map.add(tempGraphicsLayer);
+
+
+
+//url checking for query to load certain views and layers
+var checkURL = urlUtils.urlToObject(window.location.href);
+
+
+if (checkURL.query != null) {
+if (checkURL.query.loadview == "subsurface") {  //load subsurface view and data
+    subSurface.visible = true;
+    geology.visible = false;
+    mapView.camera.position.z = -431.67459647450596;
+    mapView.camera.tilt = 93.26527489700682;
+} else if (checkURL.query.loadview == "thermal") { //load thermal view and data
+    thermalData.visible = true;
+    geology.visible = false;
+    mapView.camera.position.latitude = 38.482522462;
+    mapView.camera.position.longitude = -112.87325304;
+    mapView.camera.position.z = 70000;
+    mapView.camera.tilt = 0;
+    mapView.camera.position.heading = 359.98;
+} else if (checkURL.query.loadview == "geologic") { //load geolgoic setting view and data
+    geology.visible = true;
+    mapView.camera.position.latitude = 38.482522462;
+    mapView.camera.position.longitude = -112.87325304;
+    mapView.camera.position.z = 70000;
+    mapView.camera.tilt = 0;
+    mapView.camera.position.heading = 270;
+}
+
+}
 
 
     //highlight faults when selected
