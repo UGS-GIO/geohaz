@@ -164,6 +164,10 @@ require([
         contentS += "<span class='bold' title='Report ID'><b>Report ID: </b></span>";
         idArrayTrimmed.forEach(reportIdArraySort);
         function reportIdArraySort(item, index) {
+            var regexSring = /^\d+$/gm;
+            if (regexSring.exec(item)){
+                contentS += "<a href='https://geodata.geology.utah.gov/pages/view.php?ref="+item+"' target='_blank'>" + item + "</a><br/>";
+            } else 
             contentS += "<a href='https://doi.org/10.34191/"+item+"' target='_blank'>" + item + "</a><br/>";
         }
     }
