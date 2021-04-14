@@ -11,7 +11,7 @@ arcpy.env.overwriteOutput = True
 Default_gdb = "C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb"
 arcpy.env.workspace = Default_gdb
 
-############################      Inputs     ###########################################################################################################
+############################      Inputs     #########################################################################################################
 
 #Faults that need to be added to the Hazards app from the SDE - these two variables will have a different selections if some data is being added or replaced
 
