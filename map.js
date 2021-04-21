@@ -1830,6 +1830,43 @@ require([
         visible: false,
         outFields: ["*"],
         popupTemplate: {
+            title: "<b>{relationships/17/HazardName}</b>",
+            content: [{
+                    type: "fields",
+                    fieldInfos: [
+                        {
+                            fieldName: "CSSMappedScale",
+                            visible: false,
+                            label: "Mapped Scale"
+                        },
+                        {
+                            fieldName: "relationships/17/Description",
+                            visible: false,
+                            label: "Hazard Description"
+                        }, {
+                            fieldName: "relationships/17/HazardName",
+                            visible: false,
+                            label: "Hazard"
+                        }
+                    ]
+                },
+                {
+                    type: "text",
+                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/17 /Description}<br>"
+                }
+            ]
+        }
+    });
+
+    const hotSprings = new FeatureLayer({
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/test_hazards/FeatureServer/22",
+        title: "Hot Springs",
+        elevationInfo: [{
+            mode: "on-the-ground"
+        }],
+        visible: false,
+        outFields: ["*"],
+        popupTemplate: {
             title: "<b>{relationships/18/HazardName}</b>",
             content: [{
                     type: "fields",
@@ -1858,9 +1895,9 @@ require([
         }
     });
 
-    const hotSprings = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/test_hazards/FeatureServer/22",
-        title: "Hot Springs",
+    const volcanicFlows = new FeatureLayer({
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/test_hazards/FeatureServer/23",
+        title: "Volcanic Flows",
         elevationInfo: [{
             mode: "on-the-ground"
         }],
@@ -1872,7 +1909,7 @@ require([
                     type: "fields",
                     fieldInfos: [
                         {
-                            fieldName: "CSSMappedScale",
+                            fieldName: "VolMappedScale",
                             visible: false,
                             label: "Mapped Scale"
                         },
@@ -1890,43 +1927,6 @@ require([
                 {
                     type: "text",
                     text: "<b>{Hazard_Symbology_Text}: </b>{relationships/19/Description}<br>"
-                }
-            ]
-        }
-    });
-
-    const volcanicFlows = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/test_hazards/FeatureServer/23",
-        title: "Volcanic Flows",
-        elevationInfo: [{
-            mode: "on-the-ground"
-        }],
-        visible: false,
-        outFields: ["*"],
-        popupTemplate: {
-            title: "<b>{relationships/20/HazardName}</b>",
-            content: [{
-                    type: "fields",
-                    fieldInfos: [
-                        {
-                            fieldName: "VolMappedScale",
-                            visible: false,
-                            label: "Mapped Scale"
-                        },
-                        {
-                            fieldName: "relationships/20/Description",
-                            visible: false,
-                            label: "Hazard Description"
-                        }, {
-                            fieldName: "relationships20/HazardName",
-                            visible: false,
-                            label: "Hazard"
-                        }
-                    ]
-                },
-                {
-                    type: "text",
-                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/20/Description}<br>"
                 }
             ]
         }
