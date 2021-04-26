@@ -1822,7 +1822,7 @@ require([
     });
 
     const volcanicCones = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/test_hazards/FeatureServer/21",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geologic_Hazards/FeatureServer/21",
         title: "Volcanic Cones",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1852,14 +1852,14 @@ require([
                 },
                 {
                     type: "text",
-                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/17 /Description}<br>"
+                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/17/Description}<br>"
                 }
             ]
         }
     });
 
     const hotSprings = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/test_hazards/FeatureServer/22",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geologic_Hazards/FeatureServer/22",
         title: "Hot Springs",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1896,7 +1896,7 @@ require([
     });
 
     const volcanicFlows = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/test_hazards/FeatureServer/23",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geologic_Hazards/FeatureServer/23",
         title: "Volcanic Flows",
         elevationInfo: [{
             mode: "on-the-ground"
