@@ -1,6 +1,6 @@
 #Qfaults workflow for the UGS Hazards Application
 
-#add label field to this script!
+
 
 # Import arcpy module
 ###this has to be run while connected to the VPN
@@ -136,6 +136,8 @@ arcpy.SelectLayerByAttribute_management("MasterQfaultsLyr", "NEW_SELECTION", "La
 arcpy.CalculateField_management("MasterQfaultsLyr", "Label", 'str(!FaultZone!) + " " + str( !SectionName!) + " " + str( !StrandName!)', "PYTHON_9.3", "")
 arcpy.CalculateField_management("MasterQfaultsLyr", "Label", '!Label!.replace("None","")', "PYTHON_9.3", "")
 arcpy.SelectLayerByAttribute_management("MasterQfaultsLyr", "CLEAR_SELECTION", "")
+
+#correct dip direction for AGRC data
 dct={"e":"east","ne":"northeast","nw":"northwest","s":"south","se":"southeast","sw":"southwest","w":"west","n":"north","N":"north", "NE":"northeast","E":"east" , "SE":"southeast", "S":"south" ,"SW":"southwest","W":"west","NW":"northwest","Unspecified":"unspecified", "Unspecified ":"unspecified"}
 
 with arcpy.da.UpdateCursor("MasterQfaultsLyr","DipDirection")as cursor:
@@ -145,7 +147,7 @@ with arcpy.da.UpdateCursor("MasterQfaultsLyr","DipDirection")as cursor:
             cursor.updateRow(row)
 arcpy.CopyFeatures_management("MasterQfaultsLyr", "C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb"+MasterQfaults, "", "0", "0", "0")
 
-#Overwrite the master qfaults layer with the feature layer that had its label field cleaned up -this is the final AGRC q faults that needs to be uploaded
+#Overwrite the master qfaults layer with the feature layer that had its label field cleaned up -this is the final AGRC q faults that needs to be uploaded to AGOL
 NewMasterQfault2=Default_gdb + MasterQfaults
 Num4 = str(arcpy.GetCount_management(NewMasterQfault2))
 Num5 = str(arcpy.GetCount_management(Default_gdb+"\\tempSDE"))
@@ -230,7 +232,7 @@ arcpy.AddField_management("featureclassLyr", "Haz_Name", "TEXT", "", "", "50", "
 # Step 28 - Process: Calculate Field - Haz_Name = Quaternary Fault
 arcpy.CalculateField_management("featureclassLyr", "Haz_Name", "\"Quaternary Fault\"", "VB", "")
 
-# Step 29 - Clean up dip direction field - this field sometimes has coded domains and sometimes doesn't
+# Step 29 - Clean up dip direction for haz app
 
 dct={"e":"east","ne":"northeast","nw":"northwest","s":"south","se":"southeast","sw":"southwest","w":"west","n":"north","N":"north", "NE":"northeast","E":"east" , "SE":"southeast", "S":"south" ,"SW":"southwest","W":"west","NW":"northwest","Unspecified":"unspecified", "Unspecified ":"unspecified"}
 
@@ -261,8 +263,8 @@ arcpy.FeatureClassToFeatureClass_conversion("featureclassLyr", Default_gdb, fina
 
 arcpy.DeleteField_management(Default_gdb+finalfeatureclass, dropFields)
 
-print ("Is the citation field fully filled out?")
-print ("Is the USGS link field fully filled out?")
+print ("Is the citation field fully filled out in the qfaults feature class?")
+print ("Is the USGS link field fully filled out in the qfaults feature class?")
 print("Does gordon have the new dataset for the UGRC?")
 print("Has the output CSV been added to the HazardUnitTextTable? - delete old qff stuff in table first")
 print("Have the Mapped Areas and Surface Fault Rupture Zones been modified for the new qfaults?")
@@ -270,7 +272,7 @@ print ("Is the Repor_ID field filled out in Mapped Areas? The data in the field 
 print("Has Gordon added the new qfaults to the AGOL webmap so that the reporting tool works?")
 print("Has someone looked at the LUCID flow chart for adding qfaults?")
 print("Has someone looked at the qfaults schema wiki on github?")
-print("Once ready, this data should be added to the qfaults PRO project on the geology server - make sure the qfaults labels are filled out for the Server service too")
+print("Once ready, this data should be added to the qfaults PRO project on the geology server - make sure the qfaults labels feature class are filled out for the Server service too")
 
 print("Done with qfaults!")
 
