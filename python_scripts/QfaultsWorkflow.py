@@ -11,7 +11,7 @@ arcpy.env.overwriteOutput = True
 Default_gdb = "C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb"
 arcpy.env.workspace = Default_gdb
 
-############################      Inputs     #########################################################################################################
+############################      Inputs     ###########################################################################################################
 
 #Faults that need to be added to the Hazards app from the SDE - these two variables will have a different selections if some data is being added or replaced
 
@@ -35,7 +35,7 @@ Qfaults_in_Haz_App = r"C:\Users\marthajensen\Desktop\Master_QfaultsData\Qfaults_
 finalfeatureclass="\\finalqfaults_forHazApp"
 
 #the final feature class for the AGRC data store
-MasterQfaults="\\masterqfaultshere_forAGRC"
+MasterQfaults="\\FinalMasterQfaults_forGordon"
 
 #the final CSV for adding to the bottom of the HazardUnitTextTable - delete all quaternary faults in the table and paste in the new ones from this CSV - the fault numbers
 # from the final haz app feature class and this table have to match for the Reporting tool to work
@@ -126,14 +126,23 @@ print("Dataset with " + Num3 + " faults successfully created.")
 
 # Step 10 - Process: Append - new fault data to Hazards data - also make slip sense lowercase for output and add labels to new faults
 arcpy.Append_management(Default_gdb+"\\tempSDE", NewMasterQfault, "NO_TEST")
-arcpy.CalculateField_management(Default_gdb+"\\NewMasterQfault", "SlipSense", "!SlipSense!.lower()", "PYTHON", "")
-arcpy.MakeFeatureLayer_management(Default_gdb+"\\NewMasterQfault", "MasterQfaultsLyr")
+arcpy.CalculateField_management(NewMasterQfault, "SlipSense", "!SlipSense!.lower()", "PYTHON", "")
+arcpy.CalculateField_management(NewMasterQfault, "DipDirection", "!DipDirection!.lower()", "PYTHON", "")
+arcpy.CalculateField_management(NewMasterQfault, "MappingConstraint", "!MappingConstraint!.lower()", "PYTHON", "")
+arcpy.MakeFeatureLayer_management(NewMasterQfault, "MasterQfaultsLyr")
 arcpy.SelectLayerByAttribute_management("MasterQfaultsLyr", "NEW_SELECTION","Label IS NULL")
 arcpy.CalculateField_management("MasterQfaultsLyr", "Label", "!FaultName!", "PYTHON_9.3", "")
 arcpy.SelectLayerByAttribute_management("MasterQfaultsLyr", "NEW_SELECTION", "Label IS NULL")
 arcpy.CalculateField_management("MasterQfaultsLyr", "Label", 'str(!FaultZone!) + " " + str( !SectionName!) + " " + str( !StrandName!)', "PYTHON_9.3", "")
 arcpy.CalculateField_management("MasterQfaultsLyr", "Label", '!Label!.replace("None","")', "PYTHON_9.3", "")
 arcpy.SelectLayerByAttribute_management("MasterQfaultsLyr", "CLEAR_SELECTION", "")
+dct={"e":"east","ne":"northeast","nw":"northwest","s":"south","se":"southeast","sw":"southwest","w":"west","n":"north","N":"north", "NE":"northeast","E":"east" , "SE":"southeast", "S":"south" ,"SW":"southwest","W":"west","NW":"northwest","Unspecified":"unspecified", "Unspecified ":"unspecified"}
+
+with arcpy.da.UpdateCursor("MasterQfaultsLyr","DipDirection")as cursor:
+    for row in cursor:
+        if row [0] in dct:
+            row[0] = dct[row[0]]
+            cursor.updateRow(row)
 arcpy.CopyFeatures_management("MasterQfaultsLyr", "C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb"+MasterQfaults, "", "0", "0", "0")
 
 #Overwrite the master qfaults layer with the feature layer that had its label field cleaned up -this is the final AGRC q faults that needs to be uploaded
