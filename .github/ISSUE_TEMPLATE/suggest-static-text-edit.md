@@ -3,7 +3,7 @@ name: Suggest Static Text Edit
 about: Use this when you want to suggest any changes to the app's static text
 title: Suggest static text edit
 labels: enhancement
-assignees: marshallrobinson, geowomansteph
+assignees: geowomansteph, marshallrobinson
 
 ---
 
