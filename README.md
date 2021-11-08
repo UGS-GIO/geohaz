@@ -3,7 +3,7 @@ Web application that compiles a large data set of geologic hazards data and disp
 
 Project Manager: Marshall Robinson
 
-Product Manager: Geologic Hazards Staff (Steve Bowman, Jessica Castleton, etc.)
+Product Manager: Geologic Hazards Staff (Steve Bowman, Jessica Castleton, Emily Kleber (qFaults), etc.)
 
 Data Manager: Martha Jensen
 
