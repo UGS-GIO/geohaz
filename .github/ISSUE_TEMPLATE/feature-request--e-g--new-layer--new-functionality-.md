@@ -17,8 +17,10 @@ A clear and concise description of what you want to happen and what value it wil
 **Additional context**
 Add any other context or screenshots about the feature request here.
 
-**Data Layer Submissions:**
-**If adding new data layers to the application, your data will be reviewed and checked off by the following people (using Github):**
+***
+
+**Data Layer Submissions**
+**(If adding new data layers to the application, your data will be reviewed and checked off by the following people using Github):
 
 **Database Design Review:**
 -GIS Analyst or Data Owner
@@ -29,5 +31,7 @@ Add any other context or screenshots about the feature request here.
 -Data Owner
 -Program Manager
 -Technical Reviewer (only the text within the database/app: if it's in full sentence format)
+
+***
 
 **All Other Feature Requests Will Be Prioritized and Considered for Future Application Releases**

@@ -11,6 +11,8 @@ assignees: marthajensen
 **Description of data you're adding to an existing layer/database**
 A clear and concise description of the data you're adding.
 
+***
+
 **Once you submit this issue, your data will be reviewed and checked off by the following people (using Github):**
 -Product Manager
 -Data Manager
