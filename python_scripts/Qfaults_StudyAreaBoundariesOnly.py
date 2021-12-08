@@ -8,7 +8,7 @@ import arcpy
 arcpy.env.overwriteOutput = True
 
 #Default workspace - note if the dataset is not in default in the script, you must include its entire path
-Default_gdb = r"G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_30Sep21.gdb"
+Default_gdb = r"G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb"
 arcpy.env.workspace = Default_gdb
 
 ############################      Inputs     ###########################################################################################################
@@ -26,8 +26,14 @@ SDEFaultnum= "FaultNum IN ('997a', '997b','998a','998b','998c','1004b','2520','2
 #Input data from Hazards SDE for selecting faults (new data)
 Input__Qfaults_from_SDE = r"G:\My Drive\PROJECTS\Hazards\import\SUFMUpdate_30Sep21\Qfault_SUFMupdate_30sep21.gdb\QFault_SUFM"
 
+#Input study area for selecting boundaries of new faults - ensure the new study area from the new project in Hazards has been added to the review geodatabase
+Input_Study_Area = r"G:\My Drive\PROJECTS\Hazards\backups\Geologic_Hazards_Geodatabase_Review_Version20Oct21.gdb\Study_Areas"
+
+#Change the study area selection to the new study area
+StudyAreaSelection = "Name = 'Washington/Hurricane/Sevier-Toroweap Fault Zones' "
+
 #Unmodified faults that we share with the AGRC (the "Master" version of the Qfaults) (fc before the dissolve)
-Qfaults_in_Haz_App = r"C:\Users\marthajensen\Desktop\Master_QfaultsData\Qfaults_AGRC.gdb\Qfaults"
+Master_Qfaults_Undissolved = r"C:\Users\marthajensen\Desktop\Master_QfaultsData\Qfaults_AGRC.gdb\Qfaults"
 
 usgs_link = "'https://earthquake.usgs.gov/cfusion/qfault/show_report_AB_archive.cfm?fault_id=1004&section_id=b'"
 
@@ -47,16 +53,17 @@ MasterQfaults="\\FinalMasterQfaults_forUGRC"
 
 #Output: Create location for output of reporting tool CSV
 OutputCSV=r"G:\My Drive\PROJECTS\Hazards\map\working_map"
-OutputCSVname = "\\hazardousfaultsAppend_04Oct.csv"
+OutputCSVname = "\\hazardousfaultsAppend_28Oct.csv"
 
 ###############################interim steps - don't need to be changed ###################################################
 
 #don't worry about the feature class below - its an interim step that never needs to be changed
 #Create a variable for the dissolved feature class (interim step - consider writing this to in_memory)
-newfeatureclass2 = "C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\newfeatureclass2"
+newfeatureclass2 = "G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb\\newfeatureclass2"
 
 #the fields that should be dropped from the feature service at the very end of the script - this should remain the same always
 dropFields = ["Description", "Haz_Name"]
+UGRCdropfield=["Summary"]
 
 ###########################################################################################################################
 
@@ -69,13 +76,12 @@ result = int(arcpy.GetCount_management('in_memory\Qfaults_SDELayer').getOutput(0
 print("The record count for the SDE layer is " + str(result))
 
 # Step 2 - Process: Feature Class to Feature Class - Select faults from the SDE that you want to append to the Hazards app - Create a feature class of selected faults using the SDEFaultnum variable
-#arcpy.FeatureClassToFeatureClass_conversion('in_memory\Qfaults_SDELayer', Default_gdb, 'faultsthatneedtobeaddedtoApp', SDEFaultnum, "FaultNum \"FaultNum\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultNum,-1,-1;FaultZone \"FaultZone\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultZone,-1,-1;FaultName \"FaultName\" true true false 60 Text 0 0 ,First,#,Qfaults_SDELayer,FaultName,-1,-1;SectionName \"SectionName\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,SectionName,-1,-1;StrandName \"StrandName\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,StrandName,-1,-1;MappedScale \"MappedScale\" true true false 15 Text 0 0 ,First,#,Qfaults_SDELayer,MappedScale,-1,-1;DipDirection \"DipDirection\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,DipDirection,-1,-1;SlipSense \"SlipSense\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,SlipSense,-1,-1;SlipRate \"SlipRate\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,SlipRate,-1,-1;MappingConstraint \"MappingConstraint\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,MappingConstraint,-1,-1;FaultClass \"FaultClass\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultClass,-1,-1;FaultAge \"FaultAge\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultAge,-1,-1;Label \"Label\" true true false 100 Text 0 0 ,First,#,Qfaults_SDELayer,Label,-1,-1;DateCreated \"DateCreated\" true true false 8 Date 0 0 ,First,#,Qfaults_SDELayer,DateCreated,-1,-1;LastModified \"LastModified\" true true false 8 Date 0 0 ,First,#,Qfaults_SDELayer,LastModified,-1,-1;Citation \"Citation\" true true false 100 Text 0 0 ,First,#,Qfaults_SDELayer,Citation,-1,-1;Shape_Length \"Shape_Length\" false true true 8 Double 0 0 ,First,#,Qfaults_SDELayer,Shape_Length,-1,-1", "")
-arcpy.FeatureClassToFeatureClass_conversion('in_memory\Qfaults_SDELayer', Default_gdb, "tempSDE, SDEFaultnum)
+arcpy.FeatureClassToFeatureClass_conversion('in_memory\Qfaults_SDELayer', Default_gdb, "tempSDE", SDEFaultnum)
 
 
-descSelected=arcpy.Describe(Default_gdb+"\\tempSDE)
-print("Name: {} Feature Class was successfully created".format(descSelected.name))
-resultSelect = int(arcpy.GetCount_management(Default_gdb+"\\tempSDE).getOutput(0))
+descSelected=arcpy.Describe(Default_gdb+"\\tempSDE")
+print("Name: {} Feature Class with faults from Emily/Adam was successfully created".format(descSelected.name))
+resultSelect = int(arcpy.GetCount_management(Default_gdb+"\\tempSDE").getOutput(0))
 print("The record count for the SDE fault selection is " + str(resultSelect))
 
 #Step 3 - Remove domain from SDE layer if its there so that domain issues don't end up in final version
@@ -84,56 +90,88 @@ print("The record count for the SDE fault selection is " + str(resultSelect))
 domains = ['QFaultMapScale','DipDirection','SlipSense',
            'QFaultSlipRate','QFaultConstraint_1','QFaultClass','QFaultAge']
 
-for field in arcpy.ListFields(Default_gdb+"\\tempSDE):
+for field in arcpy.ListFields(Default_gdb+"\\tempSDE"):
         if field.domain in domains:
-            arcpy.RemoveDomainFromField_management(Default_gdb+"\\tempSDE,field.name)
+            arcpy.RemoveDomainFromField_management(Default_gdb+"\\tempSDE",field.name)
             print "%s domain removed."%str(field.domain)
 
+#temp SDE is the new faults that need to be added to the Haz app
+#Master_Qfaults_Undissolved is the features we currently have in the Haz app but an undissolved version of them
 
 #Step 4 create lower case variables for Dip Direction and Slip Sense
-arcpy.CalculateField_management(Default_gdb+"\\tempSDE, "DipDirection", "!DipDirection!.lower()", "PYTHON", "")
-arcpy.CalculateField_management(Default_gdb+"\\tempSDE, "SlipSense", "!SlipSense!.lower()", "PYTHON", "")
+arcpy.CalculateField_management(Default_gdb+"\\tempSDE", "DipDirection", "!DipDirection!.lower()", "PYTHON", "")
+arcpy.CalculateField_management(Default_gdb+"\\tempSDE", "SlipSense", "!SlipSense!.lower()", "PYTHON", "")
 
+
+#temp SDE is the new faults that need to be added to the Haz app
+#Master_Qfaults_Undissolved is the features we currently have in the Haz app but an undissolved version of them
 
 # Step 5 - Process: Feature Class to Feature Class - Create a new feature class of the Hazard app data so that the original is not overwritten
-arcpy.FeatureClassToFeatureClass_conversion(Qfaults_in_Haz_App, Default_gdb, 'HazFaults2')
+arcpy.FeatureClassToFeatureClass_conversion(Master_Qfaults_Undissolved, Default_gdb, 'Master_Qfaults_Undissolved_temp')
 
-descHaz = arcpy.Describe('HazFaults2')
-print("Name: {} is a copy of the Hazards app feature service. It was successfully created.".format(descHaz.name))
-resultHaz = int(arcpy.GetCount_management('HazFaults2').getOutput(0))
-print("The record count for the Hazards App Fault Data is " + str(resultHaz))
-field_names = [f.name for f in arcpy.ListFields('HazFaults2')]
-print("The field_names in the Hazards App Fault data are " + str(field_names))
+descHaz = arcpy.Describe('Master_Qfaults_Undissolved_temp')
+print("Name: {} is a copy of the Master Hazards app feature service - i.e. the undissolved Master version of the faults. It was successfully created.".format(descHaz.name))
+resultHaz = int(arcpy.GetCount_management('Master_Qfaults_Undissolved_temp').getOutput(0))
+print("The record count for the Master Hazards app feature service is " + str(resultHaz))
+field_names = [f.name for f in arcpy.ListFields('Master_Qfaults_Undissolved_temp')]
+print("The field_names in the Master Hazards app feature service are " + str(field_names))
 
 
 # Step 6 -Process: Make Feature Layer of the copied Hazards app data so that the selection tool can be used
-arcpy.MakeFeatureLayer_management('HazFaults2', "HazFaults2_Layer")
+#arcpy.MakeFeatureLayer_management('Master_Qfaults_Undissolved_temp', "Master_Qfaults_Undissolved_temp_Layer")
+
+# Step 7 - Process: Select faults to delete from the Hazard app layer. In the original script, we deleted by fault number. Now we are deleting the faults
+# in the study area and appending in the new faults (step ?)
+#Split by polygon - 2 steps - split faults into points by selected study area then split fault line by point
+#Select study area and create temporary polyon of selection
+arcpy.MakeFeatureLayer_management(Input_Study_Area, "Input_Study_Area_Layer")
+arcpy.SelectLayerByAttribute_management("Input_Study_Area_Layer", "NEW_SELECTION", StudyAreaSelection)
+arcpy.CopyFeatures_management("Input_Study_Area_Layer", "G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb\\StudySelection", "", "0", "0", "0")
+
+#Intersect fault lines with selected study area - ouput points
+infeatures= ["G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb\\StudySelection", 'Master_Qfaults_Undissolved_temp']
+Num3=str(arcpy.GetCount_management('Master_Qfaults_Undissolved_temp'))
+intersectOutput = "G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb\\SplitFaultPoints"
+arcpy.Intersect_analysis(infeatures, intersectOutput, "", "", "point")
+
+
+#Split fault line at point
+arcpy.SplitLineAtPoint_management('Master_Qfaults_Undissolved_temp', intersectOutput, 'G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb\Master_Qfaults_Undissolved_temp_split', "0.25 Meter")
+
+Master_Qfaults_Undissolved_temp_split= 'G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb\Master_Qfaults_Undissolved_temp_split'
+#
+#Erase lines within the selected study area
+arcpy.Erase_analysis(Master_Qfaults_Undissolved_temp_split, "G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb\StudySelection", 'MasterQfaults_EraseStudyArea')
+
+NewMasterQfault="G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb\MasterQfaults_EraseStudyArea"
 
 
 # Step 7 - Process: Select faults to delete from the Hazard app layer
-arcpy.SelectLayerByAttribute_management("HazFaults2_Layer", "NEW_SELECTION", HazFaultnum)
-Num = str(arcpy.GetCount_management("HazFaults2_Layer"))
-print("The amount of faults selected to be deleted from the current Hazards app data are " + Num)
+# arcpy.SelectLayerByAttribute_management("Master_Qfaults_Undissolved_temp_Layer", "NEW_SELECTION", HazFaultnum)
+# Num = str(arcpy.GetCount_management("Master_Qfaults_Undissolved_temp_Layer"))
+# print("The amount of faults selected to be deleted from the current Master Hazards app feature service are " + Num)
 
 # Step 8 - Process: Switch Selection - This makes it possible to copy the data that is not to be deleted (i.e. drop selected data from dataset)
-arcpy.SelectLayerByAttribute_management("HazFaults2_Layer", "SWITCH_SELECTION", "")
-Num2=str(arcpy.GetCount_management("HazFaults2_Layer"))
-print("The original hazards layer had " + str(resultHaz) + " faults. " + Num + " faults were removed. The new hazards layer has " + Num2 + " faults.")
+# arcpy.SelectLayerByAttribute_management("Master_Qfaults_Undissolved_temp_Layer", "SWITCH_SELECTION", "")
+# Num2=str(arcpy.GetCount_management("Master_Qfaults_Undissolved_temp_Layer"))
+# print("The Master Hazards app feature service layer had " + str(resultHaz) + " faults. " + Num + " faults were removed. The new hazards layer has " + Num2 + " faults.")
 
 
 
 # Step 9 - Process: Copy Features
-arcpy.CopyFeatures_management("HazFaults2_Layer", "C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\templayer", "", "0", "0", "0")
-NewMasterQfault="C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\templayer"
-Num3=str(arcpy.GetCount_management(NewMasterQfault))
-print("Dataset with " + Num3 + " faults successfully created.")
+# arcpy.CopyFeatures_management("Master_Qfaults_Undissolved_temp_Layer", "C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\templayer", "", "0", "0", "0")
+# NewMasterQfault="C:\\Users\\marthajensen\\Documents\\ArcGIS\\Default.gdb\\templayer"
+# Num3=str(arcpy.GetCount_management(NewMasterQfault))
+# print("Dataset with " + Num3 + " faults successfully created.")
 
 
 # Step 10 - Process: Append - new fault data to Hazards data - also make slip sense lowercase for output and add labels to new faults
-arcpy.Append_management(Default_gdb+"\\tempSDE, NewMasterQfault, "NO_TEST")
+arcpy.Append_management(Default_gdb+"\\tempSDE", NewMasterQfault, "NO_TEST")
 arcpy.CalculateField_management(NewMasterQfault, "SlipSense", "!SlipSense!.lower()", "PYTHON", "")
 arcpy.CalculateField_management(NewMasterQfault, "DipDirection", "!DipDirection!.lower()", "PYTHON", "")
 arcpy.CalculateField_management(NewMasterQfault, "MappingConstraint", "!MappingConstraint!.lower()", "PYTHON", "")
+
+#Make layer of the New Master Qfaults so that you can select and calculate fields
 arcpy.MakeFeatureLayer_management(NewMasterQfault, "MasterQfaultsLyr")
 arcpy.SelectLayerByAttribute_management("MasterQfaultsLyr", "NEW_SELECTION","Label = ''")
 arcpy.SelectLayerByAttribute_management("MasterQfaultsLyr", "ADD_TO_SELECTION","Label IS NULL")
@@ -153,6 +191,9 @@ arcpy.SelectLayerByAttribute_management("MasterQfaultsLyr", "CLEAR_SELECTION", "
 
 
 
+
+
+
 #correct dip direction for AGRC data
 dct={"e":"east","ne":"northeast","nw":"northwest","s":"south","se":"southeast","sw":"southwest","w":"west","n":"north","N":"north", "NE":"northeast","E":"east" , "SE":"southeast", "S":"south" ,"SW":"southwest","W":"west","NW":"northwest","Unspecified":"unspecified", "Unspecified ":"unspecified"}
 
@@ -161,13 +202,14 @@ with arcpy.da.UpdateCursor("MasterQfaultsLyr","DipDirection")as cursor:
         if row [0] in dct:
             row[0] = dct[row[0]]
             cursor.updateRow(row)
-arcpy.CopyFeatures_management("MasterQfaultsLyr", "G:\\My Drive\\PROJECTS\\Hazards\\map\\working_map\\Qfault_update_30Sep21.gdb"+MasterQfaults, "", "0", "0", "0")
+arcpy.CopyFeatures_management("MasterQfaultsLyr", "G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb\FinalMasterQfaults_forUGRC", "", "0", "0", "0")
+#arcpy.DeleteField_management("G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb\FinalMasterQfaults_forUGRC", UGRCdropfield)
 
 #Overwrite the master qfaults layer with the feature layer that had its label field cleaned up -this is the final AGRC q faults that needs to be uploaded to AGOL
-NewMasterQfault2=Default_gdb + MasterQfaults
+NewMasterQfault2= Default_gdb + MasterQfaults
 Num4 = str(arcpy.GetCount_management(NewMasterQfault2))
-Num5 = str(arcpy.GetCount_management(Default_gdb+"\\tempSDE))
-print("The new Hazards data now has " + Num4 + " faults. This is a result of adding " + Num5 + " faults from the SDE to the " + Num3 + " faults from the Hazards app." )
+Num5 = str(arcpy.GetCount_management(Default_gdb+"\\tempSDE"))
+print("The new Hazards data now has " + Num4 + " faults. This is a result of adding " + Num5 + " faults from the new SDE data to the " + Num3 + " faults from the Hazards app." )
 
 # Step 11 - Process: Make Feature Layer of the newly created feature class so that the selection can be removed
 arcpy.MakeFeatureLayer_management(NewMasterQfault2, "HazFaults_CopyFeatures_Layer")
@@ -216,7 +258,7 @@ arcpy.CalculateField_management("featureclassLyr", "SectionName", "!SectionName!
 arcpy.CalculateField_management("featureclassLyr","SectionName", '!SectionName!.replace("section","")', "PYTHON_9.3", "")
 arcpy.SelectLayerByAttribute_management("featureclassLyr", "CLEAR_SELECTION", "")
 
-#Now calculate the label field
+#Now calculate the label field and the usgslink field
 arcpy.SelectLayerByAttribute_management("featureclassLyr", "NEW_SELECTION","Label = ''")
 arcpy.SelectLayerByAttribute_management("featureclassLyr", "ADD_TO_SELECTION","Label IS NULL")
 arcpy.CalculateField_management("featureclassLyr", "Label", "!FaultName!", "PYTHON_9.3", "")
@@ -226,6 +268,10 @@ arcpy.CalculateField_management("featureclassLyr", "Label", 'str(!FaultZone!) + 
 arcpy.CalculateField_management("featureclassLyr", "Label", '!Label!.replace("None","")', "PYTHON_9.3", "")
 arcpy.SelectLayerByAttribute_management("featureclassLyr", "CLEAR_SELECTION", "")
 arcpy.CalculateField_management("featureclassLyr", "Label", "!Label!.lstrip()", "PYTHON_9.3", "")
+
+
+
+
 
 
 
@@ -311,9 +357,10 @@ field_names = [f.name for f in arcpy.ListFields('featureclassLyr')]
 # Step 32 - Process: Feature Class to Feature Class conversion to put the final hazard app (new) feature class where you want it - its currently being stored in my default_gdb
 arcpy.FeatureClassToFeatureClass_conversion("featureclassLyr", Default_gdb, finalfeatureclass)
 
-#Step 33 - drop the fields you don't want from the final feature class
+#Step 33 - drop the fields you don't want from the final feature classes
 
 arcpy.DeleteField_management(Default_gdb+finalfeatureclass, dropFields)
+arcpy.DeleteField_management("G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_20Oct21.gdb\FinalMasterQfaults_forUGRC", UGRCdropfield)
 
 print ("Is the citation field fully filled out in the qfaults feature class?")
 print ("Is the USGS link field fully filled out in the qfaults feature class?")
