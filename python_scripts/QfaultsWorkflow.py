@@ -1,14 +1,12 @@
 #Qfaults workflow for the UGS Hazards Application
 
-
-
 # Import arcpy module
 ###this has to be run while connected to the VPN
 import arcpy
 arcpy.env.overwriteOutput = True
 
-#Default workspace - note if the dataset is not in default in the script, you must include its entire path
-Default_gdb = r"G:\My Drive\PROJECTS\Hazards\map\working_map\Qfault_update_30Sep21.gdb"
+#Default workspace - note if the dataset is not in the default geodatabase within the script, you must include its entire path
+Default_gdb = r"your default gdb"
 arcpy.env.workspace = Default_gdb
 
 ############################      Inputs     ###########################################################################################################
@@ -16,7 +14,7 @@ arcpy.env.workspace = Default_gdb
 #Faults that need to be added to the Hazards app from the SDE - these two variables will have a different selections if some data is being added or replaced
 
 #faults that need to be deleted from hazards app/or replaced with new faults (check to see if these only need to be deleted in Study Area)
-HazFaultnum= "FaultNum IN ('997a', '997b','998a','998b','998c','1004b','2520','2522','2524','2527','2528','2529','2532','2533','2534','2535','2536','2537','2550','2558')"
+HazFaultnum= "FaultNum IN ('997a', '997b')"
 
 
 #faults that need to be extracted from SDE and added to hazards app (check to see if these only need to be deleted in Study Area)
@@ -24,13 +22,15 @@ HazFaultnum= "FaultNum IN ('997a', '997b','998a','998b','998c','1004b','2520','2
 SDEFaultnum= "FaultNum IN ('997a', '997b','998a','998b','998c','1004b','2520','2522','2524','2527','2528','2529','2532','2533','2534','2535','2536','2537','2550','2558')"
 
 #Input data from Hazards SDE for selecting faults (new data)
-Input__Qfaults_from_SDE = r"G:\My Drive\PROJECTS\Hazards\import\SUFMUpdate_30Sep21\Qfault_SUFMupdate_30sep21.gdb\QFault_SUFM"
+Input__Qfaults_from_SDE = r"Qfaults SDE location"
 
-#Unmodified faults that we share with the AGRC (the "Master" version of the Qfaults) (fc before the dissolve)
-Qfaults_in_Haz_App = r"C:\Users\marthajensen\Desktop\Master_QfaultsData\Qfaults_AGRC.gdb\Qfaults"
+#Unmodified faults that we share with the UGRC (the "Master" version of the Qfaults) (fc before the dissolve)
+Qfaults_in_Haz_App = r"Existing faults shared with UGRC"
 
+#link to new fault reports
 usgs_link = "'https://earthquake.usgs.gov/cfusion/qfault/show_report_AB_archive.cfm?fault_id=1004&section_id=b'"
 
+#citation of new data
 citation = "!Citation! + "; " + str('Knudsen and others, 2021')"
 
 ################################ OUTPUTS ################################################################ change values
