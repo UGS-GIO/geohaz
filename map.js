@@ -1,23 +1,23 @@
 require([
     // ArcGIS
     "esri/Map",
-    "esri/views/MapView",
     "esri/views/SceneView",
     "esri/layers/FeatureLayer",
     "esri/layers/ImageryLayer",
-    "esri/layers/MapImageLayer",
     "esri/layers/GroupLayer",
     "esri/core/watchUtils",
     "esri/tasks/GeometryService",
-    "esri/tasks/support/ProjectParameters",
+    "esri/rest/support/ProjectParameters",
     "esri/geometry/Extent",
     "esri/tasks/Locator",
+    "esri/symbols/LineSymbol3DLayer",
+    "esri/symbols/LineSymbol3D",
+    "esri/symbols/patterns/LineStylePattern3D",
     // Widgets
     "esri/widgets/Home",
     "esri/widgets/Zoom",
     "esri/widgets/Compass",
     "esri/widgets/Search",
-    "esri/widgets/Legend",
     "esri/widgets/Expand",
     "esri/widgets/Sketch/SketchViewModel",
     "esri/widgets/BasemapToggle",
@@ -25,8 +25,7 @@ require([
     "esri/widgets/Locate",
     "esri/layers/GraphicsLayer",
     "esri/Graphic",
-    "esri/tasks/support/FeatureSet",
-    "esri/tasks/support/Query",
+    "esri/rest/support/Query",
     "esri/tasks/QueryTask",
     //DGrid
     "dstore/Memory",
@@ -46,7 +45,9 @@ require([
     "calcite-maps/calcitemaps-arcgis-support-v0.10",
     "dojo/query",
     "dojo/domReady!"
-], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, watchUtils, GeometryService, ProjectParameters, Extent, Locator, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, LayerList, Locate, GraphicsLayer, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
+], function(Map, SceneView, FeatureLayer, ImageryLayer, GroupLayer, watchUtils, GeometryService, ProjectParameters, Extent, Locator, LineSymbol3DLayer,
+    LineSymbol3D,
+    LineStylePattern3D, Home, Zoom, Compass, Search, Expand, SketchViewModel, BasemapToggle, LayerList, Locate, GraphicsLayer, Graphic, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
     /******************************************************************
      *
      * Create the map, view and widgets
@@ -228,17 +229,18 @@ require([
     //qfaults popup code
     poopTemplate = 
          (event) => {
+             console.log(event);
             
           const { graphic } = event;
           const containerFaultZone = document.createElement("div");
       
-          if (graphic.attributes.FaultZone) {
+          if (graphic.attributes.faultzone) {
               const faultZoneDiv = document.createElement("strong");
               faultZoneDiv.textContent = "Fault Zone Name: ";
               containerFaultZone.appendChild(faultZoneDiv);
       
-              const faultZoneSum = graphic.attributes.Summary;
-              const faultZone = graphic.attributes.FaultZone;
+              const faultZoneSum = graphic.attributes.summary;
+              const faultZone = graphic.attributes.faultzone;
               const faultTip = document.createElement("span");
               faultTip.textContent = faultZone;
               faultTip.style.textDecoration = 'underline';
@@ -250,106 +252,106 @@ require([
               };
           }
 
-          if (graphic.attributes.FaultName) {
+          if (graphic.attributes.faultname) {
             var br = document.createElement("br");
             const faultNameDiv = document.createElement('strong');
             faultNameDiv.textContent = "Fault Name: ";
             containerFaultZone.appendChild(br);
             containerFaultZone.appendChild(faultNameDiv);
  
-            const faultNameValue = graphic.attributes.FaultName;
+            const faultNameValue = graphic.attributes.faultname;
             const faultNameSpan = document.createElement("span");
             faultNameSpan.textContent = faultNameValue;
             containerFaultZone.appendChild(faultNameSpan);
         }
         
-        if (graphic.attributes.SectionName) {
+        if (graphic.attributes.sectionname) {
            var br = document.createElement("br");
            const sectionNameDiv = document.createElement('strong');
            sectionNameDiv.textContent = "Section Name: ";
            containerFaultZone.appendChild(br);
            containerFaultZone.appendChild(sectionNameDiv);
 
-           const sectionNameValue = graphic.attributes.SectionName;
+           const sectionNameValue = graphic.attributes.sectionname;
            const sectionNameSpan = document.createElement("span");
            sectionNameSpan.textContent = sectionNameValue;
            containerFaultZone.appendChild(sectionNameSpan);
        }
 
-       if (graphic.attributes.StrandName) {
+       if (graphic.attributes.strandname) {
         var br = document.createElement("br");
         const strandNameDiv = document.createElement('strong');
         strandNameDiv.textContent = "Strand Name: ";
         containerFaultZone.appendChild(br);
         containerFaultZone.appendChild(strandNameDiv);
 
-        const strandNameValue = graphic.attributes.StrandName;
+        const strandNameValue = graphic.attributes.strandname;
         const strandNameSpan = document.createElement("span");
         strandNameSpan.textContent = strandNameValue;
         containerFaultZone.appendChild(strandNameSpan);
     }
 
-    if (graphic.attributes.FaultNum) {
+    if (graphic.attributes.faultnum) {
         var br = document.createElement("br");
         const faultNumDiv = document.createElement('strong');
         faultNumDiv.textContent = "Structure Number: ";
         containerFaultZone.appendChild(br);
         containerFaultZone.appendChild(faultNumDiv);
 
-        const faultNumValue = graphic.attributes.FaultNum;
+        const faultNumValue = graphic.attributes.faultnum;
         const faultNumSpan = document.createElement("span");
         faultNumSpan.textContent = faultNumValue;
         containerFaultZone.appendChild(faultNumSpan);
     }
 
-    if (graphic.attributes.MappedScale) {
+    if (graphic.attributes.mappedscale) {
         var br = document.createElement("br");
         const mapScaleDiv = document.createElement('strong');
         mapScaleDiv.textContent = "Mapped Scale: ";
         containerFaultZone.appendChild(br);
         containerFaultZone.appendChild(mapScaleDiv);
 
-        const mapScaleValue = graphic.attributes.MappedScale;
+        const mapScaleValue = graphic.attributes.mappedscale;
         const mapScaleSpan = document.createElement("span");
         mapScaleSpan.textContent = mapScaleValue;
         containerFaultZone.appendChild(mapScaleSpan);
     }
 
 
-    if (graphic.attributes.DipDirection) {
+    if (graphic.attributes.dipdirection) {
         var br = document.createElement("br");
         const dipDirDiv = document.createElement('strong');
         dipDirDiv.textContent = "Dip Direction: ";
         containerFaultZone.appendChild(br);
         containerFaultZone.appendChild(dipDirDiv);
 
-        const dipDirValue = graphic.attributes.DipDirection;
+        const dipDirValue = graphic.attributes.dipdirection;
         const dipDirSpan = document.createElement("span");
         dipDirSpan.textContent = dipDirValue;
         containerFaultZone.appendChild(dipDirSpan);
     }
 
-        if (graphic.attributes.SlipSense) {
+        if (graphic.attributes.slipsense) {
             var br = document.createElement("br");
             const slipSenseDiv = document.createElement('strong');
             slipSenseDiv.textContent = "Slip Sense: ";
             containerFaultZone.appendChild(br);
             containerFaultZone.appendChild(slipSenseDiv);
     
-            const slipSenseValue = graphic.attributes.SlipSense;
+            const slipSenseValue = graphic.attributes.slipsense;
             const slipSenseSpan = document.createElement("span");
             slipSenseSpan.textContent = slipSenseValue;
             containerFaultZone.appendChild(slipSenseSpan);
         }
 
-        if (graphic.attributes.SlipRate) {
+        if (graphic.attributes.sliprate) {
             var br = document.createElement("br");
             const slipRateDiv = document.createElement('strong');
             slipRateDiv.textContent = "Slip Rate: ";
             containerFaultZone.appendChild(br);
             containerFaultZone.appendChild(slipRateDiv);
     
-            const slipRatevalue = graphic.attributes.SlipRate;
+            const slipRatevalue = graphic.attributes.sliprate;
             const slipRateSpan = document.createElement("span");
             slipRateSpan.textContent = slipRatevalue;
             containerFaultZone.appendChild(slipRateSpan);
@@ -357,39 +359,39 @@ require([
     
         
 
-        if (graphic.attributes.FaultClass) {
+        if (graphic.attributes.faultclass) {
             var br = document.createElement("br");
             const faultClassDiv = document.createElement('strong');
             faultClassDiv.textContent = "Structure Class: ";
             containerFaultZone.appendChild(br);
             containerFaultZone.appendChild(faultClassDiv);
     
-            const faultClassvalue = graphic.attributes.FaultClass;
+            const faultClassvalue = graphic.attributes.fFaultclass;
             const faultClassSpan = document.createElement("span");
             faultClassSpan.textContent = faultClassvalue;
             containerFaultZone.appendChild(faultClassSpan);
         }
 
-        if (graphic.attributes.FaultAge) {
+        if (graphic.attributes.faultage) {
             var br = document.createElement("br");
             const faultAgeDiv = document.createElement('strong');
             faultAgeDiv.textContent = "Structure Age: ";
             containerFaultZone.appendChild(br);
             containerFaultZone.appendChild(faultAgeDiv);
     
-            const faultAgevalue = graphic.attributes.FaultAge;
+            const faultAgevalue = graphic.attributes.faultage;
             const faultAgeSpan = document.createElement("span");
             faultAgeSpan.textContent = faultAgevalue;
             containerFaultZone.appendChild(faultAgeSpan);
         }
 
-        if (graphic.attributes.USGS_Link) {
+        if (graphic.attributes.usgs_link) {
             var br = document.createElement("br");
             const linkDiv = document.createElement('strong');
             linkDiv.textContent = "Detailed Report: ";
             containerFaultZone.appendChild(br);
             containerFaultZone.appendChild(linkDiv);
-            const linkvalue = graphic.attributes.USGS_Link;
+            const linkvalue = graphic.attributes.usgs_link;
     
             var a = document.createElement('a');
       var linkText = document.createTextNode("Opens in new tab");
@@ -937,6 +939,323 @@ require([
         }
     }
 
+    //qFault renderer
+
+    const youngestSolid = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [255, 0, 0] },
+            pattern: {
+                type: "style",
+                style: "solid"
+              },
+          }
+        ]
+      };
+
+      const youngSolid = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [255, 155, 4] },
+            pattern: {
+                type: "style",
+                style: "solid"
+              },
+          }
+        ]
+      };
+
+      const youngDash = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [255, 155, 4] },
+            pattern: {
+                type: "style",
+                style: "short-dash"
+              },
+          }
+        ]
+      };
+
+      const youngDot = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [255, 155, 4] },
+            pattern: {
+                type: "style",
+                style: "short-dot"
+              },
+          }
+        ]
+      };
+
+      const greenSolid = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [7, 255, 42] },
+
+            pattern: {
+                type: "style",
+                style: "solid"
+              },
+          }
+        ]
+      };
+
+      const greenDash = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [7, 255, 42] },
+            pattern: {
+                type: "style",
+                style: "short-dash"
+              },
+          }
+        ]
+      };
+
+      const greenDot = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [7, 255, 42] },
+            pattern: {
+                type: "style",
+                style: "short-dot"
+              },
+          }
+        ]
+      };
+
+      const blueSolid = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [0, 98, 247] },
+            pattern: {
+                type: "style",
+                style: "solid"
+              },
+          }
+        ]
+      };
+
+      const blueDash = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [0, 98, 247] },
+            pattern: {
+                type: "style",
+                style: "short-dash"
+              },
+          }
+        ]
+      };
+
+      const blueDot = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [0, 98, 247] },
+            pattern: {
+                type: "style",
+                style: "short-dot"
+              },
+          }
+        ]
+      };
+
+      const blackSolid = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [0, 0, 0] },
+            pattern: {
+                type: "style",
+                style: "solid"
+              },
+          }
+        ]
+      };
+
+      const blackDash = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [0, 0, 0] },
+            pattern: {
+                type: "style",
+                style: "short-dash"
+              },
+          }
+        ]
+      };
+
+      const blackDot = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [0, 0, 0] },
+            pattern: {
+                type: "style",
+                style: "short-dot"
+              },
+          }
+        ]
+      };
+
+      const purpleSolid = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [114, 0, 247] },
+            pattern: {
+                type: "style",
+                style: "solid"
+              },
+          }
+        ]
+      };
+
+      const purpleDash = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [114, 0, 247] },
+            pattern: {
+                type: "style",
+                style: "short-dash"
+              },
+          }
+        ]
+      };
+
+      const purpleDot = {
+        type: "line-3d",
+        symbolLayers: [{
+            type: "line",
+            size: 3,
+            cap: "round",
+            material: { color: [114, 0, 247] },
+            pattern: {
+                type: "style",
+                style: "short-dot"
+              },
+          }
+        ]
+      };
+
+    const qFaultRenderer = {
+        type: "unique-value",
+        field: "faultage",
+        field2: "mappingconstraint",
+        fieldDelimiter: ", ",
+        uniqueValueInfos: [{
+            value: "<150, well constrained",
+            label: "<150 Years, Well Constrained",
+            symbol: youngestSolid
+        },{
+            value: "<15,000,well constrained",
+            label: "<15,000 Years,Well Constrained",
+            symbol: youngSolid
+        },{
+            value: "<15,000, moderately constrained",
+            label: "<15,000 Years, Moderately Constrained",
+            symbol: youngDash
+        },{
+            value: "<15,000, inferred",
+            label: "<15,000 Years, Inferred",
+            symbol: youngDot
+        },{
+            value: "<130,000, well constrained",
+            label: "<130,000 Years, Well Constrained",
+            symbol: greenSolid
+        },{
+            value: "<130,000, moderately constrained",
+            label: "<130,000 Years, Moderately Constrained",
+            symbol: greenDash
+        },{
+            value: "<130,000, inferred",
+            label: "<130,000 Years, Inferred",
+            symbol: greenDot
+        },{
+            value: "<750,000, well constrained",
+            label: "<750,000 Years, Well Constrained",
+            symbol: blueSolid
+        },{
+            value: "<750,000, moderately constrained",
+            label: "<750,000 Years, Moderately Constrained",
+            symbol: blueDash
+        },{
+            value: "<750,000, inferred",
+            label: "<750,000 Years, Inferred",
+            symbol: blueDot
+        },{
+            value: "<2.6 million, well constrained",
+            label: "<2.6 Million Years, Well Constrained",
+            symbol: blackSolid
+        },{
+            value: "<2.6 million, moderately constrained",
+            label: "<2.6 Million Years, Moderately Constrained",
+            symbol: blackDash
+        },{
+            value: "<2.6 million, inferred",
+            label: "<2.6 Million Years, Inferred",
+            symbol: blackDot
+        },{
+            value: "undetermined, well constrained",
+            label: "Undetermined, Well Constrained",
+            symbol: purpleSolid
+        },{
+            value: "undetermined, moderately constrained",
+            label: "Undetermined, Moderately Constrained",
+            symbol: purpleDash
+        },{
+            value: "undetermined, inferred",
+            label: "Undetermined, Inferred",
+            symbol: purpleDot
+        }
+    ]
+
+    }
+
 
 
     const landslideComp = new FeatureLayer({
@@ -1119,30 +1438,22 @@ require([
 
 
     // **********qfaults from our server as a mapimageservice
-    const qFaults = new MapImageLayer({
+    const qFaults = new FeatureLayer({
 
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults_with_labels/MapServer",
-        sublayers: [{
-            id: 0,
-            visible: true,
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults_sde/FeatureServer/0",
+        renderer: qFaultRenderer,
 
             popupTemplate:
             {
                 outFields: ["*"],
                 title: "<b>Hazardous (Quaternary age) Faults</b>",
                 content: poopTemplate
-            }
-        },
-        {
-            
-                id: 1,
-                visible: true,
-        
-            
-
+            },
+            elevationInfo: [{
+                mode: "on-the-ground"
             }],
         title: "Hazardous (Quaternary age) Faults",
-        listMode: "hide-children",
+        //listMode: "hide-children",
         visible: false,
 
 
@@ -1930,29 +2241,29 @@ require([
     mapView.map.add(tempGraphicsLayer);
 
 
-    //highlight faults when selected
+//     //highlight faults when selected
 
-  mapView.popup.watch('selectedFeature', function(gra){
-    if(gra){
-        mapView.graphics.removeAll();
-      var h = mapView.highlightOptions;
-      gra.symbol = {
-        type: "simple-line", 
-        style: "solid",
-        color: [255, 255, 0],    
-        width: 3
-      };
-      mapView.graphics.add(gra);
-    }else{
-        mapView.graphics.removeAll();
-    }
-  });
+//   mapView.popup.watch('selectedFeature', function(gra){
+//     if(gra){
+//         mapView.graphics.removeAll();
+//       var h = mapView.highlightOptions;
+//       gra.symbol = {
+//         type: "simple-line", 
+//         style: "solid",
+//         color: [255, 255, 0],    
+//         width: 3
+//       };
+//       mapView.graphics.add(gra);
+//     }else{
+//         mapView.graphics.removeAll();
+//     }
+//   });
   
-  mapView.popup.watch('visible', function(vis){
-    if(!vis){
-        mapView.graphics.removeAll();
-    }
-  });
+//   mapView.popup.watch('visible', function(vis){
+//     if(!vis){
+//         mapView.graphics.removeAll();
+//     }
+//   });
 
 
 
