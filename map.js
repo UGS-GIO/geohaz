@@ -7,11 +7,12 @@ require([
     "esri/layers/ImageryLayer",
     "esri/layers/MapImageLayer",
     "esri/layers/GroupLayer",
-    "esri/core/watchUtils",
-    "esri/tasks/GeometryService",
-    "esri/tasks/support/ProjectParameters",
+    "esri/rest/geometryService",
+    "esri/rest/support/ProjectParameters",
     "esri/geometry/Extent",
-    "esri/tasks/Locator",
+    "esri/rest/locator",
+    "esri/widgets/Search/LocatorSearchSource",
+    "esri/geometry/geometryEngine",
     // Widgets
     "esri/widgets/Home",
     "esri/widgets/Zoom",
@@ -25,17 +26,9 @@ require([
     "esri/widgets/Locate",
     "esri/layers/GraphicsLayer",
     "esri/Graphic",
-    "esri/tasks/support/FeatureSet",
-    "esri/tasks/support/Query",
-    "esri/tasks/QueryTask",
-    //DGrid
-    "dstore/Memory",
-    "dojo/data/ObjectStore",
-    "dojo/data/ItemFileReadStore",
-    "dojox/grid/DataGrid",
-    "dgrid/OnDemandGrid",
-    "dgrid/Selection",
-    "dgrid/List",
+    "esri/rest/query",
+    "esri/rest/support/Query",
+    "esri/core/reactiveUtils",
     // Bootstrap
     "bootstrap/Collapse",
     "bootstrap/Dropdown",
@@ -44,9 +37,16 @@ require([
 
     // Calcite Maps ArcGIS Support
     "calcite-maps/calcitemaps-arcgis-support-v0.10",
+
+    "dojo/on",
     "dojo/query",
+    "dojo/_base/array",
+    "dojo/dom",
+    "dojo/dom-class",
+    "dojo/dom-construct",
     "dojo/domReady!"
-], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, watchUtils, GeometryService, ProjectParameters, Extent, Locator, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, LayerList, Locate, GraphicsLayer, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
+
+], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, geometryService, ProjectParameters, Extent, locator, LocatorSearchSource, geometryEngine, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, LayerList, Locate, GraphicsLayer, Graphic, query, Query, reactiveUtils, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, on, query, arrayUtils, dom, domClass, domConstruct) {
     /******************************************************************
      *
      * Create the map, view and widgets
@@ -1960,16 +1960,12 @@ require([
 
     //watches when shakingVector is turned to also turn shakingRaster
 
-    watchUtils.watch(shakingVector, 'visible', function(e) {
-        if (e == true) {
-            mapView.map.add(shakingRaster);
-            console.log(map.layers.items);
-        }
-        if (e == false) {
-            console.log(map.layers.items);
-            mapView.map.remove(shakingRaster);
-        };
-    });
+    reactiveUtils.when(() => mapView.shakingVector?.visible === true, () =>
+            mapView.map.add(shakingRaster)
+            //console.log(map.layers.items)
+            //mapView.map.remove(shakingRaster);
+
+    );
 
     //symbolize shakingRaster
     function colorize(pixelData) {
@@ -2199,8 +2195,9 @@ require([
           // if the full-extent action is triggered then navigate
           // to the full extent of the visible layer
           if(event.item.layer.fullExtent.spatialReference !== mapView.spatialReference){
-            var geomSer = new GeometryService({url: 'http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer'});
+            //var geomSer = new geometryService({url: 'http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer'});
             var params = new ProjectParameters({
+              url: 'http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer',
               geometries: [event.item.layer.fullExtent],
               outSpatialReference: mapView.spatialReference
             });
@@ -2222,19 +2219,14 @@ require([
 
     layerInformation = function(eet) {
         console.log(eet);
-
-
-        var layerInfoQueryTask = new QueryTask({
-            url: layerInfoURL
-        });
-        console.log("QueryTask");
+        console.log("New Query Layer Code");
 
         var query = new Query();
         query.outFields = ["*"];
         query.where = "title = '" + eet + "'";
         console.log(query);
 
-        layerInfoQueryTask.execute(query).then(function(results) {
+        query.executeQueryJSON(layerInfoURL, query).then(function(results) {
             console.log(results.features[0].attributes.content);
             var contentLayerInfo = results.features[0].attributes.content;
             document.getElementsByClassName("modal-content")[0].innerHTML = "<b>" + eet + "</b> <br>" + contentLayerInfo;
@@ -2255,20 +2247,6 @@ require([
         }
     }
 
-
-
-
-    // geolocate user position
-    query(".dropdown-menu").on("click", function(e) {
-        if (e.target.text == " Locate") {
-            locate.locate().then(function() {
-                // do we want to add a note to user?
-                if (query(".calcite-dropdown.open")[0]) {
-                    query(".calcite-dropdown, .calcite-dropdown-toggle").removeClass("open");
-                } // end if
-            }) // end .then
-        } // end if
-    }); // end query
 
 
     // Basemap events
@@ -2595,7 +2573,9 @@ function showCoordinates(pt) {
   searchWidget.includeDefaultSources = false;
 
   searchWidget.on("search-complete", function(e){
-    console.log(e);
+    console.log("Search Results ", e);
+
+    //const union = geometryEngineAsync.union([pt1, pt2]);
 
     var faultID = e.results[0].results[0].feature;
     console.log(faultID);
@@ -2608,16 +2588,8 @@ function showCoordinates(pt) {
         width: 3
       };
       mapView.graphics.add(faultID);
-
-
 });
-
-
-
-   searchWidget.allPlaceholder = "Find Fault, Place, or Parcel";
-
-
-       
+   searchWidget.allPlaceholder = "Find Fault, Place, or Parcel";  
     searchWidget.on("search-start", function(e) {
             mapView.popup.close();   //close previous popup when starting new search
     });
@@ -2627,11 +2599,6 @@ function showCoordinates(pt) {
     });
 
     var extent = new Extent(-114.1, 37.0, -108.9, 42.0);
-
-
-    
-
-
     var sources = [
       {
         layer: 
@@ -2652,27 +2619,33 @@ function showCoordinates(pt) {
          suggestionTemplate: "<b>Fault Zone:</b> {FaultZone}, <b>Fault Name:</b> {FaultName}, <b>Section Name:</b> {SectionName}, <b>Strand Name:</b> {StrandName}",
         maxSuggestions: 5000,
         minSuggestCharacters: 3,
+        maxResults: 500
 
     },
-    {
-    locator: new Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
-    exactMatch: true,
-    singleLineFieldName: "SingleLine",
-    type: "locator",
-    name: "Location Search",
-    countryCode: "US",  
-    searchExtent: extent,
-    category:["Address","Neighborhood","City"],
-    placeholder: "ex: -111.9, 40.8 or Place",
+//     {
+//     locator: new Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
+//     exactMatch: true,
+//     singleLineFieldName: "SingleLine",
+//     type: "locator",
+//     name: "Location Search",
+//     countryCode: "US",  
+//     searchExtent: extent,
+//     category:["Address","Neighborhood","City"],
+//     placeholder: "ex: -111.9, 40.8 or Place",
 
+//     minSuggestCharacters: 3,
+//     zoomScale: 100000,
+//   },
+  {
+    name: "Location Search",
+    placeholder: "ex: -111.9, 40.8 or Place",
+    apiKey: "AAPKf4e2e178abb040b6926d0b5aba62bf6fyMTKfiHTdDW3eVySDnjjuP2G-YZsmvD6pqd5H91PmdrHTJXATy91wB41JigXqPZ6",
+    singleLineFieldName: "SingleLine",
+    url: "https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer",
     minSuggestCharacters: 3,
     zoomScale: 100000,
+    countryCode: "US",  
   }
 ];
-
     searchWidget.sources = sources;    
-
-        
-
-
 });
