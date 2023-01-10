@@ -2195,13 +2195,15 @@ require([
           // if the full-extent action is triggered then navigate
           // to the full extent of the visible layer
           if(event.item.layer.fullExtent.spatialReference !== mapView.spatialReference){
-            //var geomSer = new geometryService({url: 'http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer'});
+            console.log(event.item.layer);
+            var geomSer = 'http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer';
             var params = new ProjectParameters({
-              url: 'http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer',
+              //url: 'http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer',
               geometries: [event.item.layer.fullExtent],
               outSpatialReference: mapView.spatialReference
             });
-            geomSer.project(params).then(function(results){
+            geometryService.project(geomSer, params).then(function(results){
+                console.log(results);
               mapView.goTo(results[0]);
             });
           }else{
