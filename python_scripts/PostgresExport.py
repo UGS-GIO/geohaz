@@ -3,8 +3,8 @@ import psycopg2
 import pandas as pd
 
 user="sde"
-password="OGU5MmM0MzhmODMwMjRkZWJl"
-host="nrwugspgressp"
+password="password"
+host="server"
 port="5432"
 database="ugsgwp"
 
