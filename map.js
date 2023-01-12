@@ -46,7 +46,7 @@ require([
     "dojo/dom-construct",
     "dojo/domReady!"
 
-], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, geometryService, ProjectParameters, Extent, locator, LocatorSearchSource, geometryEngine, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, LayerList, Locate, GraphicsLayer, Graphic, query, Query, reactiveUtils, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, on, query, arrayUtils, dom, domClass, domConstruct) {
+], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, geometryService, ProjectParameters, Extent, locator, LocatorSearchSource, geometryEngine, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, LayerList, Locate, GraphicsLayer, Graphic, restQuery, Query, reactiveUtils, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, on, query, arrayUtils, dom, domClass, domConstruct) {
     /******************************************************************
      *
      * Create the map, view and widgets
@@ -120,7 +120,7 @@ require([
 
     mapView.ui.add(locateWidget, "top-left");
 
-          // show or hide any open calicite panels when user clicks for attribute details
+    // show or hide any open calicite panels when user clicks for attribute details
       // be sure to pass the panel body, not panel title, ussually called 'collapseNAME'
       function showHideCalcitePanels(showPanel, showCollapse){
         // hide all windows
@@ -2089,7 +2089,7 @@ require([
     layerList.on("trigger-action", function(event) {
 
         console.log(event);
-
+        
 
 
         // Capture the action id.
@@ -2214,36 +2214,28 @@ require([
     });
 
 
-    var layerInfoURL = "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Hazard_Layer_Info/FeatureServer/0";
+    //var layerInfoURL = "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Hazard_Layer_Info/FeatureServer/0";
 
 
     var modal = document.getElementById("myModal");
 
     layerInformation = function(eet) {
-        console.log(eet);
-        console.log("New Query Layer Code");
+        let queryObj = new Query();
+        queryObj.outFields = ["*"];
+        queryObj.where = "title = '" + eet + "'";
+        console.log(queryObj);
 
-        var query = new Query();
-        query.outFields = ["*"];
-        query.where = "title = '" + eet + "'";
-        console.log(query);
+        let layerInfoURL = "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Hazard_Layer_Info/FeatureServer/0";
 
-        query.executeQueryJSON(layerInfoURL, query).then(function(results) {
-            console.log(results.features[0].attributes.content);
+        restQuery.executeQueryJSON(layerInfoURL, queryObj).then(function(results) {
+            console.log(results);
             var contentLayerInfo = results.features[0].attributes.content;
             document.getElementsByClassName("modal-content")[0].innerHTML = "<b>" + eet + "</b> <br>" + contentLayerInfo;
-
             modal.style.display = "block";
         });
-
-
-        // document.getElementsByClassName("modal-content")[0].innerHTML = eet;
-
-        // modal.style.display = "block";
     }
 
     window.onclick = function(event) {
-        //console.log(event);
         if (event.target == modal) {
             modal.style.display = "none";
         }
