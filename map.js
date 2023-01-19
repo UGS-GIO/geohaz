@@ -8,6 +8,7 @@ require([
     "esri/layers/MapImageLayer",
     "esri/layers/GroupLayer",
     "esri/core/watchUtils",
+    "esri/core/urlUtils",
     "esri/tasks/GeometryService",
     "esri/tasks/support/ProjectParameters",
     "esri/geometry/Extent",
@@ -46,7 +47,7 @@ require([
     "calcite-maps/calcitemaps-arcgis-support-v0.10",
     "dojo/query",
     "dojo/domReady!"
-], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, watchUtils, GeometryService, ProjectParameters, Extent, Locator, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, LayerList, Locate, GraphicsLayer, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
+], function(Map, MapView, SceneView, FeatureLayer, ImageryLayer, MapImageLayer, GroupLayer, watchUtils, urlUtils, GeometryService, ProjectParameters, Extent, Locator, Home, Zoom, Compass, Search, Legend, Expand, SketchViewModel, BasemapToggle, LayerList, Locate, GraphicsLayer, Graphic, FeatureSet, Query, QueryTask, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, Selection, List, Collapse, Dropdown, CalciteMaps, CalciteMapArcGISSupport, query) {
     /******************************************************************
      *
      * Create the map, view and widgets
@@ -72,12 +73,12 @@ require([
         ui: {
             components: []
         },
-        highlightOptions: {
-            color: [255, 255, 0, 1],
-            haloColor: "white",
-            haloOpacity: 0.9,
-            fillOpacity: 0.2
-          }
+        // highlightOptions: {
+        //     color: [255, 255, 0, 1],
+        //     haloColor: "white",
+        //     haloOpacity: 0.9,
+        //     fillOpacity: 0.2
+        //   }
     });
 
     var highlight = null;
@@ -1778,7 +1779,7 @@ require([
                 },
                 {
                     type: "text",
-                    text: "{relationships/4/Description}<br><b>Mapped Scale: </b>{CSSMappedScale}"
+                    text: "{relationships/5/Description}<br><b>Mapped Scale: </b>{CSSMappedScale}"
                 }
             ]
         }
@@ -1818,6 +1819,123 @@ require([
                 }
             ]
         }
+    });
+
+    const volcanicCones = new FeatureLayer({
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geologic_Hazards/FeatureServer/21",
+        title: "Volcanic Cones",
+        elevationInfo: [{
+            mode: "on-the-ground"
+        }],
+        visible: false,
+        outFields: ["*"],
+        popupTemplate: {
+            title: "<b>{relationships/17/HazardName}</b>",
+            content: [{
+                    type: "fields",
+                    fieldInfos: [
+                        {
+                            fieldName: "CSSMappedScale",
+                            visible: false,
+                            label: "Mapped Scale"
+                        },
+                        {
+                            fieldName: "relationships/17/Description",
+                            visible: false,
+                            label: "Hazard Description"
+                        }, {
+                            fieldName: "relationships/17/HazardName",
+                            visible: false,
+                            label: "Hazard"
+                        }
+                    ]
+                },
+                {
+                    type: "text",
+                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/17/Description}<br>"
+                }
+            ]
+        }
+    });
+
+    const hotSprings = new FeatureLayer({
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geologic_Hazards/FeatureServer/22",
+        title: "Hot Springs",
+        elevationInfo: [{
+            mode: "on-the-ground"
+        }],
+        visible: false,
+        outFields: ["*"],
+        popupTemplate: {
+            title: "<b>{relationships/18/HazardName}</b>",
+            content: [{
+                    type: "fields",
+                    fieldInfos: [
+                        {
+                            fieldName: "CSSMappedScale",
+                            visible: false,
+                            label: "Mapped Scale"
+                        },
+                        {
+                            fieldName: "relationships/18/Description",
+                            visible: false,
+                            label: "Hazard Description"
+                        }, {
+                            fieldName: "relationships/18/HazardName",
+                            visible: false,
+                            label: "Hazard"
+                        }
+                    ]
+                },
+                {
+                    type: "text",
+                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/18/Description}<br>"
+                }
+            ]
+        }
+    });
+
+    const volcanicFlows = new FeatureLayer({
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geologic_Hazards/FeatureServer/23",
+        title: "Volcanic Flows",
+        elevationInfo: [{
+            mode: "on-the-ground"
+        }],
+        visible: false,
+        outFields: ["*"],
+        popupTemplate: {
+            title: "<b>{relationships/19/HazardName}</b>",
+            content: [{
+                    type: "fields",
+                    fieldInfos: [
+                        {
+                            fieldName: "VolMappedScale",
+                            visible: false,
+                            label: "Mapped Scale"
+                        },
+                        {
+                            fieldName: "relationships/19/Description",
+                            visible: false,
+                            label: "Hazard Description"
+                        }, {
+                            fieldName: "relationships/19/HazardName",
+                            visible: false,
+                            label: "Hazard"
+                        }
+                    ]
+                },
+                {
+                    type: "text",
+                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/19/Description}<br>"
+                }
+            ]
+        }
+    });
+
+    const volcanicHazards = new GroupLayer({
+        title: "Volcanic Hazards",
+        visible: true,
+        layers: [volcanicCones, hotSprings, volcanicFlows]
     });
 
     const soilHazards = new GroupLayer({
@@ -1926,8 +2044,40 @@ require([
     mapView.map.add(soilHazards);
     mapView.map.add(landslides);
     mapView.map.add(floodHazards);
+    mapView.map.add(volcanicHazards);
     mapView.map.add(earthquakes);
     mapView.map.add(tempGraphicsLayer);
+
+
+
+//url checking for query to load certain views and layers
+var checkURL = urlUtils.urlToObject(window.location.href);
+
+
+if (checkURL.query != null) {
+if (checkURL.query.loadview == "subsurface") {  //load subsurface view and data
+    subSurface.visible = true;
+    geology.visible = false;
+    mapView.camera.position.z = -431.67459647450596;
+    mapView.camera.tilt = 93.26527489700682;
+} else if (checkURL.query.loadview == "thermal") { //load thermal view and data
+    thermalData.visible = true;
+    geology.visible = false;
+    mapView.camera.position.latitude = 38.482522462;
+    mapView.camera.position.longitude = -112.87325304;
+    mapView.camera.position.z = 70000;
+    mapView.camera.tilt = 0;
+    mapView.camera.position.heading = 359.98;
+} else if (checkURL.query.loadview == "geologic") { //load geolgoic setting view and data
+    geology.visible = true;
+    mapView.camera.position.latitude = 38.482522462;
+    mapView.camera.position.longitude = -112.87325304;
+    mapView.camera.position.z = 70000;
+    mapView.camera.tilt = 0;
+    mapView.camera.position.heading = 270;
+}
+
+}
 
 
     //highlight faults when selected
@@ -1935,7 +2085,6 @@ require([
   mapView.popup.watch('selectedFeature', function(gra){
     if(gra){
         mapView.graphics.removeAll();
-      var h = mapView.highlightOptions;
       gra.symbol = {
         type: "simple-line", 
         style: "solid",
@@ -1946,6 +2095,7 @@ require([
     }else{
         mapView.graphics.removeAll();
     }
+
   });
   
   mapView.popup.watch('visible', function(vis){
@@ -2169,6 +2319,12 @@ require([
             layer = notMapped;
         } else if (title === "Liquefaction Susceptibility") {
             layer = liquefaction;
+        } else if (title === "Volcanic Flows") {
+            layer = volcanicFlows;
+        } else if (title === "Hot Springs") {
+            layer = hotSprings;
+        } else if (title === "Volcanic Cones") {
+            layer = volcanicCones;
         }
 
         if (id === "information") {
