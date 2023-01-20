@@ -24,7 +24,10 @@ SDEFaultnum= "FaultNum IN ('997a', '997b','998a','998b','998c','1004b','2520','2
 #Input data from Hazards SDE for selecting faults (new data)
 Input__Qfaults_from_SDE = r"Qfaults SDE location"
 
-#Unmodified faults that we share with the UGRC (the "Master" version of the Qfaults) (fc before the dissolve)
+#Unmodified faults that we share with the UGRC (the "Master" version of the Qfaults) (fc before the dissolve) 
+#We always start with the newest UGRC version of the faults for the haz app dissolve. The newest version of the faults is located at: START with this
+#version for the next Qfaults update! "G:\Shared drives\UGS_Hazards_MapPortal\Hazards Portal\UGRC_QfaultsLayer\Qfaults_under_review"
+
 Qfaults_in_Haz_App = r"Existing faults shared with UGRC"
 
 #link to new fault reports

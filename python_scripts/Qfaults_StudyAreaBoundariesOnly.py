@@ -32,7 +32,9 @@ Input_Study_Area = r"G:\My Drive\PROJECTS\Hazards\backups\Geologic_Hazards_Geoda
 #Change the study area selection to the new study area
 StudyAreaSelection = "Name = 'Washington/Hurricane/Sevier-Toroweap Fault Zones' "
 
-#Unmodified faults that we share with the AGRC (the "Master" version of the Qfaults) (fc before the dissolve)
+#Unmodified faults that we share with the AGRC (the "Master" version of the Qfaults) (fc before the dissolve) #Unmodified faults that we share with the UGRC (the "Master" version of the Qfaults) (fc before the dissolve) 
+#We always start with the newest UGRC version of the faults for the haz app dissolve. The newest version of the faults is located at: START with this
+#version for the next Qfaults update! "G:\Shared drives\UGS_Hazards_MapPortal\Hazards Portal\UGRC_QfaultsLayer\Qfaults_under_review"
 Master_Qfaults_Undissolved = r"C:\Users\marthajensen\Desktop\Master_QfaultsData\Qfaults_AGRC.gdb\Qfaults"
 
 usgs_link = "'https://earthquake.usgs.gov/cfusion/qfault/show_report_AB_archive.cfm?fault_id=1004&section_id=b'"
