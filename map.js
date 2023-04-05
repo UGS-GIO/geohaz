@@ -841,6 +841,47 @@ require([
         ]
     }
 
+    var tectonicDefRenderer = {
+        type: "unique-value",
+        field: "SDHHazardUnit",
+        fieldDelimiter: ", ",
+        uniqueValueInfos: [{
+            value: "GDsdh",
+            label: "Ground Deformation",
+            symbol: {
+                type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                color: [230,85,87],
+                outline: { // autocasts as new SimpleLineSymbol()
+                    color: [0, 0, 0],
+                    width: "0.4px"
+                }
+            }
+        },{
+            value: "VFsdh",
+            label: "Potential Valley Floor Subsidence",
+            symbol: {
+                type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                color: [255,255,0],
+                outline: { // autocasts as new SimpleLineSymbol()
+                    color: [0, 0, 0],
+                    width: "0.4px"
+                }
+            }
+        },{
+            value: "Psdh",
+            label: "Plateau Subsidence",
+            symbol: {
+                type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                color: [56,168,0],
+                outline: { // autocasts as new SimpleLineSymbol()
+                    color: [0, 0, 0],
+                    width: "0.4px"
+                }
+            }
+        }
+        ]
+    }
+
 
     var rendererLiquefaction = {
         type: "unique-value", // autocasts as new UniqueValueRenderer()
@@ -1233,6 +1274,8 @@ require([
         }],
         visible: false,
         outFields: ["*"],
+        renderer: tectonicDefRenderer,
+        qualityProfile: "high",
         popupTemplate: {
             title: "<b>{relationships/14/HazardName}</b>",
             content: [{
@@ -2169,13 +2212,7 @@ require([
 
         if (id === "information") {
 
-            // if the information action is triggered, then
-            // open the item details page of the service layer
-            //window.open(title.url);
-
             layerInformation(title);
-
-
 
         } else if (id === "increase-opacity") {
             // if the increase-opacity action is triggered, then
