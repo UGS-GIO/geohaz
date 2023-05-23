@@ -2,11 +2,12 @@
 
 # Import arcpy module
 ###this has to be run while connected to the VPN
+##Run in python 2
 import arcpy
 arcpy.env.overwriteOutput = True
 
 #Default workspace - note if the dataset is not in the default geodatabase within the script, you must include its entire path
-Default_gdb = r"your default gdb"
+Default_gdb = r"C:\Users\marthajensen\Desktop\matheson\qfault_UBOT.gdb"
 arcpy.env.workspace = Default_gdb
 
 ############################      Inputs     ###########################################################################################################
@@ -19,13 +20,17 @@ HazFaultnum= "FaultNum IN ('997a', '997b')"
 
 #faults that need to be extracted from SDE and added to hazards app (check to see if these only need to be deleted in Study Area)
 
-SDEFaultnum= "FaultNum IN ('997a', '997b','998a','998b','998c','1004b','2520','2522','2524','2527','2528','2529','2532','2533','2534','2535','2536','2537','2550','2558')"
+SDEFaultnum= "FaultNum IN ('2407')"
 
 #Input data from Hazards SDE for selecting faults (new data)
-Input__Qfaults_from_SDE = r"Qfaults SDE location"
+Input__Qfaults_from_SDE = r"C:\Users\marthajensen\Desktop\matheson\qfault_UBOT.gdb\Qfaults_UBOT"
 
 #Unmodified faults that we share with the UGRC (the "Master" version of the Qfaults) (fc before the dissolve)
-Qfaults_in_Haz_App = r"Existing faults shared with UGRC"
+#We always start with the newest UGRC version of the faults for the haz app dissolve. The newest version of the faults is located at: START with this
+#version for the next Qfaults update! "G:\Shared drives\UGS_Hazards_MapPortal\Hazards Portal\UGRC_QfaultsLayer\Qfaults_under_review" -
+#Copy this version and put it on your desktop! Do not connect to the one on the G drive
+
+Qfaults_in_Haz_App = r"C:\Users\marthajensen\Desktop\Master_QfaultsData\Qfaults_AGRC.gdb\Qfaults"
 
 #link to new fault reports
 usgs_link = "'https://earthquake.usgs.gov/cfusion/qfault/show_report_AB_archive.cfm?fault_id=1004&section_id=b'"
@@ -46,8 +51,8 @@ MasterQfaults="\\FinalMasterQfaults_forUGRC"
 # from the final haz app feature class and this table have to match for the Reporting tool to work
 
 #Output: Create location for output of reporting tool CSV
-OutputCSV=r"G:\My Drive\PROJECTS\Hazards\map\working_map"
-OutputCSVname = "\\hazardousfaultsAppend_04Oct.csv"
+OutputCSV=r"C:\Users\marthajensen\Desktop\hazapp"
+OutputCSVname = "\\hazardousfaultsAppend_23Jan.csv"
 
 ###############################interim steps - don't need to be changed ###################################################
 
@@ -68,14 +73,14 @@ print("Name: {} Feature Layer was successfully created".format(descLayer.name))
 result = int(arcpy.GetCount_management('in_memory\Qfaults_SDELayer').getOutput(0))
 print("The record count for the SDE layer is " + str(result))
 
+
 # Step 2 - Process: Feature Class to Feature Class - Select faults from the SDE that you want to append to the Hazards app - Create a feature class of selected faults using the SDEFaultnum variable
-#arcpy.FeatureClassToFeatureClass_conversion('in_memory\Qfaults_SDELayer', Default_gdb, 'faultsthatneedtobeaddedtoApp', SDEFaultnum, "FaultNum \"FaultNum\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultNum,-1,-1;FaultZone \"FaultZone\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultZone,-1,-1;FaultName \"FaultName\" true true false 60 Text 0 0 ,First,#,Qfaults_SDELayer,FaultName,-1,-1;SectionName \"SectionName\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,SectionName,-1,-1;StrandName \"StrandName\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,StrandName,-1,-1;MappedScale \"MappedScale\" true true false 15 Text 0 0 ,First,#,Qfaults_SDELayer,MappedScale,-1,-1;DipDirection \"DipDirection\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,DipDirection,-1,-1;SlipSense \"SlipSense\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,SlipSense,-1,-1;SlipRate \"SlipRate\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,SlipRate,-1,-1;MappingConstraint \"MappingConstraint\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,MappingConstraint,-1,-1;FaultClass \"FaultClass\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultClass,-1,-1;FaultAge \"FaultAge\" true true false 50 Text 0 0 ,First,#,Qfaults_SDELayer,FaultAge,-1,-1;Label \"Label\" true true false 100 Text 0 0 ,First,#,Qfaults_SDELayer,Label,-1,-1;DateCreated \"DateCreated\" true true false 8 Date 0 0 ,First,#,Qfaults_SDELayer,DateCreated,-1,-1;LastModified \"LastModified\" true true false 8 Date 0 0 ,First,#,Qfaults_SDELayer,LastModified,-1,-1;Citation \"Citation\" true true false 100 Text 0 0 ,First,#,Qfaults_SDELayer,Citation,-1,-1;Shape_Length \"Shape_Length\" false true true 8 Double 0 0 ,First,#,Qfaults_SDELayer,Shape_Length,-1,-1", "")
-arcpy.FeatureClassToFeatureClass_conversion('in_memory\Qfaults_SDELayer', Default_gdb, "tempSDE, SDEFaultnum)
+arcpy.FeatureClassToFeatureClass_conversion('in_memory\Qfaults_SDELayer', Default_gdb, "tempSDE", SDEFaultnum)
 
 
-descSelected=arcpy.Describe(Default_gdb+"\\tempSDE)
+descSelected=arcpy.Describe(Default_gdb+"\\tempSDE")
 print("Name: {} Feature Class was successfully created".format(descSelected.name))
-resultSelect = int(arcpy.GetCount_management(Default_gdb+"\\tempSDE).getOutput(0))
+resultSelect = int(arcpy.GetCount_management(Default_gdb+"\\tempSDE").getOutput(0))
 print("The record count for the SDE fault selection is " + str(resultSelect))
 
 #Step 3 - Remove domain from SDE layer if its there so that domain issues don't end up in final version
@@ -84,15 +89,15 @@ print("The record count for the SDE fault selection is " + str(resultSelect))
 domains = ['QFaultMapScale','DipDirection','SlipSense',
            'QFaultSlipRate','QFaultConstraint_1','QFaultClass','QFaultAge']
 
-for field in arcpy.ListFields(Default_gdb+"\\tempSDE):
+for field in arcpy.ListFields(Default_gdb+"\\tempSDE"):
         if field.domain in domains:
-            arcpy.RemoveDomainFromField_management(Default_gdb+"\\tempSDE,field.name)
+            arcpy.RemoveDomainFromField_management(Default_gdb+"\\tempSDE",field.name)
             print "%s domain removed."%str(field.domain)
 
 
 #Step 4 create lower case variables for Dip Direction and Slip Sense
-arcpy.CalculateField_management(Default_gdb+"\\tempSDE, "DipDirection", "!DipDirection!.lower()", "PYTHON", "")
-arcpy.CalculateField_management(Default_gdb+"\\tempSDE, "SlipSense", "!SlipSense!.lower()", "PYTHON", "")
+arcpy.CalculateField_management(Default_gdb+"\\tempSDE", "DipDirection", "!DipDirection!.lower()", "PYTHON", "")
+arcpy.CalculateField_management(Default_gdb+"\\tempSDE", "SlipSense", "!SlipSense!.lower()", "PYTHON", "")
 
 
 # Step 5 - Process: Feature Class to Feature Class - Create a new feature class of the Hazard app data so that the original is not overwritten
@@ -130,7 +135,7 @@ print("Dataset with " + Num3 + " faults successfully created.")
 
 
 # Step 10 - Process: Append - new fault data to Hazards data - also make slip sense lowercase for output and add labels to new faults
-arcpy.Append_management(Default_gdb+"\\tempSDE, NewMasterQfault, "NO_TEST")
+arcpy.Append_management(Default_gdb+"\\tempSDE", NewMasterQfault, "NO_TEST")
 arcpy.CalculateField_management(NewMasterQfault, "SlipSense", "!SlipSense!.lower()", "PYTHON", "")
 arcpy.CalculateField_management(NewMasterQfault, "DipDirection", "!DipDirection!.lower()", "PYTHON", "")
 arcpy.CalculateField_management(NewMasterQfault, "MappingConstraint", "!MappingConstraint!.lower()", "PYTHON", "")
@@ -161,12 +166,12 @@ with arcpy.da.UpdateCursor("MasterQfaultsLyr","DipDirection")as cursor:
         if row [0] in dct:
             row[0] = dct[row[0]]
             cursor.updateRow(row)
-arcpy.CopyFeatures_management("MasterQfaultsLyr", "G:\\My Drive\\PROJECTS\\Hazards\\map\\working_map\\Qfault_update_30Sep21.gdb"+MasterQfaults, "", "0", "0", "0")
+arcpy.CopyFeatures_management("MasterQfaultsLyr", Default_gdb +MasterQfaults, "", "0", "0", "0")
 
 #Overwrite the master qfaults layer with the feature layer that had its label field cleaned up -this is the final AGRC q faults that needs to be uploaded to AGOL
-NewMasterQfault2=Default_gdb + MasterQfaults
+NewMasterQfault2= Default_gdb + MasterQfaults
 Num4 = str(arcpy.GetCount_management(NewMasterQfault2))
-Num5 = str(arcpy.GetCount_management(Default_gdb+"\\tempSDE))
+Num5 = str(arcpy.GetCount_management(Default_gdb+"\\tempSDE"))
 print("The new Hazards data now has " + Num4 + " faults. This is a result of adding " + Num5 + " faults from the SDE to the " + Num3 + " faults from the Hazards app." )
 
 # Step 11 - Process: Make Feature Layer of the newly created feature class so that the selection can be removed
@@ -327,4 +332,3 @@ print("Has someone looked at the qfaults schema wiki on github?")
 print("Once ready, this data should be added to the qfaults PRO project on the geology server - make sure the qfaults labels feature class are filled out for the Server service too")
 
 print("Done with qfaults!")
-
