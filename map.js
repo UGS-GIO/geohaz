@@ -2629,7 +2629,7 @@ function showCoordinates(pt) {
     var extent = new Extent(-114.1, 37.0, -108.9, 42.0);
 
 
-    
+    //sources
 
 
     var sources = [
