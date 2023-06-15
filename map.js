@@ -2599,7 +2599,7 @@ function showCoordinates(pt) {
     showCoordinates(mapView.toMap({ x: evt.x, y: evt.y }));
   });
          
-  //------------------Search Code------------------------  
+  //------------------Search Code------------------------  ---
 
   searchWidget.includeDefaultSources = false;
 
