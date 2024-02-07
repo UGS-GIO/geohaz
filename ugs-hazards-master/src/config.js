@@ -41,11 +41,12 @@ export default {
     ['Utah_Geologic_Hazards/FeatureServer/12', 'MKF'], // Karst Features
     ['Utah_Geologic_Hazards/FeatureServer/13', 'PES'], // Piping and Erosion Susceptibility
     ['Utah_Geologic_Hazards/FeatureServer/14', 'GRS'], // Radon Susceptibility
-    ['Utah_Geologic_Hazards/FeatureServer/15', 'RFH'], // Rockfall Hazard
+    ['Utah_Geologic_Hazards/FeatureServer/15', 'RFH'], // Rockfall Hazardßß
     ['Utah_Geologic_Hazards/FeatureServer/16', 'SDH'], // Salt Tectonics Related Ground Deformation
     ['Utah_Geologic_Hazards/FeatureServer/17', 'SBP'], // Shallow Bedrock Potential
     ['Utah_Geologic_Hazards/FeatureServer/18', 'SLS'], // Soluble Soil and Rock Susceptibility
     ['Utah_Geologic_Hazards/FeatureServer/19', 'WSS'], // Wind-Blown Sand Susceptibility
+    ['Utah_Geologic_Hazards/FeatureServer/24', 'AAF'], // Alluvial Fan Inventory
     ['https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults/MapServer/0', quaternaryFaultsHazardCode], // Quaternary Faults
     ['Utah_Earthquake_Hazards/FeatureServer/2', 'LQS'], // Liquefaction Susceptibility
     ['Utah_Earthquake_Hazards/FeatureServer/3', 'SFR'], // Surface Fault Rupture Hazard Special Study Zone
