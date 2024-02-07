@@ -1827,7 +1827,8 @@ require([
     });
 
     const quadBoundaries = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/0",
+        //old---------- url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/0",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geological_Hazards_Supplemental_Data__test__view/FeatureServer/0",
         title: "USGS 1:24,000-Scale Quadrangle Boundaries",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1854,7 +1855,8 @@ require([
     })
 
     const hazardStudy = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/1",
+        //old-------
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geological_Hazards_Supplemental_Data__test__view/FeatureServer/1",
         title: "Mapped Areas",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1871,7 +1873,8 @@ require([
 
 
     const lidarBounds = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/2",
+        //old---------url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/2",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data__test_view/FeatureServer/2",
         title: "Lidar Extents",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1880,7 +1883,8 @@ require([
     })
 
     const airphotoPoints = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/3",
+        //old-----------url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/3",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data__test_view/FeatureServer/3",
         title: "Aerial Imagery Centerpoints",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1890,7 +1894,8 @@ require([
     })
 
     const notMapped = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/4",
+        //old----------url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/4",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data__test_view/FeatureServer/4",
         title: "Areas Not Mapped within Project Areas",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1898,12 +1903,47 @@ require([
         visible: true,
     })
 
+    const alluvFans = new FeatureLayer({
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database___AGOLservice__test_view/FeatureServer/24",
+        title: "Statewide Active Alluvial Fan Inventory",
+        elevationInfo: [{
+            mode: "on-the-ground"
+        }],
+        visible: false,
+        popupTemplate: {
+            title: "<b>{relationships/20/HazardName}</b>",
+            content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                            fieldName: "AAFMappedScale",
+                            visible: false,
+                            label: "Mapped Scale"
+                        },
+                        {
+                            fieldName: "relationships/20/Description",
+                            visible: false,
+                            label: "Hazard Description"
+                        }, {
+                            fieldName: "relationships/20/HazardName",
+                            visible: false,
+                            label: "Hazard"
+                        }
+                    ]
+                },
+                {
+                    type: "text",
+                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/20/Description}<br><b>Mapped Scale: </b>{AAFMappedScale}"
+                }
+            ]
+        }
+    })
+
     //grouplayers for organization
 
     const floodHazards = new GroupLayer({
         title: "Flooding Hazards",
         visible: true,
-        layers: [floodHazard, groundwaterSus]
+        layers: [alluvFans, floodHazard, groundwaterSus]
     });
 
     const earthquakes = new GroupLayer({
@@ -2215,8 +2255,8 @@ require([
     });
 
 
-    var layerInfoURL = "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Hazard_Layer_Info/FeatureServer/0";
-
+    //old------------ var layerInfoURL = "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Hazard_Layer_Info/FeatureServer/0";
+    var layerInfoURL = "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Hazard_Layer_Info_Text_test/FeatureServer/0";
 
     var modal = document.getElementById("myModal");
 
