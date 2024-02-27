@@ -7,7 +7,7 @@ export default async () => {
     'esri/views/MapView',
     'esri/geometry/Polygon',
     'esri/Graphic',
-    'esri/core/watchUtils',
+    'esri/core/reactiveUtils',
     'esri/symbols/support/symbolUtils',
     'esri/widgets/ScaleBar'
   ];
@@ -17,15 +17,15 @@ export default async () => {
     MapView,
     Polygon,
     Graphic,
-    watchUtils,
+    reactiveUtils,
     symbolUtils,
     ScaleBar
   ] = await loadModules(requires, {
-    version: '4.23',
+    version: '4.29',
     css: true
   });
 
   return {
-    WebMap, MapView, Polygon, Graphic, watchUtils, symbolUtils, ScaleBar
+    WebMap, MapView, Polygon, Graphic, reactiveUtils, symbolUtils, ScaleBar
   };
 };

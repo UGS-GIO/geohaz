@@ -176,7 +176,7 @@ const getScreenshot = async function(url, hazardCode) {
     };
   }
 
-  const { watchUtils } = await getModules();
+  const { reactiveUtils } = await getModules();
 
   let originalScale;
   if (hazardCode === config.groundshakingHazardCode) {
@@ -188,7 +188,15 @@ const getScreenshot = async function(url, hazardCode) {
     });
   }
 
-  await watchUtils.whenFalseOnce(view, 'updating');
+//  await watchUtils.whenFalseOnce(view, 'updating');
+
+  await reactiveUtils.when(
+    () => !view.updating,
+    () => {
+      console.log('VIEWUPDATING', view.updating);
+    }, {
+      once:true
+    });
 
   // map width is 8.5" - 0.78" (default print margins for Chrome on macOS) * 300 dpi
   // height is golden ratio
