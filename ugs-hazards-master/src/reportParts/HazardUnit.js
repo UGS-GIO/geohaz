@@ -30,7 +30,7 @@ export default props => {
       }
 
       const symbol = renderers[0].symbol.clone();
-
+      if (props.HazardUnit === 'S3sgs' || props.HazardUnit === 'Hlqs') console.log('symbolSTRING',symbol);
       await symbolUtils.renderPreviewHTML(symbol, {
         node: legend.current
       });
