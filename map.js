@@ -940,7 +940,7 @@ require([
 
 
     const landslideComp = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/4",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/4",
         title: "Legacy Landslide Compilation",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -956,7 +956,7 @@ require([
     });
 
     const landslideDeposit = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/3",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/3",
         title: "Landslides",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -973,7 +973,7 @@ require([
 
 
     const landslideSusceptibility = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/2",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/2",
         visible: false,
         //renderer: landslideSusRenderer,
         title: "Landslide Susceptibility",
@@ -1189,7 +1189,7 @@ require([
     });
 
     const eolianSus = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/19",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/19",
         title: "Wind-Blown Sand Susceptibility",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1210,11 +1210,11 @@ require([
                             visible: false,
                             label: "Hazard Description"
                         },
-                        // {
-                        //  fieldName: "relationships/17/HazardName",
-                        //  visible: false,
-                        //  label: "Hazard"
-                        // }
+                        {
+                         fieldName: "relationships/17/HazardName",
+                         visible: false,
+                         label: "Hazard"
+                        }
                     ]
                 },
                 {
@@ -1226,7 +1226,7 @@ require([
     });
 
     const tectonicDef = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/16",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/16",
         title: "Salt Tectonics-Related Ground Deformation",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1267,7 +1267,7 @@ require([
     });
 
     const bedrockPot = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/17",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/17",
         title: "Shallow Bedrock Potential",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1309,7 +1309,7 @@ require([
     });
 
     const rockfallHaz = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/15",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/15",
         title: "Rockfall Hazard",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1352,7 +1352,7 @@ require([
     });
 
     const pipingSus = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/13",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/13",
         title: "Piping and Erosion Susceptibility",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1388,7 +1388,7 @@ require([
     });
 
     const expansiveSoil = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/10",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/10",
         title: "Expansive Soil and Rock Susceptibility",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1424,7 +1424,7 @@ require([
     });
 
     const groundwaterSus = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/1",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/1",
         title: "Shallow Groundwater Susceptibility",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1460,7 +1460,7 @@ require([
     });
 
     const radonSus = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/14",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/14",
         title: "Geologic Radon Susceptibility",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1496,7 +1496,7 @@ require([
     });
 
     const corrosiveSoil = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/7",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/7",
         title: "Corrosive Soil and Rock Susceptibility",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1532,7 +1532,7 @@ require([
     });
 
     const collapsibleSoil = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/6",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/6",
         title: "Collapsible Soil Susceptibility",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1568,7 +1568,7 @@ require([
     });
 
     const solubleSoil = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/18",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/18",
         title: "Soluble Soil and Rock Susceptibility",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1604,7 +1604,7 @@ require([
     });
 
     const caliche = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/5",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/5",
         title: "Caliche Susceptibility",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1641,7 +1641,7 @@ require([
 
 
     const floodHazard = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/0",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/0",
         title: "Flood and Debris-Flow Hazard",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1677,7 +1677,7 @@ require([
     });
 
     const earthFissure = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/8",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/8",
         title: "Earth Fissure Hazard",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1713,7 +1713,7 @@ require([
     });
 
     const erosionZone = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/9",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/9",
         title: "J.E. Fuller Flood Erosion Hazard Zones",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1749,7 +1749,7 @@ require([
     });
 
     const groundSubsidence = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/11",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/11",
         title: "Ground Subsidence Potential",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1785,7 +1785,7 @@ require([
     });
 
     const karstFeatures = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/12",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/12",
         title: "Karst Features",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1827,8 +1827,7 @@ require([
     });
 
     const quadBoundaries = new FeatureLayer({
-        //old---------- url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/0",
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geological_Hazards_Supplemental_Data__test__view/FeatureServer/0",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data_t1_view/FeatureServer/0",
         title: "USGS 1:24,000-Scale Quadrangle Boundaries",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1855,8 +1854,7 @@ require([
     })
 
     const hazardStudy = new FeatureLayer({
-        //old-------
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geological_Hazards_Supplemental_Data__test__view/FeatureServer/1",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geological_Hazards_Supplemental_Data_t1_view/FeatureServer/1",
         title: "Mapped Areas",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1873,8 +1871,7 @@ require([
 
 
     const lidarBounds = new FeatureLayer({
-        //old---------url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/2",
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data__test_view/FeatureServer/2",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data_t1_view/FeatureServer/2",
         title: "Lidar Extents",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1883,8 +1880,7 @@ require([
     })
 
     const airphotoPoints = new FeatureLayer({
-        //old-----------url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/3",
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data__test_view/FeatureServer/3",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data_t1_view/FeatureServer/3",
         title: "Aerial Imagery Centerpoints",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1894,8 +1890,7 @@ require([
     })
 
     const notMapped = new FeatureLayer({
-        //old----------url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data_View/FeatureServer/4",
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Supplemental_Data__test_view/FeatureServer/4",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data_t1_view/FeatureServer/4",
         title: "Areas Not Mapped within Project Areas",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1904,14 +1899,14 @@ require([
     })
 
     const alluvFans = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database___AGOLservice__test_view/FeatureServer/24",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/24",
         title: "Statewide Active Alluvial Fan Inventory",
         elevationInfo: [{
             mode: "on-the-ground"
         }],
         visible: false,
         popupTemplate: {
-            title: "<b>{relationships/20/HazardName}</b>",
+            title: "<b>{relationships/21/HazardName}</b>",
             content: [{
                     type: "fields",
                     fieldInfos: [{
@@ -1920,11 +1915,11 @@ require([
                             label: "Mapped Scale"
                         },
                         {
-                            fieldName: "relationships/20/Description",
+                            fieldName: "relationships/21/Description",
                             visible: false,
                             label: "Hazard Description"
                         }, {
-                            fieldName: "relationships/20/HazardName",
+                            fieldName: "relationships/21/HazardName",
                             visible: false,
                             label: "Hazard"
                         }
@@ -1932,7 +1927,7 @@ require([
                 },
                 {
                     type: "text",
-                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/20/Description}<br><b>Mapped Scale: </b>{AAFMappedScale}"
+                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/21/Description}<br><b>Mapped Scale: </b>{AAFMappedScale}"
                 }
             ]
         }
@@ -2173,7 +2168,7 @@ require([
             layer = collapsibleSoil;
         } else if (title === "Corrosive Soil and Rock Susceptibility") {
             layer = corrosiveSoil;
-        } else if (title === "Geologic Radon Susceptibilty") {
+        } else if (title === "Geologic Radon Susceptibility") {
             layer = radonSus;
         } else if (title === "Shallow Groundwater Susceptibility") {
             layer = groundwaterSus;
@@ -2255,8 +2250,7 @@ require([
     });
 
 
-    //old------------ var layerInfoURL = "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Hazard_Layer_Info/FeatureServer/0";
-    var layerInfoURL = "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Hazard_Layer_Info_Text_test/FeatureServer/0";
+    var layerInfoURL = "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Hazard_Layer_Info_t1/FeatureServer/0";
 
     var modal = document.getElementById("myModal");
 

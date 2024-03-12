@@ -1,0 +1,1 @@
+import{S as o}from"./subclass-f7409b1b.js";import{n as t,M as p,x as m}from"./Extent-2b4578b8.js";import{u as i,m as n,j as r}from"./Polyline-013cde1f.js";import"./SpatialReference-428523ee.js";import"./typeUtils-3056a943.js";const e={base:t,key:"type",typeMap:{extent:p,multipoint:i,point:m,polyline:n,polygon:r}};o(e);export{e as n};
