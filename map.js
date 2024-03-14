@@ -2204,6 +2204,8 @@ require([
             layer = notMapped;
         } else if (title === "Liquefaction Susceptibility") {
             layer = liquefaction;
+        } else if (title === "Statewide Active Alluvial Fan Inventory") {
+            layer = alluvFans;
         }
 
         if (id === "information") {
