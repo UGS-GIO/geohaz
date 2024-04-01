@@ -1900,7 +1900,7 @@ require([
 
     const alluvFans = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/24",
-        title: "Statewide Active Alluvial Fan Inventory",
+        title: "Statewide Active Alluvial-Fan Inventory",
         elevationInfo: [{
             mode: "on-the-ground"
         }],
@@ -2204,7 +2204,7 @@ require([
             layer = notMapped;
         } else if (title === "Liquefaction Susceptibility") {
             layer = liquefaction;
-        } else if (title === "Statewide Active Alluvial Fan Inventory") {
+        } else if (title === "Statewide Active Alluvial-Fan Inventory") {
             layer = alluvFans;
         }
 
