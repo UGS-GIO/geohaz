@@ -1904,6 +1904,7 @@ require([
         elevationInfo: [{
             mode: "on-the-ground"
         }],
+        outFields: ["*"],
         visible: false,
         popupTemplate: {
             title: "<b>{relationships/21/HazardName}</b>",
