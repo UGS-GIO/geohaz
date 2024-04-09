@@ -1923,12 +1923,16 @@ require([
                             fieldName: "relationships/21/HazardName",
                             visible: false,
                             label: "Hazard"
+                        }, {
+                            fieldName: "PROJECT_SOURCE",
+                            visible: false,
+                            label: "Source"
                         }
                     ]
                 },
                 {
                     type: "text",
-                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/21/Description}<br><b>Mapped Scale: </b>{AAFMappedScale}"
+                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/21/Description}<br><b>Mapped Scale: </b>{AAFMappedScale}<br><b>Source: </b>{PROJECT_SOURCE}"
                 }
             ]
         }
