@@ -16,4 +16,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_UT_DNR_UGS_HAZARDS2_DEV }}'
           channelId: live
-          projectId: ut-dnr-ugs-hazards2-dev
+          projectId: ut-dnr-ugs-hazards2-prod
