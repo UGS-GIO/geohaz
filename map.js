@@ -1640,41 +1640,41 @@ require([
     });
 
 
-    const floodHazard = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/0",
-        title: "Flood and Debris-Flow Hazard",
-        elevationInfo: [{
-            mode: "on-the-ground"
-        }],
-        visible: false,
-        outFields: ["*"],
-        popupTemplate: {
-            title: "<b>{relationships/0/HazardName}</b>",
-            content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                            fieldName: "FLHMappedScale",
-                            visible: false,
-                            label: "Mapped Scale"
-                        },
-                        {
-                            fieldName: "relationships/0/Description",
-                            visible: false,
-                            label: "Hazard Description"
-                        }, {
-                            fieldName: "relationships/0/HazardName",
-                            visible: false,
-                            label: "Hazard"
-                        }
-                    ]
-                },
-                {
-                    type: "text",
-                    text: "<b>{Hazard_Symbology_Text}: </b>{relationships/0/Description}<br><b>Mapped Scale: </b>{FLHMappedScale}"
-                }
-            ]
-        }
-    });
+    // const floodHazard = new FeatureLayer({
+    //     url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/0",
+    //     title: "Flood and Debris-Flow Hazard",
+    //     elevationInfo: [{
+    //         mode: "on-the-ground"
+    //     }],
+    //     visible: false,
+    //     outFields: ["*"],
+    //     popupTemplate: {
+    //         title: "<b>{relationships/0/HazardName}</b>",
+    //         content: [{
+    //                 type: "fields",
+    //                 fieldInfos: [{
+    //                         fieldName: "FLHMappedScale",
+    //                         visible: false,
+    //                         label: "Mapped Scale"
+    //                     },
+    //                     {
+    //                         fieldName: "relationships/0/Description",
+    //                         visible: false,
+    //                         label: "Hazard Description"
+    //                     }, {
+    //                         fieldName: "relationships/0/HazardName",
+    //                         visible: false,
+    //                         label: "Hazard"
+    //                     }
+    //                 ]
+    //             },
+    //             {
+    //                 type: "text",
+    //                 text: "<b>{Hazard_Symbology_Text}: </b>{relationships/0/Description}<br><b>Mapped Scale: </b>{FLHMappedScale}"
+    //             }
+    //         ]
+    //     }
+    // });
 
     const earthFissure = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards_Working_Database_t1_view/FeatureServer/8",
@@ -1943,7 +1943,7 @@ require([
     const floodHazards = new GroupLayer({
         title: "Flooding Hazards",
         visible: true,
-        layers: [alluvFans, floodHazard, groundwaterSus]
+        layers: [alluvFans, groundwaterSus]
     });
 
     const earthquakes = new GroupLayer({
