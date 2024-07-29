@@ -1117,7 +1117,6 @@ require([
         }
     });
 
-
     // **********qfaults from our server as a mapimageservice
     const qFaults = new MapImageLayer({
         url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults_with_labels_25July24/MapServer",
