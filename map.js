@@ -837,6 +837,17 @@ require([
                     width: "0.4px"
                 }
             }
+        },{
+            value: "Csbp",
+            label: "Caliche",
+            symbol: {
+                type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                color: [210, 185, 102],
+                outline: { // autocasts as new SimpleLineSymbol()
+                    color: [0, 0, 0],
+                    width: "0.4px"
+                }
+            }
         },
         ]
     }
