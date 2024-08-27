@@ -1128,11 +1128,10 @@ require([
         }
     });
 
-
     // **********qfaults from our server as a mapimageservice
     const qFaults = new MapImageLayer({
-
-        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults_with_labels/MapServer",
+        url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults_with_labels_25July24/MapServer",
+        //url: "https://webmaps.geology.utah.gov/arcgis/rest/services/Hazards/quaternary_faults_with_labels/MapServer",
         sublayers: [{
             id: 0,
             visible: true,
@@ -1838,7 +1837,7 @@ require([
     });
 
     const quadBoundaries = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data_t1_view/FeatureServer/0",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data25July24view/FeatureServer/0",
         title: "USGS 1:24,000-Scale Quadrangle Boundaries",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1865,7 +1864,7 @@ require([
     })
 
     const hazardStudy = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Utah_Geological_Hazards_Supplemental_Data_t1_view/FeatureServer/1",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data25July24view/FeatureServer/1",
         title: "Mapped Areas",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1882,7 +1881,7 @@ require([
 
 
     const lidarBounds = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data_t1_view/FeatureServer/2",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data25July24view/FeatureServer/2",
         title: "Lidar Extents",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1891,7 +1890,7 @@ require([
     })
 
     const airphotoPoints = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data_t1_view/FeatureServer/3",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data25July24view/FeatureServer/3",
         title: "Aerial Imagery Centerpoints",
         elevationInfo: [{
             mode: "on-the-ground"
@@ -1901,7 +1900,7 @@ require([
     })
 
     const notMapped = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data_t1_view/FeatureServer/4",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geological_Hazards_Supplemental_Data25July24view/FeatureServer/4",
         title: "Areas Not Mapped within Project Areas",
         elevationInfo: [{
             mode: "on-the-ground"
